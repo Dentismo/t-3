@@ -1,0 +1,6 @@
+{
+  "eslint.validate": ["react", "html", "typescript"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
