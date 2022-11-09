@@ -5,12 +5,29 @@ const path = require('path');
 const cors = require('cors');
 const history = require('connect-history-api-fallback');
 
+//mqtt
+const mqtt = require('mqtt')
+const clientId = `mqtt_${Math.random().toString(16).slice(3)}`
+const client = mqtt.connect('mqtt://localhost:1883', {
+  clientId,
+  clean: true,
+  connectTimeout: 4000,
+  username: 'name',
+  password: '1997',
+  reconnectPeriod: 1000,
+})
+
+var mqttController = require('./controller/mqtt');
+//
+
+
 const mongoURI = 'mongodb://127.0.0.1:27017/dentistClinicDB';
 const port = process.env.PORT || 3000;
 
 connectToDatabase(mongoURI);
 const app = startApp(port);
 module.exports = app;
+
 
 
 function connectToDatabase(mongoURI) {
@@ -23,11 +40,36 @@ function connectToDatabase(mongoURI) {
         console.log(`Connected to MongoDB with URI: ${mongoURI}`);
     });
 }
+/*Function connectToMqtt connect us to the broker via port 1883, added the function to startApp
+open a terminal and copy paste: mosquitto_sub -h localhost -t /nodejs/mqtt
+*/
+function connectToMqtt() {
+  const topic = "/nodejs/mqtt";
+  client.on("connect", () => {
+    console.log("Connected");
+    
+    client.subscribe([topic], () => {
+      console.log(`Subscribe to topic '${topic}'`);
+    });
+
+client.publish(topic, "nodejs mqtt test", { qos: 0, retain: false }, (error) => {
+        if (error) {
+        console.error(error);
+        }
+    }
+    );
+  });
+  client.on("message", (topic, payload) => {
+    console.log("Received Message:", topic, payload.toString());
+  });
+
+}
 
 function startApp(port) {
     const app = setupApp();
     addRoutesToApp(app);
     addFrontendToApp(app);
+    connectToMqtt(app);
 
     // Error handler (i.e., when exception is thrown) must be registered last
     const env = app.get('env');
@@ -61,6 +103,7 @@ function addRoutesToApp(app) {
     /**
      * Add controllers here
      */
+    app.use('/api/message', mqttController);
 
     // Catch all non-error handler for api (i.e., 404 Not Found)
     app.use('/api/*', function (req, res) {

@@ -3,6 +3,19 @@ import logo from './logo.svg'
 import './App.css'
 
 function App() {
+  const sendMessage = async () => {
+    const response = await fetch('http://localhost:3000/api/message', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: 'Wow Hello World' })
+    });
+    if (!response.ok) {
+        throw new Error('Could not send message')
+    }
+}
   return (
     <div className="App">
       <header className="App-header">
@@ -19,6 +32,9 @@ function App() {
           Learn React
         </a>
       </header>
+      <div>
+        <button onClick={sendMessage}>Send message</button>
+      </div>
     </div>
   )
 }
