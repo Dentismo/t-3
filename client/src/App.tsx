@@ -10,11 +10,24 @@ function App() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: 'This message is now diffrent' })
+        body: JSON.stringify({ message: 'This sends a mqtt message' })
     });
     if (!response.ok) {
         throw new Error('Could not send message')
     }
+}
+const sendMessage2 = async () => {
+  const response = await fetch('http://localhost:3000/dentist', {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message: 'This message is now diffrent' })
+  });
+  if (!response.ok) {
+      throw new Error('Could not send message')
+  }
 }
   return (
     <div className="App">
@@ -34,6 +47,9 @@ function App() {
       </header>
       <div>
         <button onClick={sendMessage}>Send message</button>
+      </div>
+      <div>
+        <button onClick={sendMessage2}>Send message 2</button>
       </div>
     </div>
   )

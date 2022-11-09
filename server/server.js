@@ -74,6 +74,16 @@ client.publish(topic, "nodejs mqtt test", { qos: 0, retain: false }, (error) => 
         })
         res.sendStatus(201);
     })
+
+    app.post('/dentist', (req, res) => {
+        const topic ='/dentist'
+        client.publish(topic, req.body.message, { qos: 0, retain: false }, (error) => {
+            if (error) {
+                console.error(error)
+            }
+        })
+        res.sendStatus(201);
+    })
   });
   client.on("message", (topic, payload) => {
     console.log("Received Message:", topic, payload.toString());

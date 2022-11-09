@@ -13,5 +13,5 @@ router.post('/message', (req, res) => {
   res.sendStatus(201);
 })
 
-
+// write in terminal: mosquitto_sub -h localhost -t /dentist/message
 module.exports = router;
