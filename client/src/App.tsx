@@ -4,13 +4,13 @@ import './App.css'
 
 function App() {
   const sendMessage = async () => {
-    const response = await fetch('http://localhost:3000/api/message', {
+    const response = await fetch('http://localhost:3000/message', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: 'Wow Hello World' })
+        body: JSON.stringify({ message: 'This message is now diffrent' })
     });
     if (!response.ok) {
         throw new Error('Could not send message')

@@ -3,7 +3,7 @@ var router = express.Router({ mergeParams: true });
 const mqtt = require('mqtt')
 
 
-router.post('/', (req, res) => {
+router.post('/message', (req, res) => {
   const topic ='/nodejs/mqtt/message'
   client.publish(topic, req.body.message, { qos: 0, retain: false }, (error) => {
       if (error) {

@@ -7,8 +7,14 @@ const history = require('connect-history-api-fallback');
 
 //mqtt
 const mqtt = require('mqtt')
+
+const host = 'localhost'
+const mqttport = '1883'
 const clientId = `mqtt_${Math.random().toString(16).slice(3)}`
-const client = mqtt.connect('mqtt://localhost:1883', {
+const connectUrl = `mqtt://${host}:${mqttport}`
+
+// Mosquitto client that will publish to mosquitto broker
+const client = mqtt.connect(connectUrl, {
   clientId,
   clean: true,
   connectTimeout: 4000,
@@ -58,6 +64,16 @@ client.publish(topic, "nodejs mqtt test", { qos: 0, retain: false }, (error) => 
         }
     }
     );
+
+    app.post('/message', (req, res) => {
+        const topic ='/dentist/message'
+        client.publish(topic, req.body.message, { qos: 0, retain: false }, (error) => {
+            if (error) {
+                console.error(error)
+            }
+        })
+        res.sendStatus(201);
+    })
   });
   client.on("message", (topic, payload) => {
     console.log("Received Message:", topic, payload.toString());
