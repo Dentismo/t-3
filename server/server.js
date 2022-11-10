@@ -24,6 +24,7 @@ const client = mqtt.connect(connectUrl, {
 })
 
 var mqttController = require('./controller/mqtt');
+const { format } = require('path');
 //
 
 
@@ -57,6 +58,10 @@ function connectToMqtt() {
     client.subscribe([topic], () => {
       console.log(`Subscribe to topic '${topic}'`);
     });
+
+    client.subscribe('/dentist/message', () => {
+        console.log(`Subscribe to topic: /dentist/message`);
+      });
 
 client.publish(topic, "nodejs mqtt test", { qos: 0, retain: false }, (error) => {
         if (error) {
