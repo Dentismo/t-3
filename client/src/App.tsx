@@ -3,6 +3,26 @@ import logo from './logo.svg'
 import './App.css'
 
 function App() {
+
+  const sendMessage = async () => {
+    const obj = {
+      Name: 'Carl', LastName: 'Dahlqvist', email: 'Carl@gmail.com'
+    }
+    const user = JSON.stringify(obj);
+    const response = await fetch('http://localhost:3000/send-mqtt', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: user })
+    });
+    if (!response.ok) {
+        throw new Error('Could not send message')
+    }
+}
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -19,6 +39,10 @@ function App() {
           Learn React
         </a>
       </header>
+      <div>
+        <button onClick={sendMessage}>Send message</button>
+      </div>
+
     </div>
   )
 }
