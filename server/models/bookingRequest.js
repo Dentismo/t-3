@@ -8,4 +8,20 @@ issuance : {type: String, unique: true},
 date : {type: Date, default: Date.now()}
 });
 
+bookingRequestSchema.virtual("request").get(function() {
+    return this.request_id;
+});
+
+bookingRequestSchema.virtual("user").get(function() {
+    return this.user_id;
+});
+
+bookingRequestSchema.virtual("issuance").get(function() {
+    return this.issuance;
+});
+
+bookingRequestSchema.virtual("date").get(function() {
+    return this.date;
+});
+
 module.exports = mongoose.model('BookingRequests', bookingRequestSchema)
