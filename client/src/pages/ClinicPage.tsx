@@ -1,11 +1,26 @@
 import { Card, CardContent, CardHeader, styled } from '@mui/material'
 import React from 'react'
+import { Calendar, momentLocalizer, SlotInfo } from 'react-big-calendar'
+import moment from 'moment'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+
+const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
   const cardContent = 'sifsd'
   const cardTitle = 'Dentist Clinic Title'
   const apiKey = 'AIzaSyDwRByjwDc9rECZ8631Up2NHGFbuk-1qE0'
   let location = 'Spannmålsgatan 20'
+
+  const myEventsList: any[] | undefined = []
+
+  const openForm = (slotSelected: SlotInfo) => {
+    console.log(slotSelected)
+  }
+  const startTime = 8
+  const endTime = 16
+
+  const today = new Date()
 
   if (location.includes(' ')) {
     location = location.replace(' ', '+')
@@ -75,7 +90,36 @@ function ClinicPage() {
             justifyContent: 'center'
           }}
         >
-          <h1>Calendar</h1>
+          <Calendar
+            localizer={localizer}
+            events={myEventsList}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 500, width: '88%' }}
+            view="day"
+            views={['day']}
+            step={3}
+            timeslots={10}
+            selectable={true}
+            onSelectSlot={openForm}
+            date={today}
+            min={
+              new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                today.getDate(),
+                startTime
+              )
+            }
+            max={
+              new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                today.getDate(),
+                endTime
+              )
+            }
+          />
         </div>
       </div>
     </MainContainer>
