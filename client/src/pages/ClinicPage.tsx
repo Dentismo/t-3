@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, styled } from '@mui/material'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { Calendar, momentLocalizer, SlotInfo } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
@@ -9,43 +9,74 @@ const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
   const { enqueueSnackbar } = useSnackbar()
+
+  //Content populated by fetching clinic
   const cardContent = 'sifsd'
   const cardTitle = 'Dentist Clinic Title'
+
+  //Maps: location of the clinic
   const apiKey = 'AIzaSyDwRByjwDc9rECZ8631Up2NHGFbuk-1qE0'
   let location = 'Spannmålsgatan 20'
-  const myEventsList: any[] | undefined = []
+
+  //fetch events from server
+  const events: any[] | undefined = []
+
+  //start and end times of clinic
   const startTime = 8
   const endTime = 16
   const today = new Date()
+
+  const [myEvents, setMyEvents] = useState(events)
 
   /**
    * Checks if the given slot is in the past,
    * if so it dissallows the form to open
    *
-   * @param slotSelected by user in the calendar
-   * @returns message about wether the booking was
-   * successfully booked or not
+   * @param start date of the appointment
+   * @param end date of the appointment
+   * @returns message based on appointment success
    */
-  const openForm = (slotSelected: SlotInfo) => {
-    if (slotSelected.start < today) {
-      console.log(slotSelected.start.getDate())
-      return enqueueSnackbar('Cannot create Appointment for Past Date', {
-        variant: 'error'
-      })
-    }
+  const openForm = useCallback(
+    ({ start, end }: { start: Date; end: Date }) => {
+      if (start < today) {
+        console.log(start.getDate())
+        return enqueueSnackbar('Cannot create Appointment for Past Date', {
+          variant: 'error'
+        })
+      }
 
-    //open form (try catch - if error return)
-    try {
-      console.log(slotSelected)
-      enqueueSnackbar('Appointment created Successfully', {
-        variant: 'success'
-      })
-    } catch (error) {
-      enqueueSnackbar('Could not create Appointment', { variant: 'error' })
-    }
+      //not working
+      myEvents.forEach((element) => {
+        console.log(element)
 
-    console.log(slotSelected)
-  }
+        if (element.start === start || element.end === end) {
+          console.log(start, 'Halleluja')
+          console.log(element.start)
+          return enqueueSnackbar('Appointment not available', {
+            variant: 'error'
+          })
+        }
+      })
+
+      //open form (try catch - if error return)
+      try {
+        setMyEvents((prev) => [
+          ...prev,
+          {
+            start: start,
+            end: end,
+            title: 'Appointment'
+          }
+        ])
+        enqueueSnackbar('Appointment created Successfully', {
+          variant: 'success'
+        })
+      } catch (error) {
+        enqueueSnackbar('Could not create Appointment', { variant: 'error' })
+      }
+    },
+    [setMyEvents]
+  )
 
   // formatting of google maps query parameter
   // must replace space char for either '+' or '%20'
@@ -82,7 +113,7 @@ function ClinicPage() {
         style={{
           height: '12rem',
           backgroundColor: 'brown',
-          width: '100vw'
+          width: '100%'
         }}
       >
         Here
@@ -119,7 +150,8 @@ function ClinicPage() {
         >
           <Calendar
             localizer={localizer}
-            events={myEventsList}
+            dayLayoutAlgorithm={'no-overlap'}
+            events={myEvents}
             startAccessor="start"
             endAccessor="end"
             style={{ height: 500, width: '88%' }}
