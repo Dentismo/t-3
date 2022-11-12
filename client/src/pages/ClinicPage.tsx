@@ -3,25 +3,52 @@ import React from 'react'
 import { Calendar, momentLocalizer, SlotInfo } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { useSnackbar } from 'notistack'
 
 const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
+  const { enqueueSnackbar } = useSnackbar()
   const cardContent = 'sifsd'
   const cardTitle = 'Dentist Clinic Title'
   const apiKey = 'AIzaSyDwRByjwDc9rECZ8631Up2NHGFbuk-1qE0'
   let location = 'Spannmålsgatan 20'
-
   const myEventsList: any[] | undefined = []
-
-  const openForm = (slotSelected: SlotInfo) => {
-    console.log(slotSelected)
-  }
   const startTime = 8
   const endTime = 16
-
   const today = new Date()
 
+  /**
+   * Checks if the given slot is in the past,
+   * if so it dissallows the form to open
+   *
+   * @param slotSelected by user in the calendar
+   * @returns message about wether the booking was
+   * successfully booked or not
+   */
+  const openForm = (slotSelected: SlotInfo) => {
+    if (slotSelected.start < today) {
+      console.log(slotSelected.start.getDate())
+      return enqueueSnackbar('Cannot create Appointment for Past Date', {
+        variant: 'error'
+      })
+    }
+
+    //open form (try catch - if error return)
+    try {
+      console.log(slotSelected)
+      enqueueSnackbar('Appointment created Successfully', {
+        variant: 'success'
+      })
+    } catch (error) {
+      enqueueSnackbar('Could not create Appointment', { variant: 'error' })
+    }
+
+    console.log(slotSelected)
+  }
+
+  // formatting of google maps query parameter
+  // must replace space char for either '+' or '%20'
   if (location.includes(' ')) {
     location = location.replace(' ', '+')
   }
@@ -98,11 +125,10 @@ function ClinicPage() {
             style={{ height: 500, width: '88%' }}
             view="day"
             views={['day']}
-            step={3}
-            timeslots={10}
+            step={30}
+            timeslots={1}
             selectable={true}
             onSelectSlot={openForm}
-            date={today}
             min={
               new Date(
                 today.getFullYear(),
