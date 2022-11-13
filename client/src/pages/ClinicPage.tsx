@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, styled } from '@mui/material'
-import React from 'react'
+import { textAlign } from '@mui/system'
+import React, { useState } from 'react'
 
 function ClinicPage() {
   const cardContent = 'sifsd'
@@ -7,6 +8,14 @@ function ClinicPage() {
   const apiKey = 'AIzaSyDwRByjwDc9rECZ8631Up2NHGFbuk-1qE0'
   let location = 'Spannmålsgatan 20'
 
+  let [showDefaultText] = useState(false)
+
+  //if location is undefined or null, set default location
+  if (location === undefined || location === null) {
+    showDefaultText = true
+
+    location = 'Spannmålsgatan 20'
+  }
   if (location.includes(' ')) {
     location = location.replace(' ', '+')
   }
@@ -30,7 +39,9 @@ function ClinicPage() {
   const BoxShadowDiv = styled('div')({
     boxShadow:
       '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
-    borderRadius: '4px'
+    borderRadius: '4px',
+    display: 'flex',
+    flexDirection: 'column'
     //border: '0.1px solid #d1d0cd'
   })
 
@@ -67,6 +78,15 @@ function ClinicPage() {
               loading="lazy"
               src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${location}`}
             />
+            <span
+              style={{
+                display: showDefaultText ? '' : 'none',
+                padding: '0.5rem 0rem 0.5rem 0rem',
+                textAlign: 'center'
+              }}
+            >
+              This is a default location, the clinic has not set a location
+            </span>
           </BoxShadowDiv>
         </CardMapContainer>
         <div
