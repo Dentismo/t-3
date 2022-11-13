@@ -2,22 +2,28 @@ var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
 var bookingRequestSchema = new Schema({
-user_id : {type: String},
-dentist_id : {type: Schema.Types.ObjectId, ref: 'Dentist'},
-issuance : {type: String, unique: true},
-date : {type: Date, default: Date.now()}
-});
-
-bookingRequestSchema.virtual("user").get(function() {
-    return this.user_id;
-});
-
-bookingRequestSchema.virtual("issuance").get(function() {
-    return this.issuance;
-});
-
-bookingRequestSchema.virtual("date").get(function() {
-    return this.date;
+user_id : {
+    type: String, 
+    required: true, 
+    match: [/^[0-9]*$/, 'Field may only contain numbers.']
+},
+dentist_id : {
+    /*
+    Type String for now as dentist schema exists on separate branch.
+    type: Schema.Types.ObjectId,
+    ref: 'Dentist',*/
+    type: String, 
+    required: true, 
+    match: [/^[0-9]*$/, 'Field may only contain numbers.']
+},
+issuance : {
+    type: String, 
+    required: true, 
+    match: [/^[0-9]*$/, 'Field may only contain numbers.']
+},
+date : {
+    type: Date, 
+    required: true}
 });
 
 module.exports = mongoose.model('BookingRequests', bookingRequestSchema)

@@ -9,7 +9,7 @@ router.get('/:id', function(req, res, next) {
     var id = req.params.id
     BookingRequest.findById(id, function(err, bookingRequest) {
         if (err) { return next(err); }
-        if (bookingRequest === null) {
+        if (!bookingRequest) {
             return res.status(404).json({'message': 'Booking request was not found!'});
         }
         res.status(200).json(bookingRequest);
@@ -21,7 +21,7 @@ router.put('/:id', function(req, res, next) {
     var id = req.params.id;
     BookingRequest.findById(id, function(err, bookingRequest) {
         if (err) { return next(err); }
-        if (bookingRequest == null) {
+        if (!bookingRequest) {
             return res.status(404).json({"message": "Booking request not found"});
         }
         bookingRequest.user_id = req.body.user_id
@@ -38,7 +38,7 @@ router.patch('/:id', function(req, res, next) {
     var id = req.params.id;
     BookingRequest.findById(id, function(err, bookingRequest) {
         if (err) { return next(err); }
-        if (bookingRequest == null) {
+        if (!bookingRequest) {
             return res.status(404).json({"message": "Booking request was not found"});
         }
         bookingRequest.user_id = (req.body.user_id || bookingRequest.user_id)
@@ -50,3 +50,4 @@ router.patch('/:id', function(req, res, next) {
     });
 });
 
+module.exports=router;
