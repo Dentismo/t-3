@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, styled } from '@mui/material'
-import { textAlign } from '@mui/system'
 import React, { useState } from 'react'
 
 function ClinicPage() {
