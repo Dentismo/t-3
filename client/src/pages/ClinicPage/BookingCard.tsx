@@ -22,11 +22,18 @@ export type Booking = {
 
 type Props = {
   booking: Booking
+  openModalWithParams: Function
+  setBookingState: (bookingId: Booking['id'], state: Booking['state']) => void
 } & StackProps
 
 // TODO: different cards based on state (denied should have delete option)
-const BookingCard: React.FC<Props> = ({ booking, ...props }) => {
-  const { user, reason, date, state } = booking
+const BookingCard: React.FC<Props> = ({
+  booking,
+  openModalWithParams,
+  setBookingState,
+  ...props
+}) => {
+  const { id, user, reason, date, state } = booking
   return (
     <Stack
       direction="row"
@@ -52,12 +59,24 @@ const BookingCard: React.FC<Props> = ({ booking, ...props }) => {
         <IconAction
           tooltip="Deny Appointment"
           icon={<CloseIcon color="error" />}
-          onClick={() => {}}
+          onClick={() =>
+            openModalWithParams({
+              title: 'Confirm Action',
+              description: `You're about to deny ${user}'s appointment on ${date}. Are you sure?`,
+              onAccept: () => setBookingState(id, 'denied')
+            })
+          }
         />
         <IconAction
           tooltip="Accept Appointment"
           icon={<CheckIcon color="success" />}
-          onClick={() => {}}
+          onClick={() =>
+            openModalWithParams({
+              title: 'Confirm Action',
+              description: `You're about to accept ${user}'s appointment on ${date}. Are you sure?`,
+              onAccept: () => setBookingState(id, 'approved')
+            })
+          }
         />
       </Stack>
     </Stack>

@@ -1,47 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Stack, Typography } from '@mui/material'
 import { Booking } from './BookingCard'
 import BookingList from './BookingList'
+import ConfirmationModal from './ConfirmationModal'
+import bookingsJson from './bookings'
 
+// TODO: use react context instead of nested state
+// TODO: put type declarations into separate file
 const DentistPage: React.FC = () => {
-  const bookings: Booking[] = [
-    {
-      id: '1',
-      user: 'Ansis Plepis',
-      reason: 'idek how i got here',
-      date: '28-12-2022',
-      state: 'pending'
-    },
-    {
-      id: '2',
-      user: 'Ansis Plepis',
-      reason: 'idek how i got here',
-      date: '28-12-2022',
-      state: 'pending'
-    },
-    {
-      id: '3',
-      user: 'Ivan Vidackovic',
-      reason: 'special provisions for teeth health',
-      date: '30-12-2022',
-      state: 'pending'
-    },
-    {
-      id: '4',
-      user: 'Ansis Plepis',
+  const [onModalAccept, setOnModalAccept] = useState<Function>(() => {})
+  const [modalTitle, setModalTitle] = useState<string>('')
+  const [modalDescription, setModalDescription] = useState<string>('')
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
 
-      reason: 'idek how i got here either',
-      date: '01-01-2023',
-      state: 'pending'
-    },
-    {
-      id: '5',
-      user: 'Ansis Plepis',
-      reason: 'idek how i got here either',
-      date: '01-01-2023',
-      state: 'denied'
-    }
-  ]
+  const [bookings, setBookings] = useState<Booking[]>(bookingsJson)
 
   const pendingBookings: Booking[] = bookings.filter(
     (booking) => booking.state === 'pending'
@@ -52,6 +24,34 @@ const DentistPage: React.FC = () => {
   const deniedBookings: Booking[] = bookings.filter(
     (booking) => booking.state === 'denied'
   )
+  type OpenModalParams = {
+    title: string
+    description: string
+    onAccept: Function
+  }
+
+  const openModalWithParams = ({
+    title,
+    description,
+    onAccept
+  }: OpenModalParams) => {
+    setOnModalAccept(() => onAccept)
+    setModalTitle(title)
+    setModalDescription(description)
+    setModalOpen(true)
+  }
+
+  const setBookingState = (bookingId: Booking['id'], state: Booking['state']) =>
+    setBookings(
+      bookings.map((booking) =>
+        booking.id === bookingId
+          ? {
+              ...booking,
+              state
+            }
+          : booking
+      )
+    )
 
   return (
     <Stack
@@ -64,7 +64,18 @@ const DentistPage: React.FC = () => {
     >
       <Typography variant="h3">Welcome, Arbitrary Clinic!</Typography>
       <Typography variant="h4">Gaze upon your pending reviews:</Typography>
-      <BookingList bookings={pendingBookings} />
+      <BookingList
+        bookings={pendingBookings}
+        setBookingState={setBookingState}
+        openModalWithParams={openModalWithParams}
+      />
+      <ConfirmationModal
+        open={modalOpen}
+        setOpen={setModalOpen}
+        title={modalTitle}
+        description={modalDescription}
+        onAccept={onModalAccept}
+      />
     </Stack>
   )
 }

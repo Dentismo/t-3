@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import BookingCard, { Booking } from './BookingCard'
 import { Stack, Typography } from '@mui/material'
 
 type Props = {
   bookings: Booking[]
+  openModalWithParams: Function
+  setBookingState: (bookingId: Booking['id'], state: Booking['state']) => void
 }
 
 type BookingsMap = {
@@ -20,7 +22,11 @@ type BookingItem = {
  * @param props.bookings Array of `Booking` objects to be displayed
  * @returns
  */
-const BookingList: React.FC<Props> = ({ bookings }) => {
+const BookingList: React.FC<Props> = ({
+  bookings,
+  openModalWithParams,
+  setBookingState
+}) => {
   const bookingsMap: BookingsMap = {}
   bookings.forEach((booking) => {
     const { date } = booking
@@ -66,6 +72,8 @@ const BookingList: React.FC<Props> = ({ bookings }) => {
             </Typography>
             {bookings.map((booking, index) => (
               <BookingCard
+                openModalWithParams={openModalWithParams}
+                setBookingState={setBookingState}
                 booking={booking}
                 key={booking.id}
                 sx={{
