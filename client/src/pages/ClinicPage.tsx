@@ -41,7 +41,6 @@ function ClinicPage() {
     borderRadius: '4px',
     display: 'flex',
     flexDirection: 'column'
-    //border: '0.1px solid #d1d0cd'
   })
 
   return (
@@ -52,9 +51,7 @@ function ClinicPage() {
           backgroundColor: 'brown',
           width: '100vw'
         }}
-      >
-        Here
-      </div>
+      ></div>
       <div style={{ padding: '2rem', width: '80%' }}>
         <CardMapContainer>
           <Card
