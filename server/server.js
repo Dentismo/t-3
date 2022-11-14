@@ -14,7 +14,7 @@ module.exports = app;
 
 
 function connectToDatabase(mongoURI) {
-    mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, function (err) {
+    mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
         if (err) {
             console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
             console.error(err.stack);
@@ -33,7 +33,7 @@ function startApp(port) {
     const env = app.get('env');
     addErrorHandlerToApp(app, env);
 
-    app.listen(port, function (err) {
+    app.listen(port, function(err) {
         if (err) throw err;
         console.log(`Express server listening on port ${port}, in ${env} mode`);
         console.log(`Backend: http://localhost:${port}/api/`);
@@ -54,18 +54,18 @@ function setupApp() {
 }
 
 function addRoutesToApp(app) {
-    app.get('/api', function (req, res) {
+    app.get('/api', function(req, res) {
         res.json({ 'message': 'Welcome to your Distributed Systems Baby' });
     });
 
     /**
      * Add controllers here
      */
-    var bookingRequestController = require('/Users/johnwebb/t3-project/server/controllers/bookingRequests.js')
-    app.use('/api/bookingRequests', bookingRequestController)
+    var BookingRequestController = require('/Users/johnwebb/t3-project/server/controllers/BookingRequests.js')
+    app.use('/api/BookingRequests', BookingRequestController)
 
     // Catch all non-error handler for api (i.e., 404 Not Found)
-    app.use('/api/*', function (req, res) {
+    app.use('/api/*', function(req, res) {
         res.status(404).json({ 'message': 'Endpoint Not Found' });
     });
 }
@@ -82,7 +82,7 @@ function addFrontendToApp(app) {
 
 function addErrorHandlerToApp(app, env) {
     // eslint-disable-next-line no-unused-consts
-    app.use(function (err, req, res, next) {
+    app.use(function(err, req, res, next) {
         console.error(err.stack);
         const err_res = {
             'message': err.message,
