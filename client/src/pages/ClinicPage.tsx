@@ -15,7 +15,7 @@ function ClinicPage() {
   const cardTitle = 'Dentist Clinic Title'
 
   //Maps: location of the clinic
-  const apiKey = 'AIzaSyDwRByjwDc9rECZ8631Up2NHGFbuk-1qE0'
+  const apiKey = process.env.REACT_APP_API_KEY
   let location = 'Spannmålsgatan 20'
 
   //fetch events from server
@@ -27,6 +27,8 @@ function ClinicPage() {
   const today = new Date()
 
   const [myEvents, setMyEvents] = useState(events)
+
+  let [showDefaultText] = useState(false)
 
   /**
    * Checks if the given slot is in the past,
@@ -77,6 +79,13 @@ function ClinicPage() {
     [setMyEvents]
   )
 
+  //if location is undefined or null, set default location
+  if (location === undefined || location === null) {
+    showDefaultText = true
+
+    location = 'Spannmålsgatan 20'
+  }
+
   // formatting of google maps query parameter
   // must replace space char for either '+' or '%20'
   if (location.includes(' ')) {
@@ -102,8 +111,9 @@ function ClinicPage() {
   const BoxShadowDiv = styled('div')({
     boxShadow:
       '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
-    borderRadius: '4px'
-    //border: '0.1px solid #d1d0cd'
+    borderRadius: '4px',
+    display: 'flex',
+    flexDirection: 'column'
   })
 
   return (
@@ -114,9 +124,7 @@ function ClinicPage() {
           backgroundColor: 'brown',
           width: '100%'
         }}
-      >
-        Here
-      </div>
+      ></div>
       <div style={{ padding: '2rem', width: '80%' }}>
         <CardMapContainer>
           <Card
@@ -139,6 +147,15 @@ function ClinicPage() {
               loading="lazy"
               src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${location}`}
             />
+            <span
+              style={{
+                display: showDefaultText ? '' : 'none',
+                padding: '0.5rem 0rem 0.5rem 0rem',
+                textAlign: 'center'
+              }}
+            >
+              This is a default location, the clinic has not set a location
+            </span>
           </BoxShadowDiv>
         </CardMapContainer>
         <div
