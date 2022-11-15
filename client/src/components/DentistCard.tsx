@@ -6,7 +6,8 @@ interface Props {
   dentist: {
     name: String,
     details?: String,
-    id?: String
+    id?: String,
+    location?: String
   }
 }
 
@@ -26,7 +27,8 @@ function DentistCard({dentist}: Props) {
             {dentist.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {dentist.details}
+            <p>Opening hours: {dentist.details}</p>
+            <p>Location: {dentist.location}</p>
           </Typography>
         </CardContent>
       </CardActionArea>

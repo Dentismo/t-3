@@ -6,7 +6,7 @@ import '../styles/HomePage.css';
 function HomePage() {
     const buttonText = "Press me";
     const dentists = [
-        {name: "Dentist 1", details: "My opening hours are 08.00 to 17:00 Monday to Friday"}, 
+        {name: "Dentist 1", details: "08.00 to 17:00 Monday to Friday", id: "1", location: "Lindholmen"}, 
         {name: "Dentist 2"}, 
         {name: "Dentist 3"}, 
         {name: "Dentist 4"}]
