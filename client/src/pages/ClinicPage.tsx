@@ -64,8 +64,7 @@ function ClinicPage() {
           ...prev,
           {
             start: start,
-            end: end,
-            title: 'Appointment'
+            end: end
           }
         ])
         enqueueSnackbar('Appointment created Successfully', {
@@ -150,13 +149,12 @@ function ClinicPage() {
         >
           <Calendar
             localizer={localizer}
-            dayLayoutAlgorithm={'no-overlap'}
             events={myEvents}
             startAccessor="start"
             endAccessor="end"
             style={{ height: 500, width: '88%' }}
-            view="day"
-            views={['day']}
+            view="week"
+            views={['week']}
             step={30}
             timeslots={1}
             selectable={true}

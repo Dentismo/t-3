@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     element: <App />
   },
   {
-    path: '/clinicPage/:pageId',
+    path: '/clinic/:pageId',
     element: <ClinicPage />
   }
 ])
