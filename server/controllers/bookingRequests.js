@@ -24,12 +24,22 @@ router.put('/:id', function(req, res, next) {
         if (!BookingRequest) {
             return res.status(404).json({ "message": "Booking request not found" });
         }
-        BookingRequest.user_id = req.body.user_id
-        BookingRequest.dentist_id = req.body.dentist_id
-        BookingRequest.issuance = req.body.issuance
-        BookingRequest.date = req.body.date
-        BookingRequest.save();
-        res.status(200).json(BookingRequest);
+        var date = req.body.date
+        var user_id = req.body.user_id
+        var issuance = req.body.issuance
+        var dentist_id = req.body.dentist_id
+        if (!(/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/.test(date))){
+            return res.json({"message": "Date must be in DD-MM-YYYY format"});
+        } else if (date === null) {
+            return res.json({"message": "Date is required"});
+        } else {
+        bookingRequest.user_id = user_id
+        bookingRequest.dentist_id = dentist_id
+        bookingRequest.issuance = issuance
+        bookingRequest.date = date
+        bookingRequest.save();
+        res.status(200).json(bookingRequest);
+        }
     });
 });
 
@@ -92,3 +102,5 @@ router.delete("/bookings/:id", async(req, res) => {
         }
     });
 });
+
+module.exports = router;
