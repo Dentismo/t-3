@@ -1,15 +1,18 @@
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import image from "../images/tooth.png";
 
 interface Props {
   dentist: {
     name: String,
     details?: String,
+    id?: String
   }
 }
 
 function DentistCard({dentist}: Props) {
   return (
+    <Link style={{ textDecoration: 'none' }} to={`/clinic/${dentist.id}`}>
     <Card sx={{ width: 345 }}>
       <CardActionArea>
         <CardMedia
@@ -28,6 +31,7 @@ function DentistCard({dentist}: Props) {
         </CardContent>
       </CardActionArea>
     </Card>
+    </Link>
   );
 }
 
