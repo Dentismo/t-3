@@ -61,7 +61,7 @@ function addRoutesToApp(app) {
     /**
      * Add controllers here
      */
-    var BookingRequestController = require('/Users/johnwebb/t3-project/server/controllers/BookingRequests.js')
+    var BookingRequestController = require('./controllers/bookingRequests.js')
     app.use('/api/BookingRequests', BookingRequestController)
 
     // Catch all non-error handler for api (i.e., 404 Not Found)

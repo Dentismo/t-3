@@ -1,7 +1,7 @@
 var express = require('express');
 var mqtt = require('mqtt');
 var router = express.Router({ mergeParams: true });
-var BookingRequest = require('../models/BookingRequest');
+var BookingRequest = require('../models/bookingRequest.js');
 
 
 //Get BookingRequest by id
