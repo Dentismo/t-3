@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 function ClinicPage() {
   const cardContent = 'sifsd'
   const cardTitle = 'Dentist Clinic Title'
-  const apiKey = 'AIzaSyDwRByjwDc9rECZ8631Up2NHGFbuk-1qE0'
+  const apiKey = process.env.REACT_APP_API_KEY
   let location = 'Spannmålsgatan 20'
 
   let [showDefaultText] = useState(false)
