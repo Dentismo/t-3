@@ -28,17 +28,17 @@ router.put('/:id', function(req, res, next) {
         var user_id = req.body.user_id
         var issuance = req.body.issuance
         var dentist_id = req.body.dentist_id
-        if (!(/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/.test(date))){
-            return res.json({"message": "Date must be in DD-MM-YYYY format"});
+        if (!(/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/.test(date))) {
+            return res.json({ "message": "Date must be in DD-MM-YYYY format" });
         } else if (date === null) {
-            return res.json({"message": "Date is required"});
+            return res.json({ "message": "Date is required" });
         } else {
-        bookingRequest.user_id = user_id
-        bookingRequest.dentist_id = dentist_id
-        bookingRequest.issuance = issuance
-        bookingRequest.date = date
-        bookingRequest.save();
-        res.status(200).json(bookingRequest);
+            bookingRequest.user_id = user_id
+            bookingRequest.dentist_id = dentist_id
+            bookingRequest.issuance = issuance
+            bookingRequest.date = date
+            bookingRequest.save();
+            res.status(200).json(bookingRequest);
         }
     });
 });
@@ -64,6 +64,11 @@ router.patch('/:id', function(req, res, next) {
 router.post("/bookings", function(req, res, next) {
     var newBooking = new BookingRequest(req.body);
 
+    BookingRequest.user_id = (req.body.user_id || BookingRequest.user_id)
+    BookingRequest.dentist_id = (req.body.dentist_id || BookingRequest.dentist_id)
+    BookingRequest.issuance = (req.body.issuance || BookingRequest.issuance)
+    BookingRequest.date = (req.body.date || BookingRequest.date)
+
     newBooking.save(function(err, addBooking) {
         if (err) {
             return next(err);
@@ -74,18 +79,12 @@ router.post("/bookings", function(req, res, next) {
 })
 
 // Get all appointements
-router.get("/bookings", async(req, res) => {
-    BookingRequest.find().exec(function(err, result) {
-        if (err) {
-            return next(err);
-        }
-
-        if (!result) {
-            return res.status(404).json({ "message": "Bookings not found" });
-        }
-
-        res.status(200).json(result);
-    });
+router.get("/bookingList", async(req, res) => {
+    BookingRequest.find().exec(function(err, results) {
+        if (err) { return next(err); }
+        if (!results) { return res.status(404).json({ 'message': 'no events found' }); }
+        res.status(200).json(results);
+    })
 });
 
 // Delete a specific booking
