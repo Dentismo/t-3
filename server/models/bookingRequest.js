@@ -9,10 +9,6 @@ user_ID : {
     match: [/^[0-9]*$/, 'Field may only contain numbers.']
 },
 clinic_ID : {
-    /*
-    Type String for now as clinic schema exists on separate branch.
-    type: Schema.Types.ObjectId,
-    ref: 'Clinic',*/
     type: String, 
     minLength: 1,
     required: true, 

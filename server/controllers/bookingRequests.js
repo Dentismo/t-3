@@ -66,7 +66,7 @@ router.post('/', function(req, res, next){
     var bookingRequest = new BookingRequest(req.body);
     bookingRequest.save(function(err) {
         if (err) { return next(err); }
-        res.status(200).json(bookingRequest);
+        res.status(201).json(bookingRequest);
     })
 });
 
