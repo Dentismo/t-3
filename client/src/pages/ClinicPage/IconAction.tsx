@@ -1,6 +1,5 @@
 import React from 'react'
 import { Tooltip, IconButton } from '@mui/material'
-import SvgIcon from '@mui/material/SvgIcon'
 
 type Props = {
   tooltip?: string

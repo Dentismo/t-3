@@ -1,24 +1,11 @@
 import React from 'react'
-import {
-  Stack,
-  Typography,
-  StackProps,
-  IconButton,
-  Tooltip
-} from '@mui/material'
+import { Stack, Typography, StackProps } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconAction from './IconAction'
-
+import { Booking } from './types'
 // TODO: use backend model
-export type Booking = {
-  id: string
-  user: string
-  reason: string
-  date: string
-  state: 'pending' | 'approved' | 'denied'
-}
 
 type Props = {
   booking: Booking

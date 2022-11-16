@@ -1,20 +1,12 @@
-import React, { Dispatch, SetStateAction } from 'react'
-import BookingCard, { Booking } from './BookingCard'
+import React from 'react'
+import BookingCard from './BookingCard'
+import { Booking, BookingsMap, BookingItem } from './types'
 import { Stack, Typography } from '@mui/material'
 
 type Props = {
   bookings: Booking[]
   openModalWithParams: Function
   setBookingState: (bookingId: Booking['id'], state: Booking['state']) => void
-}
-
-type BookingsMap = {
-  [date: string]: Booking[]
-}
-
-type BookingItem = {
-  date: string
-  bookings: Booking[]
 }
 
 /**

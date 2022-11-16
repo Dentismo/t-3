@@ -1,4 +1,4 @@
-import { Booking } from './BookingCard'
+import { Booking } from './types'
 
 const bookings: Booking[] = [
   {

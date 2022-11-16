@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Stack, Typography } from '@mui/material'
-import { Booking } from './BookingCard'
+import { Booking, OpenModalParams } from './types'
 import BookingList from './BookingList'
 import ConfirmationModal from './ConfirmationModal'
 import bookingsJson from './bookings'
@@ -24,11 +24,6 @@ const DentistPage: React.FC = () => {
   const deniedBookings: Booking[] = bookings.filter(
     (booking) => booking.state === 'denied'
   )
-  type OpenModalParams = {
-    title: string
-    description: string
-    onAccept: Function
-  }
 
   const openModalWithParams = ({
     title,
