@@ -37,6 +37,7 @@ router.put('/:id', function(req, res, next) {
         bookingRequest.clinic_id = clinic_id
         bookingRequest.issuance = issuance
         bookingRequest.date = date
+        bookingRequest.state = state
         bookingRequest.save();
         res.status(200).json(bookingRequest);
         }
@@ -55,6 +56,7 @@ router.patch('/:id', function(req, res, next) {
         bookingRequest.clinic_id = (req.body.clinic_id || bookingRequest.clinic_id)
         bookingRequest.issuance = (req.body.issuance || bookingRequest.issuance)
         bookingRequest.date = (req.body.date || bookingRequest.date)
+        bookingRequest.state = (req.body.state || bookingRequest.state)
         bookingRequest.save();
         res.status(200).json(bookingRequest);
     });

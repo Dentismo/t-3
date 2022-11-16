@@ -28,8 +28,13 @@ issuance : {
 date : {
     type: Date, 
     required: true
+},
+state : {
+    type: String,
+    required: true, 
+    default: 'pending',
+    enum: ['approved','pending','denied']
 }
-/* Add state e.g approved, pending, denied */
 });
 
 module.exports = mongoose.model('BookingRequests', bookingRequestSchema)
