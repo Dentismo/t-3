@@ -2,13 +2,13 @@ var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
 var bookingRequestSchema = new Schema({
-user_id : {
+user_ID : {
     type: String, 
     minLength: 1,
     required: true, 
     match: [/^[0-9]*$/, 'Field may only contain numbers.']
 },
-clinic_id : {
+clinic_ID : {
     /*
     Type String for now as clinic schema exists on separate branch.
     type: Schema.Types.ObjectId,
