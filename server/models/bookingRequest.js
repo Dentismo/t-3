@@ -8,11 +8,11 @@ user_id : {
     required: true, 
     match: [/^[0-9]*$/, 'Field may only contain numbers.']
 },
-dentist_id : {
+clinic_id : {
     /*
-    Type String for now as dentist schema exists on separate branch.
+    Type String for now as clinic schema exists on separate branch.
     type: Schema.Types.ObjectId,
-    ref: 'Dentist',*/
+    ref: 'Clinic',*/
     type: String, 
     minLength: 1,
     required: true, 
@@ -29,6 +29,7 @@ date : {
     type: Date, 
     required: true
 }
+/* Add state e.g approved, pending, denied */
 });
 
 module.exports = mongoose.model('BookingRequests', bookingRequestSchema)

@@ -7,34 +7,34 @@ var BookingRequest = require('../models/BookingRequest');
 //Get BookingRequest by id
 router.get('/:id', function(req, res, next) {
     var id = req.params.id
-    BookingRequest.findById(id, function(err, BookingRequest) {
+    BookingRequest.findById(id, function(err, bookingRequest) {
         if (err) { return next(err); }
-        if (!BookingRequest) {
+        if (!bookingRequest) {
             return res.status(404).json({ 'message': 'Booking request was not found!' });
         }
-        res.status(200).json(BookingRequest);
+        res.status(200).json(bookingRequest);
     });
 });
 
 //Update entire booking request
 router.put('/:id', function(req, res, next) {
     var id = req.params.id;
-    BookingRequest.findById(id, function(err, BookingRequest) {
+    BookingRequest.findById(id, function(err, bookingRequest) {
         if (err) { return next(err); }
-        if (!BookingRequest) {
+        if (!bookingRequest) {
             return res.status(404).json({ "message": "Booking request not found" });
         }
         var date = req.body.date
         var user_id = req.body.user_id
         var issuance = req.body.issuance
-        var dentist_id = req.body.dentist_id
+        var clinic_id = req.body.clinic_id
         if (!(/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/.test(date))){
             return res.json({"message": "Date must be in DD-MM-YYYY format"});
         } else if (date === null) {
             return res.json({"message": "Date is required"});
         } else {
         bookingRequest.user_id = user_id
-        bookingRequest.dentist_id = dentist_id
+        bookingRequest.clinic_id = clinic_id
         bookingRequest.issuance = issuance
         bookingRequest.date = date
         bookingRequest.save();
@@ -46,17 +46,17 @@ router.put('/:id', function(req, res, next) {
 //Update all/part of a booking request
 router.patch('/:id', function(req, res, next) {
     var id = req.params.id;
-    BookingRequest.findById(id, function(err, BookingRequest) {
+    BookingRequest.findById(id, function(err, bookingRequest) {
         if (err) { return next(err); }
-        if (!BookingRequest) {
+        if (!bookingRequest) {
             return res.status(404).json({ "message": "Booking request was not found" });
         }
-        BookingRequest.user_id = (req.body.user_id || BookingRequest.user_id)
-        BookingRequest.dentist_id = (req.body.dentist_id || BookingRequest.dentist_id)
-        BookingRequest.issuance = (req.body.issuance || BookingRequest.issuance)
-        BookingRequest.date = (req.body.date || BookingRequest.date)
-        BookingRequest.save();
-        res.status(200).json(BookingRequest);
+        bookingRequest.user_id = (req.body.user_id || bookingRequest.user_id)
+        bookingRequest.clinic_id = (req.body.clinic_id || bookingRequest.clinic_id)
+        bookingRequest.issuance = (req.body.issuance || bookingRequest.issuance)
+        bookingRequest.date = (req.body.date || bookingRequest.date)
+        bookingRequest.save();
+        res.status(200).json(bookingRequest);
     });
 });
 
