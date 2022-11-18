@@ -4,11 +4,13 @@ import { Calendar, momentLocalizer, SlotInfo } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useSnackbar } from 'notistack'
+import Navbar from '../components/Navbar'
 
 const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
   const { enqueueSnackbar } = useSnackbar()
+  const screenWidth = window.matchMedia('all and (min-width: 767px)')
 
   //Content populated by fetching clinic
   const cardContent = 'sifsd'
@@ -117,85 +119,123 @@ function ClinicPage() {
   })
 
   return (
-    <MainContainer>
-      <div
-        style={{
-          height: '12rem',
-          backgroundColor: 'brown',
-          width: '100%'
-        }}
-      ></div>
-      <div style={{ padding: '2rem', width: '80%' }}>
-        <CardMapContainer>
-          <Card
-            sx={{
-              width: '600px',
-              height: '280px'
-            }}
-          >
-            <CardHeader title={cardTitle}></CardHeader>
-            <CardContent> {cardContent} </CardContent>
-          </Card>
-          <BoxShadowDiv>
-            <iframe
-              title="google-map-element"
-              style={{
-                border: 0,
-                width: '405px',
-                height: '280px'
-              }}
-              loading="lazy"
-              src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${location}`}
-            />
-            <span
-              style={{
-                display: showDefaultText ? '' : 'none',
-                padding: '0.5rem 0rem 0.5rem 0rem',
-                textAlign: 'center'
-              }}
-            >
-              This is a default location, the clinic has not set a location
-            </span>
-          </BoxShadowDiv>
-        </CardMapContainer>
+    <div>
+      <Navbar />
+      <MainContainer>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center'
+            height: '12rem',
+            backgroundColor: 'brown',
+            width: '100%'
           }}
-        >
-          <Calendar
-            localizer={localizer}
-            events={myEvents}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 500, width: '88%' }}
-            view="week"
-            views={['week']}
-            step={30}
-            timeslots={1}
-            selectable={true}
-            onSelectSlot={openForm}
-            min={
-              new Date(
-                today.getFullYear(),
-                today.getMonth(),
-                today.getDate(),
-                startTime
-              )
-            }
-            max={
-              new Date(
-                today.getFullYear(),
-                today.getMonth(),
-                today.getDate(),
-                endTime
-              )
-            }
-          />
+        ></div>
+        <div style={{ padding: '2rem', width: '80%' }}>
+          <CardMapContainer>
+            <Card
+              sx={{
+                width: '600px',
+                height: '280px'
+              }}
+            >
+              <CardHeader title={cardTitle}></CardHeader>
+              <CardContent> {cardContent} </CardContent>
+            </Card>
+            <BoxShadowDiv>
+              <iframe
+                title="google-map-element"
+                style={{
+                  border: 0,
+                  width: '405px',
+                  height: '280px'
+                }}
+                loading="lazy"
+                src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${location}`}
+              />
+              <span
+                style={{
+                  display: showDefaultText ? '' : 'none',
+                  padding: '0.5rem 0rem 0.5rem 0rem',
+                  textAlign: 'center'
+                }}
+              >
+                This is a default location, the clinic has not set a location
+              </span>
+            </BoxShadowDiv>
+          </CardMapContainer>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column'
+            }}
+          >
+            <h1>Book an Appointment</h1>
+            {screenWidth.matches ? (
+              <Calendar
+                localizer={localizer}
+                events={myEvents}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: 500, width: '88%' }}
+                view={'week'}
+                views={['week']}
+                step={30}
+                timeslots={1}
+                selectable={true}
+                onSelectSlot={openForm}
+                min={
+                  new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate(),
+                    startTime
+                  )
+                }
+                max={
+                  new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate(),
+                    endTime
+                  )
+                }
+              />
+            ) : (
+              <Calendar
+                localizer={localizer}
+                events={myEvents}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: 500, width: '88%' }}
+                view={'day'}
+                views={['day']}
+                step={30}
+                timeslots={1}
+                selectable={true}
+                onSelectSlot={openForm}
+                min={
+                  new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate(),
+                    startTime
+                  )
+                }
+                max={
+                  new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate(),
+                    endTime
+                  )
+                }
+              />
+            )}
+          </div>
         </div>
-      </div>
-    </MainContainer>
+      </MainContainer>
+    </div>
   )
 }
 
