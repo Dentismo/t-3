@@ -6,7 +6,6 @@ type Props = {
   variant: 'text' | 'outlined' | 'contained' | undefined
   buttonText?: String
   children?: React.ReactNode
-  icon?: React.ReactNode
 } & React.ComponentProps<typeof Button>
 
 const LinkButton = (props: Props) => {

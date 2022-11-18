@@ -4,21 +4,31 @@ import logo from '../images/logo.png'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { Link } from 'react-router-dom'
 import LinkButton from './LinkButton'
+import { useSnackbar } from 'notistack'
 
 const Navbar = (props: ContainerProps) => {
+  const { enqueueSnackbar } = useSnackbar()
+
   const NavbarContainer = styled('div')({
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    padding: '1.5rem 1.25rem 1.5rem 1.25rem'
   })
 
   const NavbarGroup = styled('div')({
     display: 'flex',
     alignItems: 'center',
-    gap: '1rem',
-    padding: '1rem 1.25rem 1rem 1.25rem'
+    gap: '1rem'
   })
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  //remove loginToken and loginId to display logout occured
+  const logout = () => {
+    localStorage.clear()
+
+    enqueueSnackbar('Appointment created Successfully', {
+      variant: 'success'
+    })
+  }
 
   return (
     <NavbarContainer>
@@ -33,11 +43,18 @@ const Navbar = (props: ContainerProps) => {
         </NavbarGroup>
       </Link>
       <NavbarGroup>
-        {!isLoggedIn ? (
-          <LinkButton variant="outlined" buttonText="Login" linkTo="/login" />
+        {localStorage.loginToken ? (
+          <LinkButton
+            style={{ fontSize: '1rem' }}
+            size="large"
+            variant="outlined"
+            buttonText="Login"
+            linkTo="/login"
+          />
         ) : (
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ display: 'flex', gap: '1.25rem' }}>
             <LinkButton
+              style={{ fontSize: '1rem' }}
               variant="contained"
               linkTo="/dashboard"
               startIcon={
@@ -45,7 +62,14 @@ const Navbar = (props: ContainerProps) => {
               }
               buttonText="My Account"
             />
-            <LinkButton variant="outlined" buttonText="Logout" linkTo="/" />
+
+            <LinkButton
+              style={{ fontSize: '1rem' }}
+              onClick={logout}
+              variant="outlined"
+              buttonText="Logout"
+              linkTo="/"
+            />
           </div>
         )}
       </NavbarGroup>
