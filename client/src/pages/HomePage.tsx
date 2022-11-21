@@ -67,7 +67,9 @@ function HomePage() {
             <div id='card-section' ref={ref} className={dentists.length > 3 && dentists.length !== 5 ? 'dentist-cards' : "alt-dentist-cards"}>
             {dentists.map(dentist => <DentistCard dentist={dentist} key={dentist.name}></DentistCard>)}
             </div>
-            
+            <div className='footer'>
+                <span>Copyright © 2022. T3-project. All Rights reserved</span>
+            </div>
         </div>
     </div>
     );

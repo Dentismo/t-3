@@ -108,7 +108,7 @@
     flex-wrap: wrap;
     padding: 0 3rem;
     gap: 2rem;
-    padding-bottom: 4rem;
+    padding-bottom: 6rem;
 }
 
 .alt-dentist-cards {
@@ -116,6 +116,19 @@
     flex-wrap: wrap;
     padding: 0 1.5rem;
     gap: 2rem;
-    padding-bottom: 4rem;
+    padding-bottom: 6rem;
     justify-content: center;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    background-color: #22443d;
+    height: 10rem;
+}
+
+.footer span {
+    margin-top: auto;
+    padding-bottom: 2rem;
+    color: #fcf9f5;
 }
