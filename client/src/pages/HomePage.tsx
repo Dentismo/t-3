@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import DentistCard from '../components/DentistCard';
 import clinic from '../images/elegant-clinic.jpg';
+import picker from '../images/picker.jpg';
 import '../styles/HomePage.css';
 
 
@@ -35,6 +36,22 @@ function HomePage() {
             <div className="banner-below-image">
                 <div>
                     <h2 className='banner-text'>Dentismo is a web-service based in Gothenburg, to provide available dentist to customers.</h2>
+                </div>
+            </div>
+            <div className='about-us-container'>
+                <div className='about-us-image'>
+                    <img id='us-image' src={picker} alt='' />
+                </div>
+                <div className='about-us-text'>
+                    <div>
+                        <span>ABOUT US</span>
+                    </div>
+                    <div>
+                        <h2>Dentismo is a platform that provides services to customers looking for dentist.</h2>
+                    </div>
+                    <div>
+                        <p id='us-text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
                 </div>
             </div>
             <div className="available-dentist">

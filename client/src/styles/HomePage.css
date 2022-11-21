@@ -69,6 +69,30 @@
     color: white;
 }
 
+.about-us-container {
+    display: flex;
+    height: 35rem;
+    justify-content: space-evenly;
+    overflow: hidden;
+    padding-top: 4rem;
+    background-color: #fcf9f5;
+}
+
+.about-us-text {
+    display: flex;
+    width: 30rem;
+    color: #22443d;
+    flex-direction: column;
+}
+
+#us-image {
+    border-radius: 1%;
+}
+
+#us-text {
+    font-size: 1.7rem;
+}
+
 .available-dentist {
     display: flex;
     justify-content: center;
