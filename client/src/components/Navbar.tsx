@@ -37,14 +37,14 @@ const Navbar = (props: ContainerProps) => {
         <NavbarGroup>
           <img
             src={logo}
-            style={{ width: '50px', height: '50px' }}
+            style={{ width: '45px', height: '45px' }}
             alt="logo"
           />
           <span style={{ fontSize: '2em', fontWeight: 500 }}>Dentismo</span>
         </NavbarGroup>
       </Link>
       <NavbarGroup>
-        {!localStorage.loginToken ? (
+        {localStorage.loginToken ? (
           <LinkButton
             style={{ fontSize: '1rem', textTransform: 'none' }}
             variant="outlined"
