@@ -12,7 +12,8 @@ const Navbar = (props: ContainerProps) => {
   const NavbarContainer = styled('div')({
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '1.5rem 1.25rem 1.5rem 1.25rem'
+    padding: '1.5rem 1.75rem 1.5rem 1.75rem',
+    boxShadow: '0px 1px  #e0e0e0'
   })
 
   const NavbarGroup = styled('div')({
@@ -36,35 +37,32 @@ const Navbar = (props: ContainerProps) => {
         <NavbarGroup>
           <img
             src={logo}
-            style={{ width: '40px', height: '40px' }}
+            style={{ width: '50px', height: '50px' }}
             alt="logo"
           />
-          <span style={{ fontSize: '2em' }}>Dentismo</span>
+          <span style={{ fontSize: '2em', fontWeight: 500 }}>Dentismo</span>
         </NavbarGroup>
       </Link>
       <NavbarGroup>
-        {localStorage.loginToken ? (
+        {!localStorage.loginToken ? (
           <LinkButton
-            style={{ fontSize: '1rem' }}
-            size="large"
+            style={{ fontSize: '1rem', textTransform: 'none' }}
             variant="outlined"
             buttonText="Login"
             linkTo="/login"
           />
         ) : (
-          <div style={{ display: 'flex', gap: '1.25rem' }}>
+          <div style={{ display: 'flex', gap: '1.5rem' }}>
             <LinkButton
-              style={{ fontSize: '1rem' }}
+              style={{ fontSize: '1rem', textTransform: 'none' }}
               variant="contained"
               linkTo="/dashboard"
-              startIcon={
-                <AccountCircleIcon style={{ paddingRight: '0.3rem' }} />
-              }
-              buttonText="My Account"
+              startIcon={<AccountCircleIcon />}
+              buttonText="Profile"
             />
 
             <LinkButton
-              style={{ fontSize: '1rem' }}
+              style={{ fontSize: '1rem', textTransform: 'none' }}
               onClick={logout}
               variant="outlined"
               buttonText="Logout"

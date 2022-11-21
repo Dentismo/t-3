@@ -10,7 +10,13 @@ type Props = {
 
 const LinkButton = (props: Props) => {
   return (
-    <Link to={props.linkTo} style={{ textDecoration: 'none', color: 'black' }}>
+    <Link
+      to={props.linkTo}
+      style={{
+        textDecoration: 'none',
+        color: 'black'
+      }}
+    >
       {props.buttonText ? (
         <Button {...props}>{props.buttonText}</Button>
       ) : (
