@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import { useRef } from 'react';
 import DentistCard from '../components/DentistCard';
 import clinic from '../images/elegant-clinic.jpg';
 import picker from '../images/picker.jpg';
@@ -14,6 +15,12 @@ function HomePage() {
         {name: "Dentist 4"},
         {name: "Dentist 5"}]
 
+    const ref = useRef<null | HTMLDivElement>(null);
+
+    const showCards = () => {
+        ref.current?.scrollIntoView({behavior: 'smooth'});
+    }
+
     return (
     <div>
         <div className='main-container'>
@@ -26,7 +33,7 @@ function HomePage() {
                         <span>Every dental experience personalized to you.</span>
                     </div>
                     <div className='button-holder'>
-                        <Button className="dentist-button" variant="outlined"> See available dentist</Button>
+                        <Button onClick={showCards} className="dentist-button" variant="outlined"> See available dentist</Button>
                     </div>
                 </div>
                 <div className='image-holder'>
@@ -57,7 +64,7 @@ function HomePage() {
             <div className="available-dentist">
                 <p>Available Dentists:</p>
             </div>
-            <div id='card-section' className={dentists.length > 3 && dentists.length !== 5 ? 'dentist-cards' : "alt-dentist-cards"}>
+            <div id='card-section' ref={ref} className={dentists.length > 3 && dentists.length !== 5 ? 'dentist-cards' : "alt-dentist-cards"}>
             {dentists.map(dentist => <DentistCard dentist={dentist} key={dentist.name}></DentistCard>)}
             </div>
             
