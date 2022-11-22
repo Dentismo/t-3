@@ -20,9 +20,3 @@ export type OpenModalParams = {
   description: string
   onAccept: Function
 }
-
-export type AppointmentType = {
-  title: string
-  icon: React.ReactElement
-  onClick: Function
-}

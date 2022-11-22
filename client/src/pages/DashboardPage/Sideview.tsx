@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, MouseEventHandler } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import {
   Toolbar,
   Drawer,
@@ -12,7 +12,7 @@ import {
   IconButton
 } from '@mui/material'
 
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import PendingIcon from '@mui/icons-material/Pending'
 import CancelIcon from '@mui/icons-material/Cancel'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -23,14 +23,9 @@ type AppointmentType = {
   onClick: () => void
 }
 
-type Props = {
-  setTab?: Dispatch<SetStateAction<string>>
-}
-
-const Sideview: React.FC<Props> = ({ setTab }) => {
-  const [searchParams] = useSearchParams()
+const Sideview: React.FC = () => {
   const navigate = useNavigate()
-  const drawerWidth = 150
+  const drawerWidth = 170
 
   const listItems: AppointmentType[] = [
     {
@@ -66,13 +61,22 @@ const Sideview: React.FC<Props> = ({ setTab }) => {
         flexShrink: 0,
         '& .MuiDrawer-paper': {
           width: drawerWidth,
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          backgroundColor: 'rgb(80, 80, 80)',
+          color: 'white'
+        },
+        '& .MuiDivider-root': {
+          background: 'white'
         }
       }}
       variant="permanent"
       anchor="left"
     >
-      <Toolbar>
+      <Toolbar
+        sx={{
+          py: 3
+        }}
+      >
         <Typography variant="h6">Appointment Types</Typography>
       </Toolbar>
       <Divider />

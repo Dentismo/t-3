@@ -20,16 +20,6 @@ const DentistPage: React.FC = () => {
   const tab = searchParams.get('tab') || 'pending'
   const [bookings, setBookings] = useState<Booking[]>(bookingsJson)
 
-  const pendingBookings: Booking[] = bookings.filter(
-    (booking) => booking.state === 'pending'
-  )
-  const approvedBookings: Booking[] = bookings.filter(
-    (booking) => booking.state === 'approved'
-  )
-  const deniedBookings: Booking[] = bookings.filter(
-    (booking) => booking.state === 'denied'
-  )
-
   const openModalWithParams = ({
     title,
     description,
@@ -71,9 +61,7 @@ const DentistPage: React.FC = () => {
         spacing={2}
       >
         <Typography variant="h3">Welcome, Arbitrary Clinic!</Typography>
-        <Typography variant="h4">
-          Gaze upon your pending appointments:
-        </Typography>
+        <Typography variant="h4">Gaze upon your {tab} appointments:</Typography>
         <BookingList
           bookings={bookings.filter((booking) => booking.state === tab)}
           setBookingState={setBookingState}
