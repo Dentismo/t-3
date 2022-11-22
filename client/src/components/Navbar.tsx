@@ -26,7 +26,7 @@ const Navbar = (props: ContainerProps) => {
   const logout = () => {
     localStorage.clear()
 
-    enqueueSnackbar('Appointment created Successfully', {
+    enqueueSnackbar('Logged out successfully', {
       variant: 'success'
     })
   }
