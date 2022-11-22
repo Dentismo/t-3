@@ -59,7 +59,9 @@ const Sideview: React.FC = () => {
       sx={{
         width: drawerWidth,
         flexShrink: 0,
+        position: 'relative',
         '& .MuiDrawer-paper': {
+          position: 'absolute',
           width: drawerWidth,
           boxSizing: 'border-box',
           backgroundColor: 'rgb(80, 80, 80)',
@@ -77,7 +79,7 @@ const Sideview: React.FC = () => {
           py: 3
         }}
       >
-        <Typography variant="h6">Appointment Types</Typography>
+        <Typography variant="h6">Appointments</Typography>
       </Toolbar>
       <Divider />
       <List>
