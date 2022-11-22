@@ -48,25 +48,25 @@ const Navbar = (props: ContainerProps) => {
           <LinkButton
             style={{ fontSize: '1rem', textTransform: 'none' }}
             variant="outlined"
-            buttonText="Login"
-            linkTo="/login"
+            buttontext="Login"
+            linkto="/login"
           />
         ) : (
           <div style={{ display: 'flex', gap: '1.5rem' }}>
             <LinkButton
               style={{ fontSize: '1rem', textTransform: 'none' }}
               variant="contained"
-              linkTo="/dashboard"
+              linkto="/dashboard"
               startIcon={<AccountCircleIcon />}
-              buttonText="Profile"
+              buttontext="Profile"
             />
 
             <LinkButton
               style={{ fontSize: '1rem', textTransform: 'none' }}
               onClick={logout}
               variant="outlined"
-              buttonText="Logout"
-              linkTo="/"
+              buttontext="Logout"
+              linkto="/"
             />
           </div>
         )}

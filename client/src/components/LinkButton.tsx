@@ -2,23 +2,23 @@ import { Button } from '@mui/material'
 import { Link, To } from 'react-router-dom'
 
 type Props = {
-  linkTo: To
+  linkto: To
   variant: 'text' | 'outlined' | 'contained' | undefined
-  buttonText?: String
+  buttontext?: String
   children?: React.ReactNode
 } & React.ComponentProps<typeof Button>
 
 const LinkButton = (props: Props) => {
   return (
     <Link
-      to={props.linkTo}
+      to={props.linkto}
       style={{
         textDecoration: 'none',
         color: 'black'
       }}
     >
-      {props.buttonText ? (
-        <Button {...props}>{props.buttonText}</Button>
+      {props.buttontext ? (
+        <Button {...props}>{props.buttontext}</Button>
       ) : (
         <Button variant={props.variant}>{props.children}</Button>
       )}
