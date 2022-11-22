@@ -19,7 +19,6 @@ function HomePage() {
 
   return (
     <div>
-      <Navbar />
       <div className="main-container">
         <div className="home-image-holder">
           <p className="image-text">Image here</p>

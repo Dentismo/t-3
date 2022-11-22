@@ -120,7 +120,6 @@ function ClinicPage() {
 
   return (
     <div>
-      <Navbar />
       <MainContainer>
         <div
           style={{
