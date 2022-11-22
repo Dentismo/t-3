@@ -2,10 +2,7 @@
     height: 100%;
     font-family:'playfair-display'
 }
-.top-div {
-    background-color: beige;
-    display: flex;
-}
+
 .dentist-heading {
     color: brown;
     margin-top: 0;

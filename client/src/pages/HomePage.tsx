@@ -24,9 +24,6 @@ function HomePage() {
     return (
     <div>
         <div className='main-container'>
-            <div className="top-div">
-                <h1 className="dentist-heading"> Dentismo </h1>
-            </div>
             <div className='home-image-holder'>
                 <div className='text-button-holder'>
                     <div className='text-holder'>
