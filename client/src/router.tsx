@@ -3,6 +3,7 @@ import App from './App'
 import ClinicPage from './pages/ClinicPage'
 import DashboardPage from './pages/DashboardPage'
 import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <DashboardPage />
+  },
+  {
+    path: '/login',
+    element: <LoginPage />
   }
 ])
 
