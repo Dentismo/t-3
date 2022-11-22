@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Stack, Typography } from '@mui/material'
+import { Stack, Typography, Box } from '@mui/material'
 import { Booking, OpenModalParams } from './types'
 import BookingList from './BookingList'
 import ConfirmationModal from './ConfirmationModal'
 import bookingsJson from './bookings'
+import Sideview from './Sideview'
 
 // TODO: use react context instead of nested state
 // TODO: put type declarations into separate file
@@ -49,29 +50,38 @@ const DentistPage: React.FC = () => {
     )
 
   return (
-    <Stack
+    <Box
       sx={{
-        backgroundColor: 'rgb(220, 220, 220)',
-        minHeight: '100vh',
-        padding: 5
+        display: 'flex'
       }}
-      spacing={2}
     >
-      <Typography variant="h3">Welcome, Arbitrary Clinic!</Typography>
-      <Typography variant="h4">Gaze upon your pending reviews:</Typography>
-      <BookingList
-        bookings={pendingBookings}
-        setBookingState={setBookingState}
-        openModalWithParams={openModalWithParams}
-      />
-      <ConfirmationModal
-        open={modalOpen}
-        setOpen={setModalOpen}
-        title={modalTitle}
-        description={modalDescription}
-        onAccept={onModalAccept}
-      />
-    </Stack>
+      <Sideview />
+
+      <Stack
+        sx={{
+          backgroundColor: 'rgb(220, 220, 220)',
+          minHeight: '100vh',
+          padding: 5,
+          flexGrow: 1
+        }}
+        spacing={2}
+      >
+        <Typography variant="h3">Welcome, Arbitrary Clinic!</Typography>
+        <Typography variant="h4">Gaze upon your pending reviews:</Typography>
+        <BookingList
+          bookings={pendingBookings}
+          setBookingState={setBookingState}
+          openModalWithParams={openModalWithParams}
+        />
+        <ConfirmationModal
+          open={modalOpen}
+          setOpen={setModalOpen}
+          title={modalTitle}
+          description={modalDescription}
+          onAccept={onModalAccept}
+        />
+      </Stack>
+    </Box>
   )
 }
 

@@ -30,14 +30,14 @@ const BookingCard: React.FC<Props> = ({
         padding: 2,
         boxShadow: '0 0 2px rgba(0, 0, 0, 0.2)',
         alignItems: 'center',
-        ...props.sx,
         transition: 'border-radius 500ms',
         '&:active': {
           boxShadow: 'none'
         },
         '&:hover': {
           borderRadius: '10px'
-        }
+        },
+        ...props.sx
       }}
     >
       <Typography fontWeight={600}>{user}:&nbsp;</Typography>
