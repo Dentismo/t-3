@@ -68,8 +68,8 @@ function HomePage() {
                 <span>Copyright © 2022. T3-project. All Rights reserved</span>
             </div>
         </div>
-    </div>
-    );
+      </div>
+  )
 }
 
-export default HomePage;
+export default HomePage
