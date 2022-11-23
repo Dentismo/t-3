@@ -1,19 +1,24 @@
-import { Card, CardContent, CardHeader, styled } from '@mui/material'
+import { styled } from '@mui/material'
+import Divider from '@mui/material/Divider'
 import React, { useCallback, useState } from 'react'
 import { Calendar, momentLocalizer, SlotInfo } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useSnackbar } from 'notistack'
-import Navbar from '../components/Navbar'
+import Navbar from '../../components/Navbar'
+import ClinicCard from './ClinicCard'
+import clinics from './clinics'
 
 const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
+  //example clinic to help populate page without database
+  const clinicExample = clinics[0]
+
   const { enqueueSnackbar } = useSnackbar()
   const screenWidth = window.matchMedia('all and (min-width: 767px)')
 
   //Content populated by fetching clinic
-  const cardContent = 'sifsd'
   const cardTitle = 'Dentist Clinic Title'
 
   //Maps: location of the clinic
@@ -120,7 +125,12 @@ function ClinicPage() {
 
   return (
     <div>
-      <MainContainer>
+      <MainContainer
+        style={{
+          backgroundColor: '#fffdf7',
+          marginBottom: '0.75rem'
+        }}
+      >
         <div
           style={{
             height: '12rem',
@@ -128,17 +138,17 @@ function ClinicPage() {
             width: '100%'
           }}
         ></div>
-        <div style={{ padding: '2rem', width: '80%' }}>
+        <div
+          style={{
+            backgroundColor: 'white',
+            marginTop: '0.5rem',
+            padding: '1.5rem',
+            width: '71%',
+            boxShadow: '0px 0px 2px #888888'
+          }}
+        >
           <CardMapContainer>
-            <Card
-              sx={{
-                width: '600px',
-                height: '280px'
-              }}
-            >
-              <CardHeader title={cardTitle}></CardHeader>
-              <CardContent> {cardContent} </CardContent>
-            </Card>
+            <ClinicCard clinic={clinicExample} />
             <BoxShadowDiv>
               <iframe
                 title="google-map-element"
@@ -170,6 +180,7 @@ function ClinicPage() {
             }}
           >
             <h1>Book an Appointment</h1>
+            <Divider style={{ width: '88%', marginBottom: '1.5rem' }} />
             {screenWidth.matches ? (
               <Calendar
                 localizer={localizer}
