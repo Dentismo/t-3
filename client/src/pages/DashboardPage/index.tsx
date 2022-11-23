@@ -17,8 +17,11 @@ const DentistPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   const [searchParams] = useSearchParams() // updates state on query change
-  const tab = searchParams.get('tab') || 'pending'
   const [bookings, setBookings] = useState<Booking[]>(bookingsJson)
+  const tab = searchParams.get('tab') || 'pending'
+  const bookingsForTab = bookings.filter(
+    (booking) => booking.state === tab
+  ).length
 
   const openModalWithParams = ({
     title,
@@ -60,8 +63,18 @@ const DentistPage: React.FC = () => {
         }}
         spacing={2}
       >
-        <Typography variant="h3">Welcome, Arbitrary Clinic!</Typography>
-        <Typography variant="h4">Gaze upon your {tab} appointments:</Typography>
+        <Stack>
+          <Typography variant="h3">Welcome, Arbitrary Clinic!</Typography>
+          {bookingsForTab === 0 ? (
+            <Typography variant="h4" color="grey" mt={3}>
+              Couldn't find any {tab} appointments :(
+            </Typography>
+          ) : (
+            <Typography variant="h4">
+              Displaying {bookingsForTab} {tab} apppointments
+            </Typography>
+          )}
+        </Stack>
         <BookingList
           bookings={bookings.filter((booking) => booking.state === tab)}
           setBookingState={setBookingState}
