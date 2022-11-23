@@ -11,6 +11,7 @@ import Navbar from './components/Navbar'
 import ClinicPage from './pages/ClinicPage'
 import DashboardPage from './pages/DashboardPage'
 import HomePage from './pages/HomePage'
+import ErrorPage from './pages/ErrorPage'
 
 const Layout = () => {
   return (
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <DashboardPage />
+      },
+      {
+        path: '*',
+        element: <ErrorPage />
       }
     ]
   }
