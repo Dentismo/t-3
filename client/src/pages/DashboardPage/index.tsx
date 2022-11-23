@@ -46,7 +46,8 @@ const DentistPage: React.FC = () => {
   return (
     <Box
       sx={{
-        display: 'flex'
+        display: 'flex',
+        minHeight: 'calc(100vh - 45px - 3rem)'
       }}
     >
       <Sideview />
@@ -54,7 +55,6 @@ const DentistPage: React.FC = () => {
       <Stack
         sx={{
           backgroundColor: 'rgb(220, 220, 220)',
-          minHeight: '100vh',
           padding: 5,
           flexGrow: 1
         }}
