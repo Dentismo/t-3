@@ -13,22 +13,19 @@ const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
   //example clinic to help populate page without database
-  const clinicExample = clinics[0]
+  const clinic = clinics[0]
 
   const { enqueueSnackbar } = useSnackbar()
   const screenWidth = window.matchMedia('all and (min-width: 767px)')
 
-  //Content populated by fetching clinic
-  const cardTitle = 'Dentist Clinic Title'
-
   //Maps: location of the clinic
   const apiKey = process.env.REACT_APP_API_KEY
-  let location = 'Spannmålsgatan 20'
+  let location = clinic.address
 
   //fetch events from server
   const events: any[] | undefined = []
 
-  //start and end times of clinic
+  //start and end times of clinic {Find way to do that for each day individually}
   const startTime = 8
   const endTime = 16
   const today = new Date()
@@ -148,7 +145,7 @@ function ClinicPage() {
           }}
         >
           <CardMapContainer>
-            <ClinicCard clinic={clinicExample} />
+            <ClinicCard clinic={clinic} />
             <BoxShadowDiv>
               <iframe
                 title="google-map-element"
