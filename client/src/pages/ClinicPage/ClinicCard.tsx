@@ -1,4 +1,12 @@
-import { Card, CardContent, CardHeader, Typography, Stack } from '@mui/material'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Stack,
+  Divider
+} from '@mui/material'
+import { height } from '@mui/system'
 import { Clinic } from './types'
 
 interface Props {
@@ -37,7 +45,9 @@ const ClinicCard = (props: Props) => {
         height: '280px'
       }}
     >
-      <div style={{ paddingLeft: '2rem' }}>
+      <div
+        style={{ paddingLeft: '2rem', paddingRight: '2rem', height: '100%' }}
+      >
         <CardHeader sx={{ paddingBottom: '0rem' }} title={props.clinic.name} />
         <CardContent
           sx={{
@@ -48,6 +58,7 @@ const ClinicCard = (props: Props) => {
           }}
         >
           <Typography>Clinic Owner: {props.clinic.owner}</Typography>
+          <Divider />
           <Typography>
             Address:{' '}
             <a
@@ -58,13 +69,23 @@ const ClinicCard = (props: Props) => {
             >
               {props.clinic.address + ', ' + props.clinic.city}
             </a>
-            <Typography></Typography>
           </Typography>
+          <Divider />
+
           <Typography>Opening Times:</Typography>
         </CardContent>
-        <CardContent sx={{ paddingTop: '0.5rem' }}>
+        <CardContent
+          style={{
+            gap: '0.6rem',
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'wrap',
+            paddingTop: '0.4rem',
+            height: '30%'
+          }}
+        >
           {times.map((timeslot) => (
-            <Typography variant="body2">{timeslot}</Typography>
+            <Typography variant="body2">{timeslot} </Typography>
           ))}
         </CardContent>
       </div>
