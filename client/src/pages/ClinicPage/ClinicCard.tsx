@@ -33,39 +33,41 @@ const ClinicCard = (props: Props) => {
   return (
     <Card
       sx={{
-        width: '600px',
+        width: '480px',
         height: '280px'
       }}
     >
-      <CardHeader sx={{ paddingLeft: '2rem' }} title={props.clinic.name} />
-      <CardContent
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.75rem',
-          padding: '0rem 1rem 0rem 2rem'
-        }}
-      >
-        <Typography>Clinic Owner: {props.clinic.owner}</Typography>
-        <Typography>
-          Address:{' '}
-          <a
-            style={{ textDecoration: 'none', color: 'darkblue' }}
-            href={`http://maps.google.com/?q=${props.clinic.address}+${props.clinic.city}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {props.clinic.address + ', ' + props.clinic.city}
-          </a>
-          <Typography></Typography>
-        </Typography>
-        <Typography>Opening Times:</Typography>
-      </CardContent>
-      <CardContent sx={{ padding: '0.25rem 1rem 0rem 2rem' }}>
-        {times.map((timeslot) => (
-          <Typography variant="body2">{timeslot}</Typography>
-        ))}
-      </CardContent>
+      <div style={{ paddingLeft: '2rem' }}>
+        <CardHeader sx={{ paddingBottom: '0rem' }} title={props.clinic.name} />
+        <CardContent
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
+            paddingBottom: '0rem'
+          }}
+        >
+          <Typography>Clinic Owner: {props.clinic.owner}</Typography>
+          <Typography>
+            Address:{' '}
+            <a
+              style={{ textDecoration: 'none', color: 'darkblue' }}
+              href={`http://maps.google.com/?q=${props.clinic.address}+${props.clinic.city}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {props.clinic.address + ', ' + props.clinic.city}
+            </a>
+            <Typography></Typography>
+          </Typography>
+          <Typography>Opening Times:</Typography>
+        </CardContent>
+        <CardContent sx={{ paddingTop: '0.5rem' }}>
+          {times.map((timeslot) => (
+            <Typography variant="body2">{timeslot}</Typography>
+          ))}
+        </CardContent>
+      </div>
     </Card>
   )
 }
