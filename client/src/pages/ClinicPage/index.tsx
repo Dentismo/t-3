@@ -8,12 +8,15 @@ import { useSnackbar } from 'notistack'
 import Navbar from '../../components/Navbar'
 import ClinicCard from './ClinicCard'
 import clinics from './clinics'
+import AppointmentModal from './AppointmentModal'
 
 const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
   //example clinic to help populate page without database
   const clinic = clinics[0]
+
+  const [openModal, setOpenModal] = useState<boolean>(false)
 
   const { enqueueSnackbar } = useSnackbar()
   const screenWidth = window.matchMedia('all and (min-width: 767px)')
@@ -65,19 +68,23 @@ function ClinicPage() {
       })
 
       //open form (try catch - if error return)
-      try {
-        setMyEvents((prev) => [
-          ...prev,
-          {
-            start: start,
-            end: end
-          }
-        ])
-        enqueueSnackbar('Appointment created Successfully', {
-          variant: 'success'
-        })
-      } catch (error) {
-        enqueueSnackbar('Could not create Appointment', { variant: 'error' })
+
+      setOpenModal(true)
+      if (openModal) {
+        try {
+          setMyEvents((prev) => [
+            ...prev,
+            {
+              start: start,
+              end: end
+            }
+          ])
+          enqueueSnackbar('Appointment created Successfully', {
+            variant: 'success'
+          })
+        } catch (error) {
+          enqueueSnackbar('Could not create Appointment', { variant: 'error' })
+        }
       }
     },
     [setMyEvents]
@@ -178,6 +185,7 @@ function ClinicPage() {
           >
             <h1>Book an Appointment</h1>
             <Divider style={{ width: '88%', marginBottom: '1.5rem' }} />
+            <AppointmentModal open={openModal} setOpen={setOpenModal} />
             {screenWidth.matches ? (
               <Calendar
                 localizer={localizer}
