@@ -57,6 +57,33 @@ const bookings: Booking[] = [
     startTime: '13:30',
     endTime: '14:00',
     state: 'pending'
+  },
+  {
+    id: '7',
+    user: 'testing time sorting',
+    reason: 'testing',
+    date: '2023-03-14',
+    startTime: '15:30',
+    endTime: '16:00',
+    state: 'pending'
+  },
+  {
+    id: '8',
+    user: 'testing time sorting',
+    reason: 'testing',
+    date: '2023-03-14',
+    startTime: '11:30',
+    endTime: '12:00',
+    state: 'pending'
+  },
+  {
+    id: '9',
+    user: 'testing time sorting',
+    reason: 'testing',
+    date: '2023-03-14',
+    startTime: '17:30',
+    endTime: '18:00',
+    state: 'pending'
   }
 ]
 

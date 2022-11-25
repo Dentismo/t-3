@@ -12,7 +12,10 @@ import { Box } from '@mui/system'
 type Props = {
   booking: Booking
   openModalWithParams: Function
-  setBookingState: (bookingId: Booking['id'], state: Booking['state']) => void
+  setBookingState: (
+    bookingId: Booking['id'],
+    state: Booking['state'] | 'deleted'
+  ) => void
 } & StackProps
 
 // TODO: different cards based on state (denied should have delete option)
@@ -44,7 +47,7 @@ const BookingCard: React.FC<Props> = ({
     >
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
-          <Typography px={1} noWrap border="1px solid black" borderRadius="3px">
+          <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
             {startTime} - {endTime}
           </Typography>
         </Stack>
@@ -56,39 +59,68 @@ const BookingCard: React.FC<Props> = ({
         </Typography>
         <Typography flexGrow={1}>{reason}</Typography>
       </Stack>
-      <Stack direction="row" ml="auto">
-        <IconAction
-          tooltip="Deny Appointment"
-          icon={<CloseIcon color="error" />}
-          onClick={() =>
-            openModalWithParams({
-              title: 'Confirm Action',
-              description: `You're about to deny ${user}'s appointment on ${date}. Are you sure?`,
-              onAccept: () => {
-                enqueueSnackbar(`Appointment ${id} successfully denied!`, {
-                  variant: 'success'
+      <Stack direction="row" ml="auto" alignSelf="center">
+        {state === 'pending' ? (
+          <>
+            <IconAction
+              tooltip="Deny Appointment"
+              icon={<CloseIcon color="error" />}
+              onClick={() =>
+                openModalWithParams({
+                  title: 'Confirm Action',
+                  description: `You're about to deny ${user}'s appointment on ${date}. Are you sure?`,
+                  onAccept: () => {
+                    enqueueSnackbar(`Appointment ${id} successfully denied!`, {
+                      variant: 'success'
+                    })
+                    setBookingState(id, 'denied')
+                  }
                 })
-                setBookingState(id, 'denied')
               }
-            })
-          }
-        />
-        <IconAction
-          tooltip="Accept Appointment"
-          icon={<CheckIcon color="success" />}
-          onClick={() =>
-            openModalWithParams({
-              title: 'Confirm Action',
-              description: `You're about to accept ${user}'s appointment on ${date}. Are you sure?`,
-              onAccept: () => {
-                enqueueSnackbar(`Appointment ${id} successfully accepted!`, {
-                  variant: 'success'
+            />
+            <IconAction
+              tooltip="Accept Appointment"
+              icon={<CheckIcon color="success" />}
+              onClick={() =>
+                openModalWithParams({
+                  title: 'Confirm Action',
+                  description: `You're about to accept ${user}'s appointment on ${date}. Are you sure?`,
+                  onAccept: () => {
+                    enqueueSnackbar(
+                      `Appointment ${id} successfully accepted!`,
+                      {
+                        variant: 'success'
+                      }
+                    )
+                    setBookingState(id, 'approved')
+                  }
                 })
-                setBookingState(id, 'approved')
               }
-            })
-          }
-        />
+            />
+          </>
+        ) : (
+          <>
+            <IconAction
+              tooltip="Delete Appointment"
+              icon={<DeleteIcon htmlColor="grey" />}
+              onClick={() =>
+                openModalWithParams({
+                  title: 'Confirm Action',
+                  description: `You're about to delete ${user}'s appointment on ${date}. Are you sure?`,
+                  onAccept: () => {
+                    enqueueSnackbar(
+                      `Appointment ${id} successfully accepted!`,
+                      {
+                        variant: 'success'
+                      }
+                    )
+                    setBookingState(id, 'deleted')
+                  }
+                })
+              }
+            />
+          </>
+        )}
       </Stack>
     </Stack>
   )

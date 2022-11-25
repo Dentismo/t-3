@@ -23,7 +23,11 @@ type AppointmentType = {
   onClick: () => void
 }
 
-const Sideview: React.FC = () => {
+type Props = {
+  tab: string
+}
+
+const Sideview: React.FC<Props> = ({ tab }) => {
   const navigate = useNavigate()
   const drawerWidth = 170
 
@@ -84,7 +88,7 @@ const Sideview: React.FC = () => {
       <Divider />
       <List>
         {listItems.map((li, index) => (
-          <Box key={li.title}>
+          <Box key={li.title} sx={{}}>
             <ListItem
               sx={{
                 flexDirection: 'column'
@@ -97,7 +101,14 @@ const Sideview: React.FC = () => {
               >
                 <IconButton onClick={li.onClick}>{li.icon}</IconButton>
               </ListItemIcon>
-              <ListItemText>{li.title}</ListItemText>
+              <ListItemText
+                sx={{
+                  textDecoration:
+                    tab === li.title.toLowerCase() ? 'underline' : ''
+                }}
+              >
+                {li.title}
+              </ListItemText>
             </ListItem>
             {index !== listItems.length - 1 && <Divider variant="middle" />}
           </Box>
