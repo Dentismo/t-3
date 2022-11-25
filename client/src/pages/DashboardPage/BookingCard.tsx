@@ -5,6 +5,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconAction from './IconAction'
 import { Booking } from './types'
+import { useSnackbar } from 'notistack'
 // TODO: use backend model
 
 type Props = {
@@ -20,6 +21,7 @@ const BookingCard: React.FC<Props> = ({
   setBookingState,
   ...props
 }) => {
+  const { enqueueSnackbar } = useSnackbar()
   const { id, user, reason, date, state } = booking
   return (
     <Stack
@@ -30,14 +32,14 @@ const BookingCard: React.FC<Props> = ({
         padding: 2,
         boxShadow: '0 0 2px rgba(0, 0, 0, 0.2)',
         alignItems: 'center',
-        ...props.sx,
         transition: 'border-radius 500ms',
         '&:active': {
           boxShadow: 'none'
         },
         '&:hover': {
           borderRadius: '10px'
-        }
+        },
+        ...props.sx
       }}
     >
       <Typography fontWeight={600}>{user}:&nbsp;</Typography>
@@ -50,7 +52,12 @@ const BookingCard: React.FC<Props> = ({
             openModalWithParams({
               title: 'Confirm Action',
               description: `You're about to deny ${user}'s appointment on ${date}. Are you sure?`,
-              onAccept: () => setBookingState(id, 'denied')
+              onAccept: () => {
+                enqueueSnackbar(`Appointment ${id} successfully denied!`, {
+                  variant: 'success'
+                })
+                setBookingState(id, 'denied')
+              }
             })
           }
         />
@@ -61,7 +68,12 @@ const BookingCard: React.FC<Props> = ({
             openModalWithParams({
               title: 'Confirm Action',
               description: `You're about to accept ${user}'s appointment on ${date}. Are you sure?`,
-              onAccept: () => setBookingState(id, 'approved')
+              onAccept: () => {
+                enqueueSnackbar(`Appointment ${id} successfully accepted!`, {
+                  variant: 'success'
+                })
+                setBookingState(id, 'approved')
+              }
             })
           }
         />
