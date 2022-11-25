@@ -11,11 +11,12 @@
 
 .home-image-holder {
     display: flex;
-    height: 42rem;
+    height: 38rem;
     margin: 0rem auto;
     overflow: hidden;
     justify-content: flex-end;
     background-color: #fcf9f5;
+    padding-top: 1rem;
     
 }
 
