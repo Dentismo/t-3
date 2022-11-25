@@ -1,11 +1,12 @@
 import React from 'react'
-import { Stack, Typography, StackProps } from '@mui/material'
+import { Stack, Typography, StackProps, Divider } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconAction from './IconAction'
 import { Booking } from './types'
 import { useSnackbar } from 'notistack'
+import { Box } from '@mui/system'
 // TODO: use backend model
 
 type Props = {
@@ -22,16 +23,15 @@ const BookingCard: React.FC<Props> = ({
   ...props
 }) => {
   const { enqueueSnackbar } = useSnackbar()
-  const { id, user, reason, date, state } = booking
+  const { id, user, reason, date, state, startTime, endTime } = booking
   return (
     <Stack
       direction="row"
+      padding={2}
+      boxShadow="0 0 2px rgba(0, 0, 0, 0.2)"
+      bgcolor="white"
       {...props}
       sx={{
-        backgroundColor: 'white',
-        padding: 2,
-        boxShadow: '0 0 2px rgba(0, 0, 0, 0.2)',
-        alignItems: 'center',
         transition: 'border-radius 500ms',
         '&:active': {
           boxShadow: 'none'
@@ -42,8 +42,20 @@ const BookingCard: React.FC<Props> = ({
         ...props.sx
       }}
     >
-      <Typography fontWeight={600}>{user}:&nbsp;</Typography>
-      <Typography>{reason}</Typography>
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Stack>
+          <Typography px={1} noWrap border="1px solid black" borderRadius="3px">
+            {startTime} - {endTime}
+          </Typography>
+        </Stack>
+        <Box alignSelf="stretch">
+          <Divider orientation="vertical" />
+        </Box>
+        <Typography fontWeight={600} noWrap overflow="visible">
+          {user}:
+        </Typography>
+        <Typography flexGrow={1}>{reason}</Typography>
+      </Stack>
       <Stack direction="row" ml="auto">
         <IconAction
           tooltip="Deny Appointment"
