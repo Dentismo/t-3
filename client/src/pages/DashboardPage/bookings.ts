@@ -1,5 +1,6 @@
 import { Booking } from './types'
 
+// TODO: remove when connecting to backend
 const bookings: Booking[] = [
   {
     id: '1',

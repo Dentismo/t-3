@@ -10,6 +10,7 @@ const Navbar = (props: ContainerProps) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const NavbarContainer = styled('div')({
+    height: '45px',
     display: 'flex',
     justifyContent: 'space-between',
     padding: '1.5rem 1.75rem 1.5rem 1.75rem',
