@@ -5,13 +5,14 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
-const paperStyle = {padding: 20, height: '18rem', width: '25rem'}
+const paperStyle = {padding: 20, height: '20rem', width: '25rem'}
 const textStyle = {margin: 4}
 
 const styles = {
     form: {
         display: 'flex',
         flexDirection: 'column' as 'column',
+        gap: "0.75rem"
     }
 }
 
@@ -24,6 +25,9 @@ const theme = createTheme(  {
 });
 
     function LoginForm() {
+        localStorage.setItem('emailData', 'ivan@gmail.com');
+        localStorage.setItem('passwordData', 'ivan123');
+
         const navigate = useNavigate();
         const { enqueueSnackbar } = useSnackbar()
 
@@ -37,11 +41,10 @@ const theme = createTheme(  {
                 .email("Invalid Email")
                 .required("Required"),
                 
-                password: Yup.string()
-                .required("Required")
+                password: Yup.string().required("Required")
             }),
             onSubmit: (values, {resetForm}) => {
-                if(values.email === 'ivan@gmail.com' && values.password === 'ivan123') {
+                if(values.email === localStorage.getItem('emailData') && values.password === localStorage.getItem('passwordData')) {
                     navigate("/dashboard")
                     enqueueSnackbar('Succesfully logged in', {
                         variant: 'success'
@@ -51,17 +54,18 @@ const theme = createTheme(  {
                         variant: 'error'
                 })
                 }
-            }
+            },
         });
 
     return (
         <ThemeProvider theme={theme}>
         <Grid textAlign='center'>
             <Paper elevation={10} style={paperStyle}>
-                <Grid textAlign='center'>  
-                    <Typography variant='h3'>Login</Typography>
+                <Grid style={{textAlign: 'center', marginBottom: '2rem'}}>  
+                    <Typography variant='h4'>Dentist Login</Typography>
                 </Grid>
                 <form onSubmit={formik.handleSubmit}>
+                    <div style={styles.form}>
                     <div style={styles.form}>
                         <TextField 
                             id='email' 
@@ -70,12 +74,12 @@ const theme = createTheme(  {
                             variant='outlined'
                             error={!!formik.errors.email} 
                             placeholder="Enter Email"
-                            onBlur={formik.handleBlur}
                             onChange={formik.handleChange} 
-                            value={formik.values.email}>
-                        </TextField>
+                            onBlur={formik.handleBlur}
+                            value={formik.values.email}
+                        />
+                         <div style={{color: 'red', fontFamily: '-Playfair-Display', textAlign: "left", opacity: formik.errors.email ? 1 : 0}}>{formik.errors.email ?? "All good "}</div>
                     </div>
-                        {formik.touched.email && formik.errors.email ? <div style={{color: 'red', fontFamily: '-Playfair-Display', textAlign: "left"}}>{formik.errors.email}</div> : null}
                     <div style={styles.form}>
                         <TextField 
                             id='password' 
@@ -83,13 +87,14 @@ const theme = createTheme(  {
                             type='password'
                             error={!!formik.errors.password} 
                             placeholder="Enter Password" 
-                            onBlur={formik.handleBlur}
                             onChange={formik.handleChange} 
-                            value={formik.values.password}>
-                        </TextField>
+                            onBlur={formik.handleBlur}
+                            value={formik.values.password}
+                        />
+                        <div style={{color: 'red', fontFamily: '-Playfair-Display', textAlign: "left", opacity: formik.errors.password ? 1 : 0}}>{formik.errors.password ?? "All good "}</div>
                     </div>
-                        {formik.touched.password && formik.errors.password ? <div style={{color: 'red', fontFamily: '-Playfair-Display', textAlign: "left"}}>{formik.errors.password}</div> : null}
-                    <Button type='submit' color='primary' variant='contained' style={{margin: '8px 0', backgroundColor: '#22443d'}} >Login</Button>
+                    </div>
+                    <Button type='submit' color='primary' variant='contained' style={{marginTop: '2rem', backgroundColor: '#22443d'}} >Login</Button>
                 </form>
             </Paper>
         </Grid>
