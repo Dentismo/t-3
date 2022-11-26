@@ -1,6 +1,6 @@
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import image from "../images/tooth.png";
+import image from "../images/tooth2.jpg";
 
 interface Props {
   dentist: {

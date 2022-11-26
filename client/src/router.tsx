@@ -1,16 +1,11 @@
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Outlet,
-  Route,
-  Router,
-  Routes
+  createBrowserRouter, Outlet
 } from 'react-router-dom'
-import App from './App'
 import Navbar from './components/Navbar'
 import ClinicPage from './pages/ClinicPage'
 import DashboardPage from './pages/DashboardPage'
 import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
 
 const Layout = () => {
   return (
@@ -33,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <DashboardPage />
+      },
+      {
+        path: '/login',
+        element: <LoginPage />
       }
     ]
   }
