@@ -2,11 +2,9 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Typography,
-  Stack,
-  Divider
+  Divider,
+  Typography
 } from '@mui/material'
-import { height } from '@mui/system'
 import { Clinic } from './types'
 
 interface Props {
