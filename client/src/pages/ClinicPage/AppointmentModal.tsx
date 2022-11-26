@@ -1,23 +1,58 @@
 import {
-  Box,
   Button,
   Dialog,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Divider,
-  Modal,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material'
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 
 interface Props {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
+  onAccept: Function
+  start: Date
+  end: Date
 }
 
-const AppointmentModal: React.FC<Props> = ({ open, setOpen }) => {
+const AppointmentModal: React.FC<Props> = ({
+  open,
+  setOpen,
+  onAccept,
+  start,
+  end
+}) => {
   const handleClose = () => setOpen(false)
+
+  const [email, setEmail] = useState<String>('')
+  const [name, setName] = useState<String>('')
+  const [inssurance, setInssurance] = useState<String>('')
+  const [details, setDetails] = useState<String>('')
+
+  const [emailValid, setEmailValid] = useState<boolean>(true)
+  const [nameValid, setNameValid] = useState<boolean>(true)
+  const [inssuranceValid, setInssuranceValid] = useState<boolean>(true)
+
+  const checkField = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>,
+    targetField: String
+  ) => {
+    if (e.target.value === '' && targetField === 'email') setEmailValid(false)
+    else if (e.target.value === '' && targetField === 'name')
+      setNameValid(false)
+    else if (e.target.value === '' && targetField === 'inssurance')
+      setInssuranceValid(false)
+  }
+
+  const checkAllFields = () => {
+    if (email === '') setEmailValid(false)
+    if (name === '') setNameValid(false)
+    if (inssurance === '') setInssuranceValid(false)
+  }
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <div
@@ -51,22 +86,37 @@ const AppointmentModal: React.FC<Props> = ({ open, setOpen }) => {
               }}
             >
               <TextField
-                id="standard-basic"
-                label="Email"
+                label="Email*"
                 variant="outlined"
                 size={'small'}
+                onChange={(e) => {
+                  setEmailValid(true)
+                  setEmail(e.target.value)
+                }}
+                error={!emailValid}
+                onBlur={(e) => checkField(e, 'email')}
               />
               <TextField
-                id="standard-basic"
-                label="Full Name"
+                label="Name*"
                 variant="outlined"
                 size={'small'}
+                onChange={(e) => {
+                  setNameValid(true)
+                  setName(e.target.value)
+                }}
+                error={!nameValid}
+                onBlur={(e) => checkField(e, 'name')}
               />
               <TextField
-                id="standard-basic"
-                label="Issurance"
+                label="Inssurance*"
                 variant="outlined"
                 size={'small'}
+                onChange={(e) => {
+                  setInssuranceValid(true)
+                  setInssurance(e.target.value)
+                }}
+                error={!inssuranceValid}
+                onBlur={(e) => checkField(e, 'inssurance')}
               />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -77,9 +127,15 @@ const AppointmentModal: React.FC<Props> = ({ open, setOpen }) => {
                 label="Describe your problem"
                 variant="outlined"
                 sx={{ height: '100%' }}
+                onChange={(e) => {
+                  setDetails(e.target.value)
+                }}
               />
             </div>
           </div>
+          <Typography variant="subtitle2" sx={{ color: 'rgba(0, 0, 0, 0.6)' }}>
+            * fields are required
+          </Typography>
           <div
             style={{
               display: 'flex',
@@ -89,7 +145,13 @@ const AppointmentModal: React.FC<Props> = ({ open, setOpen }) => {
             }}
           >
             <Button onClick={handleClose}>Cancel</Button>
-            <Button variant="contained" onClick={handleClose}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                onAccept(start, end, email, name, inssurance, details)
+                checkAllFields()
+              }}
+            >
               Submit
             </Button>
           </div>
