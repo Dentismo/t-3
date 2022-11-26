@@ -1,14 +1,14 @@
 import { styled } from '@mui/material'
 import Divider from '@mui/material/Divider'
-import React, { useCallback, useState } from 'react'
-import { Calendar, momentLocalizer, SlotInfo } from 'react-big-calendar'
 import moment from 'moment'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useSnackbar } from 'notistack'
-import Navbar from '../../components/Navbar'
+import { useCallback, useState } from 'react'
+import { Calendar, momentLocalizer } from 'react-big-calendar'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+import AppointmentModal from './AppointmentModal'
 import ClinicCard from './ClinicCard'
 import clinics from './clinics'
-import AppointmentModal from './AppointmentModal'
+import { Booking } from './types'
 
 const localizer = momentLocalizer(moment)
 
@@ -37,6 +37,9 @@ function ClinicPage() {
 
   let [showDefaultText] = useState(false)
 
+  const [start, setStart] = useState<Date>(new Date())
+  const [end, setEnd] = useState<Date>(new Date())
+
   /**
    * Checks if the given slot is in the past,
    * if so it dissallows the form to open
@@ -45,33 +48,67 @@ function ClinicPage() {
    * @param end date of the appointment
    * @returns message based on appointment success
    */
-  const openForm = useCallback(
-    ({ start, end }: { start: Date; end: Date }) => {
-      if (start < today) {
-        console.log(start.getDate())
-        return enqueueSnackbar('Cannot create Appointment for Past Date', {
+  const openForm = ({ start, end }: { start: Date; end: Date }) => {
+    if (start < today) {
+      console.log(start.getDate())
+      return enqueueSnackbar('Cannot create Appointment for Past Date', {
+        variant: 'error'
+      })
+    }
+
+    //not working
+    myEvents.forEach((element) => {
+      console.log(element)
+
+      if (element.start === start || element.end === end) {
+        return enqueueSnackbar('Appointment not available', {
           variant: 'error'
         })
       }
+    })
+    setStart(start)
+    setEnd(end)
+    //open form (try catch - if error return)
+    setOpenModal(true)
+  }
 
-      //not working
-      myEvents.forEach((element) => {
-        console.log(element)
-
-        if (element.start === start || element.end === end) {
-          console.log(start, 'Halleluja')
-          console.log(element.start)
-          return enqueueSnackbar('Appointment not available', {
+  /**
+   * Creation of the appointment after it was sent to the availability
+   * checker. Also checks that the required fields are entered
+   */
+  const onAccept = useCallback(
+    (
+      start: Date,
+      end: Date,
+      email: String,
+      name: String,
+      inssurance: String,
+      details: String
+    ) => {
+      try {
+        if (name === '' || email === '' || inssurance === '') {
+          enqueueSnackbar('Fill out the required fields', {
             variant: 'error'
           })
+          return false
         }
-      })
-
-      //open form (try catch - if error return)
-
-      setOpenModal(true)
-      if (openModal) {
-        try {
+        //check availability
+        const available = true
+        if (available) {
+          //create booking
+          const booking: Booking = {
+            user: {
+              email: email,
+              name: name
+            },
+            clinicId: 'comes from website',
+            issuance: inssurance,
+            date: 'not sure how',
+            state: 'pending',
+            start: start.toString(),
+            end: end.toString(),
+            details: details
+          }
           setMyEvents((prev) => [
             ...prev,
             {
@@ -79,12 +116,24 @@ function ClinicPage() {
               end: end
             }
           ])
+
+          console.log(booking)
           enqueueSnackbar('Appointment created Successfully', {
             variant: 'success'
           })
-        } catch (error) {
-          enqueueSnackbar('Could not create Appointment', { variant: 'error' })
+          setOpenModal(false)
+          return true
+        } else {
+          //if the timeslot is not available for booking
+          enqueueSnackbar('Timeslot was not available', {
+            variant: 'error'
+          })
+          return false
         }
+      } catch (error) {
+        console.log(error)
+        enqueueSnackbar('Could not create Appointment', { variant: 'error' })
+        setOpenModal(false)
       }
     },
     [setMyEvents]
@@ -185,7 +234,7 @@ function ClinicPage() {
           >
             <h1>Book an Appointment</h1>
             <Divider style={{ width: '88%', marginBottom: '1.5rem' }} />
-            <AppointmentModal open={openModal} setOpen={setOpenModal} />
+
             {screenWidth.matches ? (
               <Calendar
                 localizer={localizer}
@@ -247,6 +296,13 @@ function ClinicPage() {
                 }
               />
             )}
+            <AppointmentModal
+              open={openModal}
+              onAccept={onAccept}
+              setOpen={setOpenModal}
+              start={start}
+              end={end}
+            />
           </div>
         </div>
       </MainContainer>
