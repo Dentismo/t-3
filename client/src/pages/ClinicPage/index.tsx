@@ -182,7 +182,7 @@ function ClinicPage() {
         <div
           style={{
             height: '12rem',
-            backgroundColor: 'brown',
+            backgroundColor: '#22443d',
             width: '100%'
           }}
         ></div>
@@ -203,7 +203,7 @@ function ClinicPage() {
                 style={{
                   border: 0,
                   width: '405px',
-                  height: '280px'
+                  height: '290px'
                 }}
                 loading="lazy"
                 src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${location}`}

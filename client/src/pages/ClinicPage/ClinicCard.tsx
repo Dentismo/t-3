@@ -40,7 +40,7 @@ const ClinicCard = (props: Props) => {
     <Card
       sx={{
         width: '480px',
-        height: '280px'
+        height: '290px'
       }}
     >
       <div
