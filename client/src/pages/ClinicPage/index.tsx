@@ -50,7 +50,6 @@ function ClinicPage() {
    */
   const openForm = ({ start, end }: { start: Date; end: Date }) => {
     if (start < today) {
-      console.log(start.getDate())
       return enqueueSnackbar('Cannot create Appointment for Past Date', {
         variant: 'error'
       })
@@ -58,8 +57,6 @@ function ClinicPage() {
 
     //not working
     myEvents.forEach((element) => {
-      console.log(element)
-
       if (element.start === start || element.end === end) {
         return enqueueSnackbar('Appointment not available', {
           variant: 'error'
@@ -117,7 +114,6 @@ function ClinicPage() {
             }
           ])
 
-          console.log(booking)
           enqueueSnackbar('Appointment created Successfully', {
             variant: 'success'
           })
@@ -131,7 +127,6 @@ function ClinicPage() {
           return false
         }
       } catch (error) {
-        console.log(error)
         enqueueSnackbar('Could not create Appointment', { variant: 'error' })
         setOpenModal(false)
       }
