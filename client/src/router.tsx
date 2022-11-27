@@ -1,12 +1,4 @@
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Outlet,
-  Route,
-  Router,
-  Routes
-} from 'react-router-dom'
-import App from './App'
+import { createBrowserRouter, Outlet } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import ClinicPage from './pages/ClinicPage'
 import DashboardPage from './pages/DashboardPage'

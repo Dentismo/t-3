@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import {
   Toolbar,
   Drawer,
@@ -88,7 +88,7 @@ const Sideview: React.FC<Props> = ({ tab }) => {
       <Divider />
       <List>
         {listItems.map((li, index) => (
-          <Box key={li.title} sx={{}}>
+          <Box key={li.title}>
             <ListItem
               sx={{
                 flexDirection: 'column'

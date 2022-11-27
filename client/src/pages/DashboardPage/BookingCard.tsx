@@ -18,7 +18,6 @@ type Props = {
   ) => void
 } & StackProps
 
-// TODO: different cards based on state (denied should have delete option)
 const BookingCard: React.FC<Props> = ({
   booking,
   openModalWithParams,
