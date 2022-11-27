@@ -6,7 +6,10 @@ import { Stack, Typography } from '@mui/material'
 type Props = {
   bookings: Booking[]
   openModalWithParams: Function
-  setBookingState: (bookingId: Booking['id'], state: Booking['state']) => void
+  setBookingState: (
+    bookingId: Booking['id'],
+    state: Booking['state'] | 'deleted'
+  ) => void
 }
 
 /**
@@ -62,17 +65,25 @@ const BookingList: React.FC<Props> = ({
             >
               Bookings for {date}:
             </Typography>
-            {bookings.map((booking, index) => (
-              <BookingCard
-                openModalWithParams={openModalWithParams}
-                setBookingState={setBookingState}
-                booking={booking}
-                key={booking.id}
-                sx={{
-                  borderRadius: createBorderRadius(index, bookings.length)
-                }}
-              />
-            ))}
+            {bookings
+              .sort((b1, b2) =>
+                b1.startTime > b2.startTime
+                  ? 1
+                  : b1.startTime < b2.startTime
+                  ? -1
+                  : 0
+              )
+              .map((booking, index) => (
+                <BookingCard
+                  openModalWithParams={openModalWithParams}
+                  setBookingState={setBookingState}
+                  booking={booking}
+                  key={booking.id}
+                  sx={{
+                    borderRadius: createBorderRadius(index, bookings.length)
+                  }}
+                />
+              ))}
           </Stack>
         )
       })}
