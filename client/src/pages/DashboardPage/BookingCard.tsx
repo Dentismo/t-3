@@ -1,12 +1,13 @@
-import React from 'react'
-import { Stack, Typography, StackProps, Divider } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { Divider, Stack, StackProps, Typography } from '@mui/material'
+import { Box } from '@mui/system'
+import { useSnackbar } from 'notistack'
+import React from 'react'
 import IconAction from './IconAction'
 import { Booking } from './types'
-import { useSnackbar } from 'notistack'
-import { Box } from '@mui/system'
+
 // TODO: use backend model
 
 type Props = {
