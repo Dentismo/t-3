@@ -3,6 +3,8 @@ export type Booking = {
   user: string
   reason: string
   date: string
+  startTime: string
+  endTime: string
   state: 'pending' | 'approved' | 'denied'
 }
 

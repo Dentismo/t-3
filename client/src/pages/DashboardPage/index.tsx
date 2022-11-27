@@ -34,16 +34,21 @@ const DentistPage: React.FC = () => {
     setModalOpen(true)
   }
 
-  const setBookingState = (bookingId: Booking['id'], state: Booking['state']) =>
+  const setBookingState = (
+    bookingId: Booking['id'],
+    state: Booking['state'] | 'deleted'
+  ) =>
     setBookings(
-      bookings.map((booking) =>
-        booking.id === bookingId
-          ? {
-              ...booking,
-              state
-            }
-          : booking
-      )
+      state === 'deleted'
+        ? bookings.filter((booking) => booking.id !== bookingId)
+        : bookings.map((booking) =>
+            booking.id === bookingId
+              ? {
+                  ...booking,
+                  state
+                }
+              : booking
+          )
     )
 
   return (
@@ -53,7 +58,7 @@ const DentistPage: React.FC = () => {
         minHeight: 'calc(100vh - 45px - 3rem)'
       }}
     >
-      <Sideview />
+      <Sideview tab={tab} />
 
       <Stack
         sx={{
