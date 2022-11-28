@@ -56,7 +56,7 @@ function addRoutesToApp(app) {
      * Add controllers here
      */
      const mqttController = require('./mqttController');
-     app.use(mqttController);
+     app.use('/api', mqttController);
 
     // Catch all non-error handler for api (i.e., 404 Not Found)
     app.use('/api/*', function (req, res) {
