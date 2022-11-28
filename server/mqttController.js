@@ -1,8 +1,8 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 const mqttHandler = require('./mqttHandler')
 
-router.post('/request/:topic', (req, res) => {
+router.post('/request/:topic', async (req, res) => {
     //curcuit breaker implementation here
 
     //define mqtt topics with the given parametere
@@ -13,13 +13,12 @@ router.post('/request/:topic', (req, res) => {
     mqttHandler.subscribe(responseTopic)
 
     //publish request
-    mqttHandler.publish(mqttTopic, req.body)
+    mqttHandler.publish(mqttTopic, JSON.stringify(req.body))
 
     //message received is parse to json and returned to the frontend
-    mqttHandler.on('message', (topic, message) => {
-        res.json(JSON.parse(message.toString()))
-        mqttHandler.unsubscribe(topic)
-    })
+    const response = await mqttHandler.onMessage()
+
+    res.status(201).json(response)
 })
 
 router.get('/request/:topic', (req, res) => {
