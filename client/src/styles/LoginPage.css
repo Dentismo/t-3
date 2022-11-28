@@ -1,0 +1,18 @@
+.login-page-container {
+    height: 100vh;
+    background-image: url('../images/toothbrush.jpg');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*
+.login-form-container {
+    border-left-color:#22443d;
+    border-left-style: solid;
+    border-left-width: 1.5rem;
+    border-top-color: #22443d;
+    border-top-style: solid;
+    border-top-width: 1.5rem;
+}
+*/

@@ -1,10 +1,8 @@
 .main-container {
     height: 100%;
+    font-family:'playfair-display'
 }
-.top-div {
-    background-color: beige;
-    display: flex;
-}
+
 .dentist-heading {
     color: brown;
     margin-top: 0;
@@ -13,21 +11,94 @@
 
 .home-image-holder {
     display: flex;
-    background-color: grey;
-    width: 70rem;
-    height: 20rem;
-    margin: 2rem auto;
+    height: 38rem;
+    margin: 0rem auto;
+    overflow: hidden;
+    justify-content: flex-end;
+    background-color: #fcf9f5;
+    padding-top: 1rem;
+    
 }
 
-.welcome-button {
+.home-image-holder img {
+    width: 70%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-holder {
+    display: flex;
+    width: 60rem;
+    justify-content: flex-end;
+    margin-right: 7rem;
+}
+
+.text-button-holder {
+    display: flex;
+    flex-direction: column;
+    width: 30rem;
+    margin-left: 10rem;
+    justify-content: center;
+}
+
+.text-holder {
+    text-align: left;
+    font-size: 50px;
+    color: #22443d;
+    width: 33rem;
+    background-color: hsla(0, 0%, 100%, 0.149);  
+    backdrop-filter: blur(30px);
+}
+
+.button-holder {
+    margin-top: 2rem;
+}
+
+.banner-below-image {
+    background-color: #22443d;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    height: 12rem;
+}
+
+.banner-text {
+    color: white;
+}
+
+.about-us-container {
+    display: flex;
+    height: 35rem;
+    justify-content: space-evenly;
+    overflow: hidden;
+    padding-top: 4rem;
+    background-color: #fcf9f5;
+}
+
+.about-us-text {
+    display: flex;
+    width: 30rem;
+    color: #22443d;
+    flex-direction: column;
+}
+
+#us-image {
+    border-radius: 1%;
+}
+
+#us-text {
+    font-size: 1.7rem;
 }
 
 .available-dentist {
     display: flex;
     justify-content: center;
+    background-color: #fcf9f5;
+}
+
+#card-section {
+    background-color: #fcf9f5;
 }
 
 .dentist-cards {
@@ -35,7 +106,7 @@
     flex-wrap: wrap;
     padding: 0 3rem;
     gap: 2rem;
-    margin-bottom: 4rem;
+    padding-bottom: 6rem;
 }
 
 .alt-dentist-cards {
@@ -43,6 +114,19 @@
     flex-wrap: wrap;
     padding: 0 1.5rem;
     gap: 2rem;
-    margin-bottom: 4rem;
+    padding-bottom: 6rem;
     justify-content: center;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    background-color: #22443d;
+    height: 10rem;
+}
+
+.footer span {
+    margin-top: auto;
+    padding-bottom: 2rem;
+    color: #fcf9f5;
 }
