@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@emotion/react";
 import { Button, createTheme, Grid, Paper, TextField, Typography } from "@mui/material";
+import axios from 'axios';
 import { useFormik } from "formik";
 import { useSnackbar } from 'notistack';
 import { useNavigate } from "react-router-dom";
@@ -25,9 +26,6 @@ const theme = createTheme(  {
 });
 
     function LoginForm() {
-        localStorage.setItem('emailData', 'ivan@gmail.com');
-        localStorage.setItem('passwordData', 'ivan123');
-
         const navigate = useNavigate();
         const { enqueueSnackbar } = useSnackbar()
 
@@ -43,18 +41,31 @@ const theme = createTheme(  {
                 
                 password: Yup.string().required("Required")
             }),
-            onSubmit: (values, {resetForm}) => {
-                if(values.email === localStorage.getItem('emailData') && values.password === localStorage.getItem('passwordData')) {
-                    navigate("/dashboard")
-                    enqueueSnackbar('Succesfully logged in', {
-                        variant: 'success'
+            onSubmit: async (values, {resetForm}) => {
+                await axios.post('request/login', values)
+                    .then(response => {
+                        if(response.data.hasKey("token")) {
+                            localStorage.token = response.data.token;
+                            localStorage.loginId = response.data.id;
+                            localStorage.clinicId = response.data.clinicId;
+                            navigate("/dashboard")
+                            enqueueSnackbar('Succesfully logged in', {
+                                variant: 'success'
+                            })
+                        } else {
+                            enqueueSnackbar('Failed to logged in', {
+                                variant: 'error'
+                            }) 
+                        }
                     })
-                } else {
-                    enqueueSnackbar('Failed to logged in', {
-                        variant: 'error'
-                })
-                }
+                    .catch(error => {
+                        console.log(error)
+                        enqueueSnackbar('Failed to logged in', {
+                            variant: 'error'
+                        })
+                    })
             },
+            
         });
 
     return (
