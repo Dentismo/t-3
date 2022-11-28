@@ -51,9 +51,8 @@ class MqttHandler {
     onMessage() {
         return new Promise(resolve => {
             this.mqttClient.on('message', (topic, message) => {
-                var stringBuf = JSON.stringify(eval(message.toString()));
-                console.log(JSON.parse(`'${message.toString()}'`))
-                resolve(JSON.parse(`'${message.toString()}'`))   
+                console.log(message.toString())
+                resolve(JSON.parse(message.toString()))   
 
                 this.mqttClient.unsubscribe(topic)
             }
