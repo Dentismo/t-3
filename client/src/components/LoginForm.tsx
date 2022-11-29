@@ -58,6 +58,7 @@ function LoginForm() {
             localStorage.loginId = response.data.id
             localStorage.clinicId = response.data.clinicId
             navigate('/dashboard')
+            window.location.reload()
             enqueueSnackbar('Succesfully logged in', {
               variant: 'success'
             })
