@@ -8,9 +8,6 @@ const history = require('connect-history-api-fallback');
 const mongoURI = 'mongodb://127.0.0.1:27017/dentistClinicDB';
 const port = process.env.PORT || 3000;
 
-const bodyParser = require("body-parser");
-const mqttHandler = require('./mqttHandler');
-
 connectToDatabase(mongoURI);
 const app = startApp(port);
 module.exports = app;
@@ -32,8 +29,6 @@ function startApp(port) {
     addRoutesToApp(app);
     addFrontendToApp(app);
     
-    mqttHandler.connect();
-
     // Error handler (i.e., when exception is thrown) must be registered last
     const env = app.get('env');
     addErrorHandlerToApp(app, env);
@@ -55,8 +50,6 @@ function setupApp() {
     app.use(morgan('dev'));
     app.options('*', cors());
     app.use(cors());
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }))
     
     return app;
 }
@@ -69,8 +62,6 @@ function addRoutesToApp(app) {
     /**
      * Add controllers here
      */
-     const mqttController = require('./mqttController');
-     app.use(mqttController);
 
     // Catch all non-error handler for api (i.e., 404 Not Found)
     app.use('/api/*', function (req, res) {
