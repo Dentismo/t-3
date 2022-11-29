@@ -1,10 +1,10 @@
 import { ThemeProvider } from "@emotion/react";
 import { Button, createTheme, Grid, Paper, TextField, Typography } from "@mui/material";
-import axios from 'axios';
 import { useFormik } from "formik";
 import { useSnackbar } from 'notistack';
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { Api } from '../Api';
 
 const paperStyle = {padding: 20, height: '20rem', width: '25rem'}
 const textStyle = {margin: 4}
@@ -41,30 +41,34 @@ const theme = createTheme(  {
                 
                 password: Yup.string().required("Required")
             }),
-            onSubmit: async (values, {resetForm}) => {
-                await axios.post('request/login', values)
-                    .then(response => {
-                        if(response.data.hasKey("token")) {
-                            localStorage.token = response.data.token;
-                            localStorage.loginId = response.data.id;
-                            localStorage.clinicId = response.data.clinicId;
-                            navigate("/dashboard")
-                            enqueueSnackbar('Succesfully logged in', {
-                                variant: 'success'
-                            })
-                        } else {
-                            enqueueSnackbar('Failed to logged in', {
-                                variant: 'error'
-                            }) 
-                        }
+            onSubmit: async (values, { resetForm }) => {
+                await Api.post('request/login', {
+                  email: values.email,
+                  password: values.password
+                })
+                  .then((response) => {
+                    if (response.data.token) {
+                      localStorage.token = response.data.token
+                      localStorage.loginId = response.data.id
+                      localStorage.clinicId = response.data.clinicId
+                      navigate('/dashboard')
+                      window.location.reload()
+                      enqueueSnackbar('Succesfully logged in', {
+                        variant: 'success'
+                      })
+                    } else {
+                      enqueueSnackbar('Failed to logged in', {
+                        variant: 'error'
+                      })
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    enqueueSnackbar('Failed to logged in', {
+                      variant: 'error'
                     })
-                    .catch(error => {
-                        console.log(error)
-                        enqueueSnackbar('Failed to logged in', {
-                            variant: 'error'
-                        })
-                    })
-            },
+                  })
+              }
             
         });
 
