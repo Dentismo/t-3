@@ -24,5 +24,6 @@ eslint:
   tags:
     - docker
   script:
+    - cd client
     - npm install eslint
     - node_modules/eslint/bin/eslint.js .
