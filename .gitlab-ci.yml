@@ -8,7 +8,7 @@ cache:
 
 stages:
   - build    
-  - lint
+  - eslint
 
 build:
   stage: build
@@ -20,7 +20,7 @@ build:
 
 # credit: https://dev.to/karltaylor/getting-started-with-gitlab-cicd-eslint-1m80
 eslint:
- stage: lint
- script:
-    - npm i eslint
+  stage: eslint
+  script:
+    - npm install eslint
     - node_modules/eslint/bin/eslint.js .
