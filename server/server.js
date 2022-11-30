@@ -28,7 +28,7 @@ function startApp(port) {
     const app = setupApp();
     addRoutesToApp(app);
     addFrontendToApp(app);
-
+    
     // Error handler (i.e., when exception is thrown) must be registered last
     const env = app.get('env');
     addErrorHandlerToApp(app, env);
@@ -50,6 +50,7 @@ function setupApp() {
     app.use(morgan('dev'));
     app.options('*', cors());
     app.use(cors());
+    
     return app;
 }
 
