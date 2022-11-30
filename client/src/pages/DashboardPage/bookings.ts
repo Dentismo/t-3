@@ -1,89 +1,79 @@
 import { Booking } from './types'
 
-// TODO: remove when connecting to backend
 const bookings: Booking[] = [
   {
-    id: '1',
-    user: 'Ansis Plepis',
-    reason: 'idek how i got here',
-    date: '2022-12-28',
-    startTime: '15:30',
-    endTime: '16:00',
-    state: 'pending'
+    _id: '691337',
+    clinicId: '12',
+    reason: 'my teeth hurts :<',
+    date: '2022-12-08',
+    issuance: '',
+    state: 'pending',
+    start: '16:00',
+    end: '16:30',
+    user: {
+      name: 'Ivan Vidackovic',
+      email: 'ivan@gmail.com'
+    }
   },
   {
-    id: '2',
-    user: 'Georg Zsolnai',
-    reason: 'I however *do* know how I got here',
-    date: '2022-12-29',
-    startTime: '16:30',
-    endTime: '17:00',
-    state: 'pending'
-  },
-  {
-    id: '3',
-    user: 'Ivan Vidackovic',
+    _id: '133769',
+    clinicId: '11',
     reason:
-      'special provisions for teeth health and operational CIA combustion mechanism enhancement',
-    date: '2022-12-30',
-    startTime: '14:30',
-    endTime: '15:00',
-    state: 'pending'
+      'my teeth are perfectly fine. I just want to come for an appointment :<',
+    date: '2022-12-09',
+    issuance: '',
+    state: 'pending',
+    start: '16:30',
+    end: '17:00',
+    user: {
+      name: 'Ansis Plepis',
+      email: 'plepis.jaunais@gmail.com'
+    }
   },
   {
-    id: '4',
-    user: 'Ansis Plepis',
-    reason: 'idek how i got here either',
+    _id: 'swag69',
+    clinicId: '1',
+    reason:
+      'i am a sigmoid and I am making an appointment to fix the dentists teeth',
     date: '2023-01-01',
-    startTime: '16:00',
-    endTime: '16:30',
-    state: 'pending'
+    issuance: '',
+    state: 'pending',
+    start: '8:30',
+    end: '9:00',
+    user: {
+      name: 'Georg Zsolnai',
+      email: 'zsolnai@gmail.com'
+    }
   },
   {
-    id: '5',
-    user: 'Speed',
-    reason: 'WORLD CUUUU-UUUUUUUP! WORLD CUUUU-UUUUUUUP!',
-    date: '2023-03-14',
-    startTime: '13:30',
-    endTime: '14:00',
-    state: 'pending'
-  },
-  {
-    id: '6',
-    user: 'worthless person',
+    _id: 'portland_random69',
+    clinicId: '10',
     reason:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti nihil modi veniam possimus officiis cumque reiciendis neque alias ut necessitatibus maxime magni repellat quibusdam laudantium eum quod officia corporis, accusamus sequi itaque tempora, dolorem sapiente sint! Nesciunt atque fugit similique quo odit deserunt rem, cum error reiciendis nam ad doloribus!',
-    date: '2023-03-14',
-    startTime: '13:30',
-    endTime: '14:00',
-    state: 'pending'
+      'i honestly dont know how i got here. i think im from the multiverse',
+    date: '2022-12-04',
+    issuance: '',
+    state: 'pending',
+    start: '15:00',
+    end: '15:30',
+    user: {
+      name: 'Bardia Forooraghi',
+      email: 'bardia@gmail.com'
+    }
   },
   {
-    id: '7',
-    user: 'testing time sorting',
-    reason: 'testing',
-    date: '2023-03-14',
-    startTime: '15:30',
-    endTime: '16:00',
-    state: 'pending'
-  },
-  {
-    id: '8',
-    user: 'testing time sorting',
-    reason: 'testing',
-    date: '2023-03-14',
-    startTime: '11:30',
-    endTime: '12:00',
-    state: 'pending'
-  },
-  {
-    id: '9',
-    user: 'testing time sorting',
-    reason: 'testing',
-    date: '2023-03-14',
-    startTime: '17:30',
-    endTime: '18:00',
-    state: 'pending'
+    _id: '1337_portland',
+    clinicId: '5',
+    reason:
+      'This is the most generic dentist appointment. Idk why I appointed it on christmas tho',
+    date: '2022-12-24',
+    issuance: '',
+    state: 'pending',
+    start: '14:30',
+    end: '15:00',
+    user: {
+      name: 'Mr. Bean',
+      email: 'bean@yahoo.com'
+    }
   }
 ]
 

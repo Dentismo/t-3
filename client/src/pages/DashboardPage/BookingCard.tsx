@@ -14,7 +14,7 @@ type Props = {
   booking: Booking
   openModalWithParams: Function
   setBookingState: (
-    bookingId: Booking['id'],
+    bookingId: Booking['_id'],
     state: Booking['state'] | 'deleted'
   ) => void
 } & StackProps
@@ -26,7 +26,15 @@ const BookingCard: React.FC<Props> = ({
   ...props
 }) => {
   const { enqueueSnackbar } = useSnackbar()
-  const { id, user, reason, date, state, startTime, endTime } = booking
+  const {
+    _id,
+    user: { name, email },
+    reason,
+    date,
+    state,
+    start,
+    end
+  } = booking
   return (
     <Stack
       direction="row"
@@ -48,14 +56,14 @@ const BookingCard: React.FC<Props> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
           <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
-            {startTime} - {endTime}
+            {start} - {end}
           </Typography>
         </Stack>
         <Box alignSelf="stretch">
           <Divider orientation="vertical" />
         </Box>
         <Typography fontWeight={600} noWrap overflow="visible">
-          {user}:
+          {name}:
         </Typography>
         <Typography flexGrow={1}>{reason}</Typography>
       </Stack>
@@ -68,12 +76,12 @@ const BookingCard: React.FC<Props> = ({
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
-                  description: `You're about to deny ${user}'s appointment on ${date}. Are you sure?`,
+                  description: `You're about to deny ${name}'s appointment on ${date}. Are you sure?`,
                   onAccept: () => {
-                    enqueueSnackbar(`Appointment ${id} successfully denied!`, {
+                    enqueueSnackbar(`Appointment ${_id} successfully denied!`, {
                       variant: 'success'
                     })
-                    setBookingState(id, 'denied')
+                    setBookingState(_id, 'denied')
                   }
                 })
               }
@@ -84,15 +92,15 @@ const BookingCard: React.FC<Props> = ({
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
-                  description: `You're about to accept ${user}'s appointment on ${date}. Are you sure?`,
+                  description: `You're about to accept ${name}'s appointment on ${date}. Are you sure?`,
                   onAccept: () => {
                     enqueueSnackbar(
-                      `Appointment ${id} successfully accepted!`,
+                      `Appointment ${_id} successfully accepted!`,
                       {
                         variant: 'success'
                       }
                     )
-                    setBookingState(id, 'approved')
+                    setBookingState(_id, 'approved')
                   }
                 })
               }
@@ -106,15 +114,15 @@ const BookingCard: React.FC<Props> = ({
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
-                  description: `You're about to delete ${user}'s appointment on ${date}. Are you sure?`,
+                  description: `You're about to delete ${name}'s appointment on ${date}. Are you sure?`,
                   onAccept: () => {
                     enqueueSnackbar(
-                      `Appointment ${id} successfully accepted!`,
+                      `Appointment ${_id} successfully accepted!`,
                       {
                         variant: 'success'
                       }
                     )
-                    setBookingState(id, 'deleted')
+                    setBookingState(_id, 'deleted')
                   }
                 })
               }

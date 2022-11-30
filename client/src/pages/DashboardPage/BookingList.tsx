@@ -7,7 +7,7 @@ type Props = {
   bookings: Booking[]
   openModalWithParams: Function
   setBookingState: (
-    bookingId: Booking['id'],
+    bookingId: Booking['_id'],
     state: Booking['state'] | 'deleted'
   ) => void
 }
@@ -56,7 +56,7 @@ const BookingList: React.FC<Props> = ({
       {bookingsArray.map((item: BookingItem) => {
         const { date, bookings } = item
         return (
-          <Stack key={bookings[0].id} spacing={2}>
+          <Stack key={bookings[0]._id} spacing={2}>
             <Typography
               variant="h5"
               sx={{
@@ -67,18 +67,14 @@ const BookingList: React.FC<Props> = ({
             </Typography>
             {bookings
               .sort((b1, b2) =>
-                b1.startTime > b2.startTime
-                  ? 1
-                  : b1.startTime < b2.startTime
-                  ? -1
-                  : 0
+                b1.start > b2.start ? 1 : b1.start < b2.start ? -1 : 0
               )
               .map((booking, index) => (
                 <BookingCard
                   openModalWithParams={openModalWithParams}
                   setBookingState={setBookingState}
                   booking={booking}
-                  key={booking.id}
+                  key={booking._id}
                   sx={{
                     borderRadius: createBorderRadius(index, bookings.length)
                   }}

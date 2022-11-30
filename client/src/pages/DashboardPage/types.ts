@@ -1,11 +1,16 @@
 export type Booking = {
-  id: string
-  user: string
-  reason: string
+  _id: string
+  user: {
+    email: string
+    name: string
+  }
+  clinicId: string
+  issuance: string
   date: string
-  startTime: string
-  endTime: string
-  state: 'pending' | 'approved' | 'denied'
+  state: 'approved' | 'pending' | 'denied'
+  start: string
+  end: string
+  reason: string
 }
 
 export type BookingsMap = {
