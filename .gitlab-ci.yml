@@ -7,16 +7,26 @@ cache:
     - server/node_modules/
 
 stages:
-  - build    
+  - buildServer 
+  - buildClient   
   - eslint
 
-build:
-  stage: build
+buildServer:
+  stage: buildServer
   tags:
     - docker
   script:
     - cd server
     - npm install
+
+buildClient:
+  stage: buildClient
+  tags:
+    - docker
+  script:
+    - cd client
+    - npm install
+    - npm run build
 
 # credit: https://dev.to/karltaylor/getting-started-with-gitlab-cicd-eslint-1m80
 eslint:
