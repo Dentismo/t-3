@@ -2,7 +2,7 @@ import Navbar from '../components/Navbar'
 import { styled } from '@mui/material'
 import DentistCard from '../components/DentistCard'
 import '../styles/HomePage.css'
-import logo from '../images/Dead-Tooth-300x300.png'
+import logo from '../images/dead_tooth.png'
 
 import { NoEncryption } from '@mui/icons-material'
 
