@@ -26,7 +26,7 @@ buildClient:
   script:
     - cd client
     - npm install
-    - npm run build
+    - CI=false npm run build
 
 # credit: https://dev.to/karltaylor/getting-started-with-gitlab-cicd-eslint-1m80
 eslint:
