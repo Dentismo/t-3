@@ -3,8 +3,6 @@ const router = express.Router({mergeParams: true});
 const mqttHandler = require('./mqttHandler')
 
 router.post('/request/:topic', async (req, res) => {
-    //curcuit breaker implementation here
-
     //define mqtt topics with the given parametere
     const mqttTopic = 'request/' + req.params.topic
     const responseTopic = 'response/' + req.params.topic
@@ -21,20 +19,20 @@ router.post('/request/:topic', async (req, res) => {
     res.status(201).json(response)
 })
 
-router.get('/request/:topic', (req, res) => {
-    //curcuit breaker implementation here
-
+router.get('/request/:topic', async (req, res) => {
     //define mqtt topics with the given parametere
+    const mqttTopic = 'request/' + req.params.topic
     const responseTopic = 'response/' + req.params.topic
+
+    mqttHandler.publish(mqttTopic, "send")
 
     //subscribe to the response
     mqttHandler.subscribe(responseTopic)
 
     //message received is parse to json and returned to the frontend
-    mqttHandler.on('message', (topic, message) => {
-        res.json(JSON.parse(message.toString()))
-        mqttHandler.unsubscribe(topic)
-    })
+    const response = await mqttHandler.onMessage()
+
+    res.status(201).json(response)
 })
 
 module.exports = router;
