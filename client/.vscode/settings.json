@@ -1,6 +1,11 @@
 {
-  "eslint.validate": ["react", "html", "typescript"],
+  "eslint.validate": [
+    "react",
+    "html",
+    "typescript"
+  ],
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
   }
 }

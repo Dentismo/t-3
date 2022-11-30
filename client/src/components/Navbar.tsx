@@ -1,15 +1,15 @@
-import { Button, ContainerProps, styled } from '@mui/material'
-import { useState } from 'react'
-import logo from '../images/logo.png'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import { Link } from 'react-router-dom'
-import LinkButton from './LinkButton'
+import { ContainerProps, styled } from '@mui/material'
 import { useSnackbar } from 'notistack'
+import { Link } from 'react-router-dom'
+import logo from '../images/logo.png'
+import LinkButton from './LinkButton'
 
 const Navbar = (props: ContainerProps) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const NavbarContainer = styled('div')({
+    height: '45px',
     display: 'flex',
     justifyContent: 'space-between',
     padding: '1.5rem 1.75rem 1.5rem 1.75rem',
