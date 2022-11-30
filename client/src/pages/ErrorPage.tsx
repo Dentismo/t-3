@@ -19,7 +19,9 @@ function ErrorPage() {
     <div>
       <Body>
         <div className="error-page" style = {{
-          textAlign: 'center'
+          color: "",
+          textAlign: 'center',
+          height: "100%"
         }}>
           <img 
             src={logo} 
