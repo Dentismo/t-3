@@ -8,9 +8,9 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendMail = async ({ to, subject, text, html }) =>
+const sendMail = async ({ from, to, subject, text, html }) =>
   transporter.sendMail({
-    from: `"Dentismo Group 1" ${process.env.MAIL_ADDRESS}`,
+    from: `Clinic ${from} ${process.env.MAIL_ADDRESS}`,
     to,
     subject,
     text,

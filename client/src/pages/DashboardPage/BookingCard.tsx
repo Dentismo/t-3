@@ -1,3 +1,4 @@
+import sendEmail from '../../util/sendEmail'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -29,10 +30,12 @@ const BookingCard: React.FC<Props> = ({
   const {
     _id,
     user: { name, email },
+    clinicId,
     reason,
     date,
     state,
     start,
+    issuance,
     end
   } = booking
   return (
@@ -76,8 +79,14 @@ const BookingCard: React.FC<Props> = ({
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
-                  description: `You're about to deny ${name}'s appointment on ${date}. Are you sure?`,
+                  description: `You're about to deny ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
                   onAccept: () => {
+                    sendEmail({
+                      from: clinicId,
+                      to: email,
+                      subject: `Appointment on ${date} denied`,
+                      html: '<p>You suck bro</p>'
+                    })
                     enqueueSnackbar(`Appointment ${_id} successfully denied!`, {
                       variant: 'success'
                     })
@@ -92,14 +101,21 @@ const BookingCard: React.FC<Props> = ({
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
-                  description: `You're about to accept ${name}'s appointment on ${date}. Are you sure?`,
+                  description: `You're about to accept ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
                   onAccept: () => {
+                    sendEmail({
+                      from: clinicId,
+                      to: email,
+                      subject: `Appointment on ${date} accepted`,
+                      html: '<p>You suck bro</p>'
+                    })
                     enqueueSnackbar(
                       `Appointment ${_id} successfully accepted!`,
                       {
                         variant: 'success'
                       }
                     )
+
                     setBookingState(_id, 'approved')
                   }
                 })

@@ -3,7 +3,11 @@ const sendMail = require("../mailer");
 const sendMailHandler = async (req, res) => {
   console.log(`Sending Mail:`);
   console.log(req.body);
-  const { to, subject, text, html } = req.body;
+  const { from, to, subject, text, html } = req.body;
+  if (!from)
+    return res
+      .status(400)
+      .json({ message: "Sending mail requires a sender name `from`" });
   if (!to)
     return res
       .status(400)
@@ -19,6 +23,7 @@ const sendMailHandler = async (req, res) => {
     });
   try {
     const message = await sendMail({
+      from,
       to,
       subject,
       text,

@@ -12,7 +12,7 @@ const bookings: Booking[] = [
     end: '16:30',
     user: {
       name: 'Ivan Vidackovic',
-      email: 'ivan@gmail.com'
+      email: 'plepis.jaunais@gmail.com'
     }
   },
   {
@@ -42,7 +42,7 @@ const bookings: Booking[] = [
     end: '9:00',
     user: {
       name: 'Georg Zsolnai',
-      email: 'zsolnai@gmail.com'
+      email: 'plepis.jaunais@gmail.com'
     }
   },
   {
@@ -57,7 +57,7 @@ const bookings: Booking[] = [
     end: '15:30',
     user: {
       name: 'Bardia Forooraghi',
-      email: 'bardia@gmail.com'
+      email: 'plepis.jaunais@gmail.com'
     }
   },
   {
@@ -72,7 +72,7 @@ const bookings: Booking[] = [
     end: '15:00',
     user: {
       name: 'Mr. Bean',
-      email: 'bean@yahoo.com'
+      email: 'plepis.jaunais@gmail.com'
     }
   }
 ]
