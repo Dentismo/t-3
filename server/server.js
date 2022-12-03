@@ -10,9 +10,7 @@ const mailRouter = require("./routers/mailRouter");
 const mongoURI = "mongodb://127.0.0.1:27017/dentistClinicDB";
 const port = process.env.PORT || 3000;
 
-// console.log(process.env);
-
-connectToDatabase(mongoURI);
+// connectToDatabase(mongoURI);
 const app = startApp(port);
 module.exports = app;
 

@@ -1,0 +1,39 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div { background-color: pink; }
+    </style>
+  </head>
+  <body>
+    <div>
+      <p style="background-color: red;">
+        Microsoft please dont block this email. Im just a student working on a
+        project sending emails to myself ;-;
+      </p>
+      <p>
+        Name:
+        {{@root.user.name}}
+      </p>
+      <p>
+        Clinic ID:
+        {{@root.clinicId}}
+      </p>
+      <p>
+        Date:
+        {{@root.date}}
+      </p>
+      <p>
+        Type:
+        {{@root.type}}
+      </p>
+      <p>From {{@root.start}} to {{@root.end}} for "{{@root.reason}}"</p>
+    </div>
+  </body>
+  <script>
+
+  </script>
+</html>

@@ -1,33 +1,20 @@
 const sendMail = require("../mailer");
 
 const sendMailHandler = async (req, res) => {
-  console.log(`Sending Mail:`);
-  console.log(req.body);
-  const { from, to, subject, text, html } = req.body;
-  if (!from)
+  const { booking, type } = req.body;
+  if (!booking)
     return res
       .status(400)
-      .json({ message: "Sending mail requires a sender name `from`" });
-  if (!to)
-    return res
-      .status(400)
-      .json({ message: "Sending mail requires a recepient address `to`" });
-  if (!subject)
-    return res
-      .status(400)
-      .json({ message: "Sending mail requires a subject `subject`" });
-  if (!text && !html)
+      .json({ message: "Sending mail requires a booking `booking`" });
+  if (!type)
     return res.status(400).json({
       message:
-        "Sending mail requires atleast one of plain text `text` or HTML `html`",
+        "Sending mail requires the type of confirmation `type` 'denied' | 'accepted'",
     });
   try {
     const message = await sendMail({
-      from,
-      to,
-      subject,
-      text,
-      html,
+      booking,
+      type,
     });
     res.status(200).json({
       message: "Mail successfully sent!",
