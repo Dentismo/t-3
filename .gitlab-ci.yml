@@ -1,0 +1,39 @@
+image: node:latest
+
+# Cache modules in between jobs per-branch
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+    - server/node_modules/
+
+stages:
+  - buildServer 
+  - buildClient   
+  - eslint
+
+buildServer:
+  stage: buildServer
+  tags:
+    - docker
+  script:
+    - cd server
+    - npm install
+
+buildClient:
+  stage: buildClient
+  tags:
+    - docker
+  script:
+    - cd client
+    - npm install
+    - CI=false npm run build
+
+# credit: https://dev.to/karltaylor/getting-started-with-gitlab-cicd-eslint-1m80
+eslint:
+  stage: eslint
+  tags:
+    - docker
+  script:
+    - cd client
+    - npm install eslint
+    - node_modules/eslint/bin/eslint.js .
