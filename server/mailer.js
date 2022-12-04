@@ -28,7 +28,6 @@ transporter.use(
 // TODO: replace homePage with our domain when in production
 /* Custom mail sending interface */
 const sendMail = async ({ booking, type }) => {
-  console.log(process.env);
   const {
     clinicId,
     date,
