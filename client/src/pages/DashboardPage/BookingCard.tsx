@@ -2,6 +2,7 @@ import sendEmail from '../../util/sendEmail'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
+import EmailIcon from '@mui/icons-material/Email'
 import { Divider, Stack, StackProps, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useSnackbar } from 'notistack'
@@ -103,10 +104,10 @@ const BookingCard: React.FC<Props> = ({
                   onAccept: () => {
                     sendEmail({
                       booking,
-                      type: 'accepted'
+                      type: 'approved'
                     })
                     enqueueSnackbar(
-                      `Appointment ${_id} successfully accepted!`,
+                      `Appointment ${_id} successfully approved!`,
                       {
                         variant: 'success'
                       }
@@ -120,6 +121,30 @@ const BookingCard: React.FC<Props> = ({
           </>
         ) : (
           <>
+            <>
+              <IconAction
+                tooltip="Resend email"
+                icon={<EmailIcon htmlColor="grey" />}
+                onClick={() =>
+                  openModalWithParams({
+                    title: 'Confirm Action',
+                    description: `You're about to resend an email to ${name} confirming their appointment is ${state}. Please avoid resending emails unless they failed to send. Are you sure you want to proceed?`,
+                    onAccept: () => {
+                      sendEmail({
+                        booking,
+                        type: state
+                      })
+                      enqueueSnackbar(
+                        `Appointment ${_id}'s status successfully resent!`,
+                        {
+                          variant: 'success'
+                        }
+                      )
+                    }
+                  })
+                }
+              />
+            </>
             <IconAction
               tooltip="Delete Appointment"
               icon={<DeleteIcon htmlColor="grey" />}
@@ -129,7 +154,7 @@ const BookingCard: React.FC<Props> = ({
                   description: `You're about to delete ${name}'s appointment on ${date}. Are you sure?`,
                   onAccept: () => {
                     enqueueSnackbar(
-                      `Appointment ${_id} successfully accepted!`,
+                      `Appointment ${_id} successfully approved!`,
                       {
                         variant: 'success'
                       }

@@ -3,7 +3,7 @@ import { Booking } from '../pages/DashboardPage/types'
 
 type SendEmailOptions = {
   booking: Booking
-  type: 'accepted' | 'denied'
+  type: 'approved' | 'denied'
 }
 
 /**

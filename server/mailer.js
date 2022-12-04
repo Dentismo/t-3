@@ -42,9 +42,9 @@ const sendMail = async ({ booking, type }) => {
     context: {
       ...booking,
       type,
-      headText: `We have some ${type === "accepted" ? "good" : "bad"} news!`,
+      headText: `We have some ${type === "approved" ? "good" : "bad"} news!`,
       footText: `Visit the Clinic's contact page ${
-        type === "accepted" ? "for more information" : "to find a new time slot"
+        type === "approved" ? "for more information" : "to find a new time slot"
       }!`,
       homePage: `http://localhost:8080`,
       clinicPage: `http://localhost:8080/clinic/${clinicId}`,

@@ -9,7 +9,7 @@ const sendMailHandler = async (req, res) => {
   if (!type)
     return res.status(400).json({
       message:
-        "Sending mail requires the type of confirmation `type` 'denied' | 'accepted'",
+        "Sending mail requires the type of confirmation `type` 'denied' | 'approved'",
     });
   try {
     const message = await sendMail({
