@@ -25,8 +25,10 @@ transporter.use(
   })
 );
 
+// TODO: replace homePage with our domain when in production
 /* Custom mail sending interface */
 const sendMail = async ({ booking, type }) => {
+  console.log(process.env);
   const {
     clinicId,
     date,
@@ -40,6 +42,12 @@ const sendMail = async ({ booking, type }) => {
     context: {
       ...booking,
       type,
+      headText: `We have some ${type === "accepted" ? "good" : "bad"} news!`,
+      footText: `Visit the Clinic's contact page ${
+        type === "accepted" ? "for more information" : "to find a new time slot"
+      }!`,
+      homePage: `http://localhost:8080`,
+      clinicPage: `http://localhost:8080/clinic/${clinicId}`,
     },
   });
 };

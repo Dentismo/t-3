@@ -82,10 +82,8 @@ const BookingCard: React.FC<Props> = ({
                   description: `You're about to deny ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
                   onAccept: () => {
                     sendEmail({
-                      from: clinicId,
-                      to: email,
-                      subject: `Appointment on ${date} denied`,
-                      html: '<p>You suck bro</p>'
+                      booking,
+                      type: 'denied'
                     })
                     enqueueSnackbar(`Appointment ${_id} successfully denied!`, {
                       variant: 'success'
@@ -104,10 +102,8 @@ const BookingCard: React.FC<Props> = ({
                   description: `You're about to accept ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
                   onAccept: () => {
                     sendEmail({
-                      from: clinicId,
-                      to: email,
-                      subject: `Appointment on ${date} accepted`,
-                      html: '<p>You suck bro</p>'
+                      booking,
+                      type: 'accepted'
                     })
                     enqueueSnackbar(
                       `Appointment ${_id} successfully accepted!`,
