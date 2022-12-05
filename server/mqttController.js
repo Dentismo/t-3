@@ -49,25 +49,15 @@ router.patch("/request/:topic", async (req, res) => {
 
 router.delete("/request/:topic", async (req, res) => {
   const { topic } = req.params;
+  const { bookingId } = req.body;
   const mqttTopic = `request/${topic}`;
   const responseTopic = `response/${topic}`;
 
   mqttHandler.subscribe(responseTopic);
-  mqttHandler.publish(mqttTopic, 1337);
+  mqttHandler.publish(mqttTopic, bookingId);
   const message = await mqttHandler.onMessage();
 
   res.status(200).json(message);
 });
-
-/* maybe better to convert handlers to infer topics based on req.body and http method, so the client has to know as little as possible
-router.patch('/request', async (req, res) => {
-    const { bookingId, type } = req.body; // type is `approve` or `denied`
-    const mqttTopic = `request/booking/${type}`
-    const responseTopic = `response/booking/${type}`
-
-    mqttHandler.subscribe(responseTopic);
-    mqttHandler.publish(mqttTopic, bookingId)
-});
-*/
 
 module.exports = router;
