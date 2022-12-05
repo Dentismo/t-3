@@ -85,7 +85,7 @@ const BookingCard: React.FC<Props> = ({
                       onAccept: async () => {
                         setDenyLoading(true)
                         await Api.put('/request/booking/denied', {
-                          state: 'denied'
+                          _id: booking.id
                         }).then(() => {
                           setDenyLoading(false)
                           enqueueSnackbar(
@@ -120,7 +120,7 @@ const BookingCard: React.FC<Props> = ({
                       onAccept: async () => {
                         setAcceptLoading(true)
                         await Api.put('/request/booking/accept', {
-                          state: 'approved'
+                          _id: booking.id
                         }).then(() => {
                           setAcceptLoading(false)
                           enqueueSnackbar(
