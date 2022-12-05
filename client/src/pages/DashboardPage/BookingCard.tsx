@@ -84,7 +84,7 @@ const BookingCard: React.FC<Props> = ({
                       description: `You're about to deny ${user}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setDenyLoading(true)
-                        await Api.put('/request/updateBooking', {
+                        await Api.put('/request/booking/denied', {
                           state: 'denied'
                         }).then(() => {
                           setDenyLoading(false)
@@ -119,7 +119,7 @@ const BookingCard: React.FC<Props> = ({
                       description: `You're about to accept ${user}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setAcceptLoading(true)
-                        await Api.put('/request/updateBooking', {
+                        await Api.put('/request/booking/accept', {
                           state: 'approved'
                         }).then(() => {
                           setAcceptLoading(false)
