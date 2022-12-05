@@ -72,67 +72,73 @@ const BookingCard: React.FC<Props> = ({
         {state === 'pending' ? (
           <>
             {denyLoading ? (
-              <CircularProgress
-                size={20}
-                sx={{ margin: '0.65rem 0.5rem 0rem 0rem' }}
-              />
+              <CircularProgress size={20} sx={{ padding: '0.5rem' }} />
             ) : (
               <IconAction
                 tooltip="Deny Appointment"
                 icon={<CloseIcon color="error" />}
-                onClick={() =>
-                  openModalWithParams({
-                    title: 'Confirm Action',
-                    description: `You're about to deny ${user}'s appointment on ${date}. Are you sure?`,
-                    onAccept: async () => {
-                      setDenyLoading(true)
-                      await Api.put('/request/updateBooking', {
-                        state: 'denied'
-                      }).then(() => {
-                        setDenyLoading(false)
-                        enqueueSnackbar(
-                          `Appointment ${id} successfully denied!`,
-                          {
-                            variant: 'success'
-                          }
-                        )
-                        setBookingState(id, 'denied')
-                      })
-                    }
-                  })
-                }
+                onClick={() => {
+                  if (!acceptLoading) {
+                    openModalWithParams({
+                      title: 'Confirm Action',
+                      description: `You're about to deny ${user}'s appointment on ${date}. Are you sure?`,
+                      onAccept: async () => {
+                        setDenyLoading(true)
+                        await Api.put('/request/updateBooking', {
+                          state: 'denied'
+                        }).then(() => {
+                          setDenyLoading(false)
+                          enqueueSnackbar(
+                            `Appointment ${id} successfully denied!`,
+                            {
+                              variant: 'success'
+                            }
+                          )
+                          setBookingState(id, 'denied')
+                        })
+                      }
+                    })
+                  } else {
+                    enqueueSnackbar('Request in progress - Try again later', {
+                      variant: 'error'
+                    })
+                  }
+                }}
               />
             )}
             {acceptLoading ? (
-              <CircularProgress
-                size={20}
-                sx={{ margin: '0.65rem 0.5rem 0rem 0.75rem' }}
-              />
+              <CircularProgress size={20} sx={{ padding: '0.5rem' }} />
             ) : (
               <IconAction
                 tooltip="Accept Appointment"
                 icon={<CheckIcon color="success" />}
-                onClick={() =>
-                  openModalWithParams({
-                    title: 'Confirm Action',
-                    description: `You're about to accept ${user}'s appointment on ${date}. Are you sure?`,
-                    onAccept: async () => {
-                      setAcceptLoading(true)
-                      await Api.put('/request/updateBooking', {
-                        state: 'approved'
-                      }).then(() => {
-                        setAcceptLoading(false)
-                        enqueueSnackbar(
-                          `Appointment ${id} successfully accepted!`,
-                          {
-                            variant: 'success'
-                          }
-                        )
-                        setBookingState(id, 'approved')
-                      })
-                    }
-                  })
-                }
+                onClick={() => {
+                  if (!denyLoading) {
+                    openModalWithParams({
+                      title: 'Confirm Action',
+                      description: `You're about to accept ${user}'s appointment on ${date}. Are you sure?`,
+                      onAccept: async () => {
+                        setAcceptLoading(true)
+                        await Api.put('/request/updateBooking', {
+                          state: 'approved'
+                        }).then(() => {
+                          setAcceptLoading(false)
+                          enqueueSnackbar(
+                            `Appointment ${id} successfully accepted!`,
+                            {
+                              variant: 'success'
+                            }
+                          )
+                          setBookingState(id, 'approved')
+                        })
+                      }
+                    })
+                  } else {
+                    enqueueSnackbar('Request in progress - Try again later', {
+                      variant: 'error'
+                    })
+                  }
+                }}
               />
             )}
           </>
