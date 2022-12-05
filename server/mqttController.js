@@ -35,4 +35,19 @@ router.get('/request/:topic', async (req, res) => {
     res.status(201).json(response)
 })
 
+router.put('/request/:topic', async (req, res) => {
+    const mqttTopic = 'request/' + req.params.topic
+    const responseTopic = 'response/' + req.params.topic
+
+    mqttHandler.publish(mqttTopic, JSON.stringify(req.body))
+
+    //subscribe to the response
+    mqttHandler.subscribe(responseTopic)
+
+    //message received is parse to json and returned to the frontend
+    const response = await mqttHandler.onMessage()
+
+    res.status(201).json(response)
+})
+
 module.exports = router;
