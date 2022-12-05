@@ -16,7 +16,9 @@ function startApp(port) {
     const app = setupApp();
     addRoutesToApp(app);
     addFrontendToApp(app);
+    mqttHandler.connect()
     
+    app.use(bodyParser)
     // Error handler (i.e., when exception is thrown) must be registered last
     const env = app.get('env');
     addErrorHandlerToApp(app, env);

@@ -35,10 +35,11 @@ router.get("/request/:topic", async (req, res) => {
   res.status(201).json(response);
 });
 
-router.patch("/request/:topic", async (req, res) => {
-  const { topic } = req.params;
-  const mqttTopic = `request/${topic}`;
-  const responseTopic = `response/${topic}`;
+router.patch("/request/:topic/:delegation", async (req, res) => {
+  const { topic, delegation } = req.params;
+  console.log(topic, delegation)
+  const mqttTopic = `request/${topic}/${delegation}`;
+  const responseTopic = `response/${topic}/${delegation}`;
 
   mqttHandler.subscribe(responseTopic);
   mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
