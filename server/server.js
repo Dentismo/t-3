@@ -5,24 +5,13 @@ const path = require('path');
 const cors = require('cors');
 const history = require('connect-history-api-fallback');
 
-const mongoURI = 'mongodb://127.0.0.1:27017/dentistClinicDB';
 const port = process.env.PORT || 3000;
 
-connectToDatabase(mongoURI);
+const bodyParser = require("body-parser");
+const mqttHandler = require('./mqttHandler');
+
 const app = startApp(port);
 module.exports = app;
-
-
-function connectToDatabase(mongoURI) {
-    mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, function (err) {
-        if (err) {
-            console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
-            console.error(err.stack);
-            process.exit(1);
-        }
-        console.log(`Connected to MongoDB with URI: ${mongoURI}`);
-    });
-}
 
 function startApp(port) {
     const app = setupApp();
@@ -62,6 +51,8 @@ function addRoutesToApp(app) {
     /**
      * Add controllers here
      */
+     const mqttController = require('./mqttController');
+     app.use('/api', mqttController);
 
     // Catch all non-error handler for api (i.e., 404 Not Found)
     app.use('/api/*', function (req, res) {
