@@ -33,7 +33,7 @@ const BookingCard: React.FC<Props> = ({
   ...props
 }) => {
   const { enqueueSnackbar } = useSnackbar()
-  const { id, user, reason, date, state, startTime, endTime } = booking
+  const { id, user, details, date, state, start, end } = booking
   const [denyLoading, setDenyLoading] = useState<boolean>(false)
   const [acceptLoading, setAcceptLoading] = useState<boolean>(false)
   return (
@@ -57,16 +57,16 @@ const BookingCard: React.FC<Props> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
           <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
-            {startTime} - {endTime}
+            {start} - {end}
           </Typography>
         </Stack>
         <Box alignSelf="stretch">
           <Divider orientation="vertical" />
         </Box>
         <Typography fontWeight={600} noWrap overflow="visible">
-          {user}:
+          {user.name}:
         </Typography>
-        <Typography flexGrow={1}>{reason}</Typography>
+        <Typography flexGrow={1}>{details}</Typography>
       </Stack>
       <Stack direction="row" ml="auto" alignSelf="center">
         {state === 'pending' ? (
@@ -81,21 +81,23 @@ const BookingCard: React.FC<Props> = ({
                   if (!acceptLoading) {
                     openModalWithParams({
                       title: 'Confirm Action',
-                      description: `You're about to deny ${user}'s appointment on ${date}. Are you sure?`,
+                      description: `You're about to deny ${user.name}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setDenyLoading(true)
-                        await Api.put('/request/booking/denied', {
+                        await Api.patch('/request/booking/denied', {
                           _id: booking.id
-                        }).then(() => {
-                          setDenyLoading(false)
-                          enqueueSnackbar(
-                            `Appointment ${id} successfully denied!`,
-                            {
-                              variant: 'success'
-                            }
-                          )
-                          setBookingState(id, 'denied')
                         })
+                          .then(() => {
+                            setDenyLoading(false)
+                            enqueueSnackbar(
+                              `Appointment ${id} successfully denied!`,
+                              {
+                                variant: 'success'
+                              }
+                            )
+                            setBookingState(id, 'denied')
+                          })
+                          .catch((err) => console.log(err))
                       }
                     })
                   } else {
@@ -116,21 +118,23 @@ const BookingCard: React.FC<Props> = ({
                   if (!denyLoading) {
                     openModalWithParams({
                       title: 'Confirm Action',
-                      description: `You're about to accept ${user}'s appointment on ${date}. Are you sure?`,
+                      description: `You're about to accept ${user.name}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setAcceptLoading(true)
-                        await Api.put('/request/booking/accept', {
+                        await Api.patch('/request/booking/approve', {
                           _id: booking.id
-                        }).then(() => {
-                          setAcceptLoading(false)
-                          enqueueSnackbar(
-                            `Appointment ${id} successfully accepted!`,
-                            {
-                              variant: 'success'
-                            }
-                          )
-                          setBookingState(id, 'approved')
                         })
+                          .then(() => {
+                            setAcceptLoading(false)
+                            enqueueSnackbar(
+                              `Appointment ${id} successfully accepted!`,
+                              {
+                                variant: 'success'
+                              }
+                            )
+                            setBookingState(id, 'approved')
+                          })
+                          .catch((err) => console.log(err))
                       }
                     })
                   } else {
@@ -150,7 +154,7 @@ const BookingCard: React.FC<Props> = ({
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
-                  description: `You're about to delete ${user}'s appointment on ${date}. Are you sure?`,
+                  description: `You're about to delete ${user.name}'s appointment on ${date}. Are you sure?`,
                   onAccept: () => {
                     enqueueSnackbar(
                       `Appointment ${id} successfully accepted!`,

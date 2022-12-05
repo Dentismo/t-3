@@ -1,7 +1,7 @@
+import { Stack, Typography } from '@mui/material'
 import React from 'react'
 import BookingCard from './BookingCard'
-import { Booking, BookingsMap, BookingItem } from './types'
-import { Stack, Typography } from '@mui/material'
+import { Booking, BookingItem, BookingsMap } from './types'
 
 type Props = {
   bookings: Booking[]
@@ -67,11 +67,7 @@ const BookingList: React.FC<Props> = ({
             </Typography>
             {bookings
               .sort((b1, b2) =>
-                b1.startTime > b2.startTime
-                  ? 1
-                  : b1.startTime < b2.startTime
-                  ? -1
-                  : 0
+                b1.start > b2.start ? 1 : b1.start < b2.start ? -1 : 0
               )
               .map((booking, index) => (
                 <BookingCard

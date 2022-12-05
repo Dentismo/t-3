@@ -1,10 +1,15 @@
 export type Booking = {
   id: string
-  user: string
-  reason: string
+  user: {
+    email: string,
+    name: string
+  },
+  clinicId: string
+  issuance: string
+  details: string
   date: string
-  startTime: string
-  endTime: string
+  start: string
+  end: string
   state: 'pending' | 'approved' | 'denied'
 }
 
