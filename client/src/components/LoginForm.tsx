@@ -41,6 +41,7 @@ function LoginForm() {
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Invalid Email').required('Required'),
+
       password: Yup.string().required('Required')
     }),
     onSubmit: async (values, { resetForm }) => {
