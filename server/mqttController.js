@@ -37,7 +37,6 @@ router.get("/request/:topic", async (req, res) => {
 
 router.patch("/request/:topic/:delegation", async (req, res) => {
   const { topic, delegation } = req.params;
-  console.log(topic, delegation)
   const mqttTopic = `request/${topic}/${delegation}`;
   const responseTopic = `response/${topic}/${delegation}`;
 
