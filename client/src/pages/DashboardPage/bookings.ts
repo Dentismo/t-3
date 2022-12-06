@@ -2,6 +2,21 @@ import { Booking } from './types'
 
 const bookings: Booking[] = [
   {
+    _id: '638f6183d6ff52a8aa97f1a5',
+    user: {
+      email: 'plepis.jaunais@gmail.com',
+      name: 'Ansis'
+    },
+    details: 'MongoDB test',
+    issuance: '124124',
+    clinicId: '1241241241241241',
+    clinicName: "Georg's Clinic",
+    date: '2022-12-28',
+    start: '15:30',
+    end: '16:00',
+    state: 'pending'
+  },
+  {
     _id: '638e2b15ac41f60264a9eefc',
     user: {
       email: 'Ansis@gmail.com',
