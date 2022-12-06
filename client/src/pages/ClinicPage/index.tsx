@@ -97,6 +97,7 @@ function ClinicPage() {
             name: name
           },
           clinicId: '1', //change so we get the correct id
+          clinicName: 'Arbitrary Clinic',
           issuance: inssurance,
           date: 'not sure how',
           state: 'pending',
