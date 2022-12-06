@@ -1,39 +1,26 @@
 require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const morgan = require("morgan");
 const path = require("path");
 const cors = require("cors");
 const history = require("connect-history-api-fallback");
+const bodyParser = require("body-parser");
+const mqttHandler = require("./mqttHandler");
+const mqttController = require("./mqttController");
 const mailRouter = require("./routers/mailRouter");
 
-const mongoURI = "mongodb://127.0.0.1:27017/dentistClinicDB";
 const port = process.env.PORT || 3000;
 
-// connectToDatabase(mongoURI);
 const app = startApp(port);
 module.exports = app;
-
-function connectToDatabase(mongoURI) {
-  mongoose.connect(
-    mongoURI,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    function (err) {
-      if (err) {
-        console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
-        console.error(err.stack);
-        process.exit(1);
-      }
-      console.log(`Connected to MongoDB with URI: ${mongoURI}`);
-    }
-  );
-}
 
 function startApp(port) {
   const app = setupApp();
   addRoutesToApp(app);
   addFrontendToApp(app);
+  mqttHandler.connect();
 
+  app.use(bodyParser);
   // Error handler (i.e., when exception is thrown) must be registered last
   const env = app.get("env");
   addErrorHandlerToApp(app, env);
@@ -53,8 +40,12 @@ function setupApp() {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(morgan("dev"));
-  app.options("*", cors());
-  app.use(cors());
+  console.log("Applying CORS");
+  app.use(
+    cors({
+      origin: "http://localhost:8080",
+    })
+  );
 
   return app;
 }
@@ -64,11 +55,8 @@ function addRoutesToApp(app) {
     res.json({ message: "Welcome to your Distributed Systems Baby" });
   });
 
-  /**
-   * Add controllers here
-   */
-
   app.use("/api/mail", mailRouter);
+  app.use("/api", mqttController);
 
   // Catch all non-error handler for api (i.e., 404 Not Found)
   app.use("/api/*", function (req, res) {

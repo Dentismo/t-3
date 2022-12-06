@@ -1,12 +1,25 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { ContainerProps, styled } from '@mui/material'
 import { useSnackbar } from 'notistack'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../images/logo.png'
 import LinkButton from './LinkButton'
 
 const Navbar = (props: ContainerProps) => {
   const { enqueueSnackbar } = useSnackbar()
+
+  const [tokenExists, setTokenExists] = useState<boolean>(
+    localStorage.getItem('token') === null
+  )
+
+  useEffect(() => {
+    if (localStorage.getItem('token') && tokenExists === false) {
+      setTokenExists(true)
+    } else if (!localStorage.getItem('token')) {
+      setTokenExists(false)
+    }
+  }, [tokenExists])
 
   const NavbarContainer = styled('div')({
     height: '45px',
@@ -24,6 +37,7 @@ const Navbar = (props: ContainerProps) => {
 
   //remove loginToken and loginId to display logout occured
   const logout = () => {
+    setTokenExists(false)
     localStorage.clear()
 
     enqueueSnackbar('Logged out successfully', {
@@ -44,7 +58,7 @@ const Navbar = (props: ContainerProps) => {
         </NavbarGroup>
       </Link>
       <NavbarGroup>
-        {localStorage.loginToken ? (
+        {!tokenExists ? (
           <LinkButton
             style={{ fontSize: '1rem', textTransform: 'none' }}
             variant="outlined"

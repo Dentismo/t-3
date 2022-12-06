@@ -3,10 +3,17 @@ import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EmailIcon from '@mui/icons-material/Email'
-import { Divider, Stack, StackProps, Typography } from '@mui/material'
+import {
+  CircularProgress,
+  Divider,
+  Stack,
+  StackProps,
+  Typography
+} from '@mui/material'
 import { Box } from '@mui/system'
 import { useSnackbar } from 'notistack'
-import React from 'react'
+import React, { useState } from 'react'
+import { Api } from '../../Api'
 import IconAction from './IconAction'
 import { Booking } from './types'
 
@@ -32,13 +39,15 @@ const BookingCard: React.FC<Props> = ({
     _id,
     user: { name, email },
     clinicId,
-    reason,
+    details,
     date,
     state,
     start,
     issuance,
     end
   } = booking
+  const [denyLoading, setDenyLoading] = useState<boolean>(false)
+  const [acceptLoading, setAcceptLoading] = useState<boolean>(false)
   return (
     <Stack
       direction="row"
@@ -69,82 +78,113 @@ const BookingCard: React.FC<Props> = ({
         <Typography fontWeight={600} noWrap overflow="visible">
           {name}:
         </Typography>
-        <Typography flexGrow={1}>{reason}</Typography>
+        <Typography flexGrow={1}>{details}</Typography>
       </Stack>
       <Stack direction="row" ml="auto" alignSelf="center">
         {state === 'pending' ? (
           <>
-            <IconAction
-              tooltip="Deny Appointment"
-              icon={<CloseIcon color="error" />}
-              onClick={() =>
-                openModalWithParams({
-                  title: 'Confirm Action',
-                  description: `You're about to deny ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
-                  onAccept: () => {
-                    sendEmail({
-                      booking,
-                      type: 'denied'
+            {denyLoading ? (
+              <CircularProgress size={20} sx={{ padding: '0.5rem' }} />
+            ) : (
+              <IconAction
+                tooltip="Deny Appointment"
+                icon={<CloseIcon color="error" />}
+                onClick={() => {
+                  if (!acceptLoading) {
+                    openModalWithParams({
+                      title: 'Confirm Action',
+                      description: `You're about to deny ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
+                      onAccept: async () => {
+                        try {
+                          setDenyLoading(true)
+                          await Api.patch('/request/booking/denied', { _id })
+                          setDenyLoading(false)
+                          sendEmail({ booking, type: 'denied' })
+                          enqueueSnackbar(`Appointment successfully denied!`, {
+                            variant: 'success'
+                          })
+                          setBookingState(_id, 'denied')
+                        } catch (err) {
+                          enqueueSnackbar('Failed to accept appointment!', {
+                            variant: 'error'
+                          })
+                          console.log(err)
+                        }
+                      }
                     })
-                    enqueueSnackbar(`Appointment ${_id} successfully denied!`, {
-                      variant: 'success'
+                  } else {
+                    enqueueSnackbar('Request in progress - Try again later', {
+                      variant: 'error'
                     })
-                    setBookingState(_id, 'denied')
                   }
-                })
-              }
-            />
+                }}
+              />
+            )}
+            {acceptLoading ? (
+              <CircularProgress size={20} sx={{ padding: '0.5rem' }} />
+            ) : (
+              <IconAction
+                tooltip="Accept Appointment"
+                icon={<CheckIcon color="success" />}
+                onClick={() => {
+                  if (!denyLoading) {
+                    openModalWithParams({
+                      title: 'Confirm Action',
+                      description: `You're about to accept ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
+                      onAccept: async () => {
+                        try {
+                          setAcceptLoading(true)
+                          await Api.patch('/request/booking/approve', { _id })
+                          sendEmail({ booking, type: 'approved' })
+                          setAcceptLoading(false)
+                          enqueueSnackbar(
+                            `Appointment successfully accepted!`,
+                            {
+                              variant: 'success'
+                            }
+                          )
+                          setBookingState(_id, 'approved')
+                        } catch (err) {
+                          enqueueSnackbar('Failed to accept appointment!', {
+                            variant: 'error'
+                          })
+                          console.log(err)
+                        }
+                      }
+                    })
+                  } else {
+                    enqueueSnackbar('Request in progress - Try again later', {
+                      variant: 'error'
+                    })
+                  }
+                }}
+              />
+            )}
+          </>
+        ) : (
+          <>
             <IconAction
-              tooltip="Accept Appointment"
-              icon={<CheckIcon color="success" />}
+              tooltip="Resend email"
+              icon={<EmailIcon htmlColor="grey" />}
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
-                  description: `You're about to accept ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
+                  description: `You're about to resend an email to ${name} confirming their appointment is ${state}. Please avoid resending emails unless they failed to send. Are you sure you want to proceed?`,
                   onAccept: () => {
                     sendEmail({
                       booking,
-                      type: 'approved'
+                      type: state
                     })
                     enqueueSnackbar(
-                      `Appointment ${_id} successfully approved!`,
+                      `Appointment ${_id}'s status successfully resent!`,
                       {
                         variant: 'success'
                       }
                     )
-
-                    setBookingState(_id, 'approved')
                   }
                 })
               }
             />
-          </>
-        ) : (
-          <>
-            <>
-              <IconAction
-                tooltip="Resend email"
-                icon={<EmailIcon htmlColor="grey" />}
-                onClick={() =>
-                  openModalWithParams({
-                    title: 'Confirm Action',
-                    description: `You're about to resend an email to ${name} confirming their appointment is ${state}. Please avoid resending emails unless they failed to send. Are you sure you want to proceed?`,
-                    onAccept: () => {
-                      sendEmail({
-                        booking,
-                        type: state
-                      })
-                      enqueueSnackbar(
-                        `Appointment ${_id}'s status successfully resent!`,
-                        {
-                          variant: 'success'
-                        }
-                      )
-                    }
-                  })
-                }
-              />
-            </>
             <IconAction
               tooltip="Delete Appointment"
               icon={<DeleteIcon htmlColor="grey" />}

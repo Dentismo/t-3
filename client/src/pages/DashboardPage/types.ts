@@ -7,11 +7,11 @@ export type Booking = {
   clinicId: string
   clinicName: string
   issuance: string
+  details: string
   date: string
-  state: 'approved' | 'pending' | 'denied'
   start: string
   end: string
-  reason: string
+  state: 'pending' | 'approved' | 'denied'
 }
 
 export type BookingsMap = {
