@@ -360,44 +360,59 @@
                         >
 
                           <div
-                            style="font-family:Ubuntu, Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:justify;color:#000000; line-height: 1.3;"
-                          ><p>
-                              <span style="color: rgb(57, 63, 76);">Responding
-                                to your appointment
-                              </span>
+                            style="font-family:Ubuntu, Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.2;text-align:justify;color:#000000;"
+                          ><p style="margin: 6px 0;">
                               <span
-                                style="font-weight: bold; color: rgb(57, 63, 76);"
-                              >"{{@root.reason}}"</span>
-                              <span style="color: rgb(57, 63, 76);">
-                                on
-                              </span><span
-                                style="font-weight: bold; color: rgb(57, 63, 76);"
-                              >{{@root.date}}</span>
-                              <span style="color: rgb(57, 63, 76);">
-                                from
-                                <span
-                                  style="font-weight: bold; color: rgb(57, 63, 76);"
-                                >{{@root.start}}</span>
-                                <span style="color: rgb(57, 63, 76);">
-                                  to
-                                </span>
-                                <span
-                                  style="font-weight: bold; color: rgb(57, 63, 76);"
-                                >{{@root.end}}</span>, Clinic
-                                {{@root.clinicId}}
-                                has
-                              </span><span
-                                style="font-weight: bold; color: rgb(57, 63, 76);"
+                                style="color: rgb(57, 63, 76); font-weight: bold;"
+                              >
+                                {{@root.clinicName}}
+                              </span>
+                              <span style="color: rgb(57, 63, 76);"> has </span>
+                              <span
+                                style="color: {{@root.typeColor}}; font-weight: bold;"
                               >{{@root.type}}</span>
-                              <span style="color: rgb(57, 63, 76);">
-                                your appointment.
-                              </span>
 
                               <span style="color: rgb(57, 63, 76);">
-                                {{@root.footText}}
-                              </span>
-                            </p></div>
+                                your appointment!</span>
 
+                            </p>
+                            <p style="margin: 6px 0;">
+                              <span style="color: rgb(57, 63, 76);">Details:
+                              </span><span
+                                style="color: rgb(57, 63, 76); font-weight: bold;"
+                              >
+                                {{@root.reason}}
+                              </span>
+                            </p>
+                            <p style="margin: 6px 0;">
+                              <span style="color: rgb(57, 63, 76);">On:
+                              </span><span
+                                style="color: rgb(57, 63, 76); font-weight: bold;"
+                              >
+                                {{@root.date}}
+                              </span>
+                            </p>
+                            <p style="margin: 6px 0;">
+                              <span style="color: rgb(57, 63, 76);">From:
+                              </span><span
+                                style="color: rgb(57, 63, 76); font-weight: bold;"
+                              >
+                                {{@root.start}}
+                              </span>
+                              <span style="color: rgb(57, 63, 76);">
+                                to
+                              </span><span
+                                style="color: rgb(57, 63, 76); font-weight: bold;"
+                              >
+                                {{@root.end}}
+                              </span>
+                            </p>
+                            <p style="margin: 6px 0;">
+                              <span
+                                style="color: rgb(57, 63, 76);"
+                              >{{@root.footText}}</span>
+                            </p>
+                          </div>
                         </td>
                       </tr>
 

@@ -37,6 +37,7 @@ export type Booking = {
     email: String
     name: String
   }
+  clinicName: String
   clinicId: String
   issuance: String
   date: String

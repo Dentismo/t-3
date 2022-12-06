@@ -3,7 +3,8 @@ import { Booking } from './types'
 const bookings: Booking[] = [
   {
     _id: '691337',
-    clinicId: '12',
+    clinicId: '1',
+    clinicName: "Georg's Clinic",
     reason: 'my teeth hurts :<',
     date: '2022-12-08',
     issuance: '',
@@ -17,7 +18,8 @@ const bookings: Booking[] = [
   },
   {
     _id: '133769',
-    clinicId: '11',
+    clinicId: '2',
+    clinicName: "Ivan's Clinic",
     reason:
       'my teeth are perfectly fine. I just want to come for an appointment :<',
     date: '2022-12-09',
@@ -32,7 +34,8 @@ const bookings: Booking[] = [
   },
   {
     _id: 'swag69',
-    clinicId: '1',
+    clinicId: '3',
+    clinicName: "Bardia's Clinic",
     reason:
       'i am a sigmoid and I am making an appointment to fix the dentists teeth',
     date: '2023-01-01',
@@ -47,7 +50,8 @@ const bookings: Booking[] = [
   },
   {
     _id: 'portland_random69',
-    clinicId: '10',
+    clinicId: '4',
+    clinicName: "Carl's Clinic",
     reason:
       'i honestly dont know how i got here. i think im from the multiverse',
     date: '2022-12-04',
@@ -63,6 +67,7 @@ const bookings: Booking[] = [
   {
     _id: '1337_portland',
     clinicId: '5',
+    clinicName: "John's Clinic",
     reason:
       'This is the most generic dentist appointment. Idk why I appointed it on christmas tho',
     date: '2022-12-24',

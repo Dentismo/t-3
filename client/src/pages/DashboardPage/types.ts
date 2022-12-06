@@ -5,6 +5,7 @@ export type Booking = {
     name: string
   }
   clinicId: string
+  clinicName: string
   issuance: string
   date: string
   state: 'approved' | 'pending' | 'denied'

@@ -41,6 +41,7 @@ const sendMail = async ({ booking, type }) => {
     context: {
       ...booking,
       type,
+      typeColor: type === "approved" ? "rgb(56, 142, 60)" : "rgb(198, 40, 40)",
       headText: `We have some ${type === "approved" ? "good" : "bad"} news!`,
       footText: `Visit the Clinic's contact page ${
         type === "approved" ? "for more information" : "to find a new time slot"

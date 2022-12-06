@@ -99,6 +99,7 @@ function ClinicPage() {
               name: name
             },
             clinicId: 'comes from website',
+            clinicName: 'arbitrarily arbitrary clinic',
             issuance: inssurance,
             date: 'not sure how',
             state: 'pending',
