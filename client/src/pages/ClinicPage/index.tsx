@@ -96,7 +96,7 @@ function ClinicPage() {
             email: email,
             name: name
           },
-          clinicId: 'comes from website',
+          clinicId: '1', //change so we get the correct id
           issuance: inssurance,
           date: 'not sure how',
           state: 'pending',
@@ -104,9 +104,10 @@ function ClinicPage() {
           end: end.toString(),
           details: details
         }
-        const success = await Api.post('request/booking', booking)
 
-        if (success.data.user) {
+        const success = await Api.post('request/availablity', booking);
+
+        if (success.data.email) {
           setMyEvents((prev) => [
             ...prev,
             {
