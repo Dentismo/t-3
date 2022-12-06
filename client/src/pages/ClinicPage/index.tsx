@@ -1,6 +1,7 @@
 import { styled } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import moment from 'moment'
+import {Api} from '../../Api'
 import { useSnackbar } from 'notistack'
 import { useCallback, useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
@@ -73,8 +74,8 @@ function ClinicPage() {
    * Creation of the appointment after it was sent to the availability
    * checker. Also checks that the required fields are entered
    */
-  const onAccept = useCallback(
-    (
+   const onAccept = useCallback(
+    async (
       start: Date,
       end: Date,
       email: String,
@@ -89,28 +90,29 @@ function ClinicPage() {
           })
           return false
         }
-        //check availability
-        const available = true
-        if (available) {
-          //create booking
-          const booking: Booking = {
-            user: {
-              email: email,
-              name: name
-            },
-            clinicId: 'comes from website',
-            issuance: inssurance,
-            date: 'not sure how',
-            state: 'pending',
-            start: start.toString(),
-            end: end.toString(),
-            details: details
-          }
+        //create booking
+        const booking: Booking = {
+          user: {
+            email: email,
+            name: name
+          },
+          clinicId: '1', //change so we get the correct id
+          issuance: inssurance,
+          date: 'not sure how',
+          state: 'pending',
+          start: start.toString(),
+          end: end.toString(),
+          details: details
+        }
+
+        const success = await Api.post('request/availablity', booking);
+
+        if (success.data.email) {
           setMyEvents((prev) => [
             ...prev,
             {
-              start: start,
-              end: end
+              start: booking.start,
+              end: booking.end
             }
           ])
 
