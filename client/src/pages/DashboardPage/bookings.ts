@@ -1,26 +1,37 @@
-import { Booking } from './types'
+import { Booking } from "./types"
 
 // TODO: remove when connecting to backend
 const bookings: Booking[] = [
   {
-    id: '1',
-    user: 'Ansis Plepis',
-    reason: 'idek how i got here',
+    id: '638e2b15ac41f60264a9eefc',
+    user: {
+      email: "Ansis@gmail.com",
+      name: "Ansis"
+    },
+    details: 'idek how i got here',
+    issuance: '124124',
+    clinicId: "1241241241241241",
     date: '2022-12-28',
-    startTime: '15:30',
-    endTime: '16:00',
+    start: '15:30',
+    end: '16:00',
     state: 'pending'
   },
   {
     id: '2',
-    user: 'Georg Zsolnai',
-    reason: 'I however *do* know how I got here',
+    user: {
+      email: "georg@gmail.com",
+      name: "Georg Zsolnai"
+    },
+    details: 'I however *do* know how I got here',
+    issuance: '4242',
+    clinicId: "1241241241241241",
     date: '2022-12-29',
-    startTime: '16:30',
-    endTime: '17:00',
+    start: '16:30',
+    end: '17:00',
     state: 'pending'
   },
-  {
+  /**
+   * {
     id: '3',
     user: 'Ivan Vidackovic',
     reason:
@@ -85,6 +96,7 @@ const bookings: Booking[] = [
     endTime: '18:00',
     state: 'pending'
   }
+   */
 ]
 
 export default bookings
