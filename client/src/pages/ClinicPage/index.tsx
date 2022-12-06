@@ -104,8 +104,9 @@ function ClinicPage() {
           end: end.toString(),
           details: details
         }
+        const id = Math.random().toString(36).substring(2,7);
 
-        const success = await Api.post('request/availablity', booking);
+        const success = await Api.post('request/availablity/' + id, booking);
 
         if (success.data.email) {
           setMyEvents((prev) => [

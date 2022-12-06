@@ -84,7 +84,9 @@ const BookingCard: React.FC<Props> = ({
                       description: `You're about to deny ${user.name}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setDenyLoading(true)
-                        await Api.patch('/request/booking/denied', {
+                        const id = Math.random().toString(36).substring(2,7);
+
+                        await Api.patch('/request/booking/denied/' + id, {
                           _id: booking.id
                         })
                           .then(() => {
@@ -121,7 +123,9 @@ const BookingCard: React.FC<Props> = ({
                       description: `You're about to accept ${user.name}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setAcceptLoading(true)
-                        await Api.patch('/request/booking/approve', {
+                        const id = Math.random().toString(36).substring(2,7);
+
+                        await Api.patch('/request/booking/approve/' + id, {
                           _id: booking.id
                         })
                           .then(() => {
