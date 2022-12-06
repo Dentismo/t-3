@@ -1,10 +1,17 @@
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Divider, Stack, StackProps, Typography } from '@mui/material'
+import {
+  CircularProgress,
+  Divider,
+  Stack,
+  StackProps,
+  Typography
+} from '@mui/material'
 import { Box } from '@mui/system'
 import { useSnackbar } from 'notistack'
-import React from 'react'
+import React, { useState } from 'react'
+import { Api } from '../../Api'
 import IconAction from './IconAction'
 import { Booking } from './types'
 
@@ -26,7 +33,9 @@ const BookingCard: React.FC<Props> = ({
   ...props
 }) => {
   const { enqueueSnackbar } = useSnackbar()
-  const { id, user, reason, date, state, startTime, endTime } = booking
+  const { id, user, details, date, state, start, end } = booking
+  const [denyLoading, setDenyLoading] = useState<boolean>(false)
+  const [acceptLoading, setAcceptLoading] = useState<boolean>(false)
   return (
     <Stack
       direction="row"
@@ -48,55 +57,94 @@ const BookingCard: React.FC<Props> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
           <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
-            {startTime} - {endTime}
+            {start} - {end}
           </Typography>
         </Stack>
         <Box alignSelf="stretch">
           <Divider orientation="vertical" />
         </Box>
         <Typography fontWeight={600} noWrap overflow="visible">
-          {user}:
+          {user.name}:
         </Typography>
-        <Typography flexGrow={1}>{reason}</Typography>
+        <Typography flexGrow={1}>{details}</Typography>
       </Stack>
       <Stack direction="row" ml="auto" alignSelf="center">
         {state === 'pending' ? (
           <>
-            <IconAction
-              tooltip="Deny Appointment"
-              icon={<CloseIcon color="error" />}
-              onClick={() =>
-                openModalWithParams({
-                  title: 'Confirm Action',
-                  description: `You're about to deny ${user}'s appointment on ${date}. Are you sure?`,
-                  onAccept: () => {
-                    enqueueSnackbar(`Appointment ${id} successfully denied!`, {
-                      variant: 'success'
-                    })
-                    setBookingState(id, 'denied')
-                  }
-                })
-              }
-            />
-            <IconAction
-              tooltip="Accept Appointment"
-              icon={<CheckIcon color="success" />}
-              onClick={() =>
-                openModalWithParams({
-                  title: 'Confirm Action',
-                  description: `You're about to accept ${user}'s appointment on ${date}. Are you sure?`,
-                  onAccept: () => {
-                    enqueueSnackbar(
-                      `Appointment ${id} successfully accepted!`,
-                      {
-                        variant: 'success'
+            {denyLoading ? (
+              <CircularProgress size={20} sx={{ padding: '0.5rem' }} />
+            ) : (
+              <IconAction
+                tooltip="Deny Appointment"
+                icon={<CloseIcon color="error" />}
+                onClick={() => {
+                  if (!acceptLoading) {
+                    openModalWithParams({
+                      title: 'Confirm Action',
+                      description: `You're about to deny ${user.name}'s appointment on ${date}. Are you sure?`,
+                      onAccept: async () => {
+                        setDenyLoading(true)
+                        await Api.patch('/request/booking/denied', {
+                          _id: booking.id
+                        })
+                          .then(() => {
+                            setDenyLoading(false)
+                            enqueueSnackbar(
+                              `Appointment ${id} successfully denied!`,
+                              {
+                                variant: 'success'
+                              }
+                            )
+                            setBookingState(id, 'denied')
+                          })
+                          .catch((err) => console.log(err))
                       }
-                    )
-                    setBookingState(id, 'approved')
+                    })
+                  } else {
+                    enqueueSnackbar('Request in progress - Try again later', {
+                      variant: 'error'
+                    })
                   }
-                })
-              }
-            />
+                }}
+              />
+            )}
+            {acceptLoading ? (
+              <CircularProgress size={20} sx={{ padding: '0.5rem' }} />
+            ) : (
+              <IconAction
+                tooltip="Accept Appointment"
+                icon={<CheckIcon color="success" />}
+                onClick={() => {
+                  if (!denyLoading) {
+                    openModalWithParams({
+                      title: 'Confirm Action',
+                      description: `You're about to accept ${user.name}'s appointment on ${date}. Are you sure?`,
+                      onAccept: async () => {
+                        setAcceptLoading(true)
+                        await Api.patch('/request/booking/approve', {
+                          _id: booking.id
+                        })
+                          .then(() => {
+                            setAcceptLoading(false)
+                            enqueueSnackbar(
+                              `Appointment ${id} successfully accepted!`,
+                              {
+                                variant: 'success'
+                              }
+                            )
+                            setBookingState(id, 'approved')
+                          })
+                          .catch((err) => console.log(err))
+                      }
+                    })
+                  } else {
+                    enqueueSnackbar('Request in progress - Try again later', {
+                      variant: 'error'
+                    })
+                  }
+                }}
+              />
+            )}
           </>
         ) : (
           <>
@@ -106,7 +154,7 @@ const BookingCard: React.FC<Props> = ({
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
-                  description: `You're about to delete ${user}'s appointment on ${date}. Are you sure?`,
+                  description: `You're about to delete ${user.name}'s appointment on ${date}. Are you sure?`,
                   onAccept: () => {
                     enqueueSnackbar(
                       `Appointment ${id} successfully accepted!`,
