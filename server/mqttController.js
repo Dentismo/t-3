@@ -40,6 +40,8 @@ router.patch("/request/:topic/:delegation", async (req, res) => {
   const mqttTopic = `request/${topic}/${delegation}`;
   const responseTopic = `response/${topic}/${delegation}`;
 
+  console.log(mqttTopic, responseTopic);
+
   mqttHandler.subscribe(responseTopic);
   mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
   const message = await mqttHandler.onMessage();

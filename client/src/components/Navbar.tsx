@@ -13,8 +13,6 @@ const Navbar = (props: ContainerProps) => {
     localStorage.getItem('token') === null
   )
 
-  console.log(tokenExists)
-
   useEffect(() => {
     if (localStorage.getItem('token') && tokenExists === false) {
       setTokenExists(true)
