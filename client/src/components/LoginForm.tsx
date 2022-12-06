@@ -41,6 +41,7 @@ function LoginForm() {
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Invalid Email').required('Required'),
+
       password: Yup.string().required('Required')
     }),
     onSubmit: async (values, { resetForm }) => {
@@ -49,10 +50,6 @@ function LoginForm() {
         password: values.password
       })
         .then((response) => {
-          console.log(response.data)
-
-          //const res = JSON.parse(`${response.data}`)
-          //console.log(res)
           if (response.data.token) {
             localStorage.token = response.data.token
             localStorage.loginId = response.data.id

@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
@@ -17,9 +16,9 @@ function startApp(port) {
     const app = setupApp();
     addRoutesToApp(app);
     addFrontendToApp(app);
+    mqttHandler.connect()
     
-    mqttHandler.connect();
-
+    app.use(bodyParser)
     // Error handler (i.e., when exception is thrown) must be registered last
     const env = app.get('env');
     addErrorHandlerToApp(app, env);
@@ -41,8 +40,6 @@ function setupApp() {
     app.use(morgan('dev'));
     app.options('*', cors());
     app.use(cors());
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }))
     
     return app;
 }

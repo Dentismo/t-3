@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import ClinicPage from './pages/ClinicPage'
 import DashboardPage from './pages/DashboardPage'
 import HomePage from './pages/HomePage'
+import ErrorPage from './pages/ErrorPage'
 import LoginPage from './pages/LoginPage'
 
 const Layout = () => {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <DashboardPage />
+      },
+      {
+        path: '*',
+        element: <ErrorPage />
       },
       {
         path: '/login',
