@@ -86,7 +86,7 @@ const BookingCard: React.FC<Props> = ({
                         setDenyLoading(true)
                         const id = Math.random().toString(36).substring(2,7);
 
-                        await Api.patch('/request/booking/denied/' + id, {
+                        await Api.patch('/request/denied/' + id, {
                           _id: booking.id
                         })
                           .then(() => {
@@ -125,7 +125,7 @@ const BookingCard: React.FC<Props> = ({
                         setAcceptLoading(true)
                         const id = Math.random().toString(36).substring(2,7);
 
-                        await Api.patch('/request/booking/approve/' + id, {
+                        await Api.patch('/request/approve/' + id, {
                           _id: booking.id
                         })
                           .then(() => {
