@@ -87,23 +87,24 @@ function ClinicPage() {
       details: String
     ) => {
       try {
+        //Check for the required fields. If they are empty, send a snackbar notification that the required fields must be filled.
         if (name === '' || email === '' || inssurance === '') {
           enqueueSnackbar('Fill out the required fields', {
             variant: 'error'
           })
           return false
         }
-        // mosquitto_pub -t 'response/availablity' -m '{"email": "John"}'
-
         //create booking
         const booking: Booking = {
           user: {
             email: email,
             name: name
           },
-          clinicId: pageId ?? '', //change so we get the correct id
-          clinicName: 'Arbitrary Clinic',
+          //ClinicId is taken from the url using useParams() from react. Clinic pages have an id associated with them in the router: clinic/:pageId
+          clinicId: pageId ?? '', 
+          clinicName: clinic.name,
           issuance: inssurance,
+          //Format the date so it is ready for the availability checker to process the date.
           date: start.getUTCFullYear() + '/' + (start.getUTCMonth() + 1) + '/' + ('0' + start.getUTCDate()), 
           state: 'pending',
           start: start.toString(),
@@ -112,8 +113,9 @@ function ClinicPage() {
         }
         const id = Math.random().toString(36).substring(2,7);
 
-        const success = await Api.post('request/availablity/' + id, booking);
+        const success = await Api.post('/request/availablity/' + id, booking);
 
+        //if the booking request is accepted by the availability checker....
         if (success.data.accepted) {
           setMyEvents((prev) => [
             ...prev,
@@ -129,7 +131,7 @@ function ClinicPage() {
           setOpenModal(false)
           return true
         } else {
-          //if the timeslot is not available for booking
+          //if the timeslot is not available for booking (accepted will have a value of false)
           enqueueSnackbar('Timeslot was not available', {
             variant: 'error'
           })
