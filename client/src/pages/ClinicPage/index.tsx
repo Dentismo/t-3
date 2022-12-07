@@ -1,7 +1,7 @@
 import { styled } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import moment from 'moment'
-import {Api} from '../../Api'
+import { Api } from '../../Api'
 import { useSnackbar } from 'notistack'
 import { useCallback, useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
@@ -74,7 +74,7 @@ function ClinicPage() {
    * Creation of the appointment after it was sent to the availability
    * checker. Also checks that the required fields are entered
    */
-   const onAccept = useCallback(
+  const onAccept = useCallback(
     async (
       start: Date,
       end: Date,
@@ -97,6 +97,7 @@ function ClinicPage() {
             name: name
           },
           clinicId: '1', //change so we get the correct id
+          clinicName: 'Arbitrary Clinic',
           issuance: inssurance,
           date: 'not sure how',
           state: 'pending',
