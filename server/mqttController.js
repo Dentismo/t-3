@@ -29,7 +29,7 @@ router.get("/request/:topic/:id", async (req, res) => {
   const mqttTopic = "request/" + req.params.topic + "/" + req.params.id
   const responseTopic = "response/" + req.params.topic + "/" + req.params.id
 
-  mqttHandler.publish(mqttTopic, "send");
+  mqttHandler.publish(mqttTopic, req.params.id);
 
   //subscribe to the response
   mqttHandler.subscribe(responseTopic);

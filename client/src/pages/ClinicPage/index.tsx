@@ -1,24 +1,25 @@
 import { styled } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import moment from 'moment'
-import { Api } from '../../Api'
 import { useSnackbar } from 'notistack'
 import { useCallback, useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { useParams } from 'react-router'
+import { Api } from '../../Api'
 import AppointmentModal from './AppointmentModal'
 import ClinicCard from './ClinicCard'
 import clinics from './clinics'
 import { Booking } from './types'
-import { useParams } from 'react-router'
 
 const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
   //example clinic to help populate page without database
-  const clinic = clinics[0]
-
   const { pageId } = useParams()
+  const response = Api.get('request/clinicPortal/clinic/' + pageId)
+
+  const clinic = clinics[0]
 
   const [openModal, setOpenModal] = useState<boolean>(false)
 
@@ -101,19 +102,24 @@ function ClinicPage() {
             name: name
           },
           //ClinicId is taken from the url using useParams() from react. Clinic pages have an id associated with them in the router: clinic/:pageId
-          clinicId: pageId ?? '', 
+          clinicId: pageId ?? '',
           clinicName: clinic.name,
           issuance: inssurance,
           //Format the date so it is ready for the availability checker to process the date.
-          date: start.getUTCFullYear() + '/' + (start.getUTCMonth() + 1) + '/' + ('0' + start.getUTCDate()), 
+          date:
+            start.getUTCFullYear() +
+            '/' +
+            (start.getUTCMonth() + 1) +
+            '/' +
+            ('0' + start.getUTCDate()),
           state: 'pending',
           start: start.toString(),
           end: end.toString(),
           details: details
         }
-        const id = Math.random().toString(36).substring(2,7);
+        const id = Math.random().toString(36).substring(2, 7)
 
-        const success = await Api.post('/request/availablity/' + id, booking);
+        const success = await Api.post('/request/availablity/' + id, booking)
 
         //if the booking request is accepted by the availability checker....
         if (success.data.accepted) {
