@@ -10,12 +10,15 @@ import AppointmentModal from './AppointmentModal'
 import ClinicCard from './ClinicCard'
 import clinics from './clinics'
 import { Booking } from './types'
+import { useParams } from 'react-router'
 
 const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
   //example clinic to help populate page without database
   const clinic = clinics[0]
+
+  const { pageId } = useParams()
 
   const [openModal, setOpenModal] = useState<boolean>(false)
 
@@ -90,24 +93,26 @@ function ClinicPage() {
           })
           return false
         }
+        // mosquitto_pub -t 'response/availablity' -m '{"email": "John"}'
+
         //create booking
         const booking: Booking = {
           user: {
             email: email,
             name: name
           },
-          clinicId: '1', //change so we get the correct id
+          clinicId: pageId ?? '', //change so we get the correct id
           issuance: inssurance,
-          date: 'not sure how',
+          date: start.getUTCFullYear() + '/' + (start.getUTCMonth() + 1) + '/' + ('0' + start.getUTCDate()), 
           state: 'pending',
           start: start.toString(),
           end: end.toString(),
           details: details
         }
-
+        console.log(booking)
         const success = await Api.post('request/availablity', booking);
 
-        if (success.data.email) {
+        if (success.data.accepted) {
           setMyEvents((prev) => [
             ...prev,
             {
