@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const mqttHandler = require("./mqttHandler");
+const bcrypt = require('bcryptjs');
 
 router.post("/request/:topic/:id", async (req, res) => {
   //define mqtt topics with the given parametere
@@ -10,6 +11,10 @@ router.post("/request/:topic/:id", async (req, res) => {
   //subscribe to the response
   mqttHandler.subscribe(responseTopic);
 
+  const {password} = req.body
+  if(password) {
+    req.body.password = await bcrypt.hash(values.password, 10)
+  }
   //publish request
   mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
 
