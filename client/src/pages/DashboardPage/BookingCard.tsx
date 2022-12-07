@@ -48,6 +48,8 @@ const BookingCard: React.FC<Props> = ({
   } = booking
   const [denyLoading, setDenyLoading] = useState<boolean>(false)
   const [acceptLoading, setAcceptLoading] = useState<boolean>(false)
+  const startTime = new Date(start)
+  const endTime = new Date(end)
   return (
     <Stack
       direction="row"
@@ -69,7 +71,7 @@ const BookingCard: React.FC<Props> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
           <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
-            {start} - {end}
+          {startTime.getHours()}:{startTime.getMinutes()} - {endTime.getHours()}:{endTime.getMinutes()}
           </Typography>
         </Stack>
         <Box alignSelf="stretch">
@@ -91,13 +93,15 @@ const BookingCard: React.FC<Props> = ({
                 icon={<CloseIcon color="error" />}
                 onClick={() => {
                   if (!acceptLoading) {
+                    const id = Math.random().toString(36).substring(2,7);
+
                     openModalWithParams({
                       title: 'Confirm Action',
                       description: `You're about to deny ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
                       onAccept: async () => {
                         try {
                           setDenyLoading(true)
-                          await Api.patch('/request/booking/denied', { _id })
+                          await Api.patch('/request/denied/' + id, { _id })
                           setDenyLoading(false)
                           sendEmail({ booking, type: 'denied' })
                           enqueueSnackbar(`Appointment successfully denied!`, {
@@ -128,14 +132,16 @@ const BookingCard: React.FC<Props> = ({
                 icon={<CheckIcon color="success" />}
                 onClick={() => {
                   if (!denyLoading) {
+                    const id = Math.random().toString(36).substring(2,7);
+
                     openModalWithParams({
                       title: 'Confirm Action',
                       description: `You're about to accept ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
                       onAccept: async () => {
                         try {
                           setAcceptLoading(true)
-                          await Api.patch('/request/booking/approve', { _id })
-                          sendEmail({ booking, type: 'approved' })
+                          await Api.patch('/request/approve/' + id, { _id })
+                          await sendEmail({ booking, type: 'approved' })
                           setAcceptLoading(false)
                           enqueueSnackbar(
                             `Appointment successfully accepted!`,
