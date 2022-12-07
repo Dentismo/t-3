@@ -52,6 +52,7 @@ class MqttHandler {
 
   onMessage() {
     return new Promise((resolve) => {
+      console.log("Inside Promise ")
       this.mqttClient.on("message", (topic, message) => {
         console.log(message.toString());
         resolve(JSON.parse(message.toString()));

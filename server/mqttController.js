@@ -4,15 +4,15 @@ const mqttHandler = require("./mqttHandler");
 
 router.post("/request/:topic/:id", async (req, res) => {
   //define mqtt topics with the given parametere
-  const mqttTopic = 'request/' + req.params.topic + "/" + req.params.id
-    const responseTopic = 'response/' + req.params.topic + "/" + req.params.id
+  const mqttTopic = "request/" + req.params.topic + '/' + req.params.id;
+  const responseTopic = "response/" + req.params.topic + '/' + req.params.id;
 
   //subscribe to the response
   mqttHandler.subscribe(responseTopic);
 
   //publish request
   mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
-
+  console.log(JSON.stringify(req.body))
   //message received is parse to json and returned to the frontend
   const response = await mqttHandler.onMessage();
 
@@ -28,9 +28,10 @@ router.get("/request/:topic/:id", async (req, res) => {
 
   //subscribe to the response
   mqttHandler.subscribe(responseTopic);
-
+console.log("before")
   //message received is parse to json and returned to the frontend
   const response = await mqttHandler.onMessage();
+  console.log("after")
 
   res.status(201).json(response);
 });

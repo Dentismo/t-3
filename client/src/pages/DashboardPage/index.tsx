@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Stack, Typography, Box } from '@mui/material'
 import { Booking, OpenModalParams } from './types'
 import BookingList from './BookingList'
 import ConfirmationModal from './ConfirmationModal'
-import bookingsJson from './bookings'
 import Sideview from './Sideview'
 import { useSearchParams } from 'react-router-dom'
+import { Api } from '../../Api'
 
 // TODO: use react context instead of nested state
 // TODO: put type declarations into separate file
@@ -16,13 +16,24 @@ const DentistPage: React.FC = () => {
   const [modalDescription, setModalDescription] = useState<string>('')
   const [modalOpen, setModalOpen] = useState<boolean>(false)
 
+  useEffect(() => {
+    const fetcher = async () => {
+      const id = Math.random().toString(36).substring(2, 7)
+      const fetchedBookings = await Api.post(`/request/booking-requests/${id}`, { clinicID: "2"});
+      setBookings(fetchedBookings.data as Booking[]);
+    }
+    fetcher()
+  }, [])
   const [searchParams] = useSearchParams() // updates state on query change
   const [bookings, setBookings] = useState<Booking[]>(
-    bookingsJson.sort((b1, b2) =>
-      b1.date > b2.date ? 1 : b1.date < b2.date ? -1 : 0
-    )
+    // [].sort((b1, b2) =>
+     // b1.date > b2.date ? 1 : b1.date < b2.date ? -1 : 0
+   // )
+   []
   )
+
   const tab = searchParams.get('tab') || 'pending'
+  console.log(bookings);
   const bookingsForTab = bookings.filter(
     (booking) => booking.state === tab
   ).length
