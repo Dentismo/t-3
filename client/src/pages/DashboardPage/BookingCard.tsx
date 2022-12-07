@@ -48,8 +48,8 @@ const BookingCard: React.FC<Props> = ({
   } = booking
   const [denyLoading, setDenyLoading] = useState<boolean>(false)
   const [acceptLoading, setAcceptLoading] = useState<boolean>(false)
-  const startTime = new Date(start)
-  const endTime = new Date(end)
+  //const startTime = new Date(start)
+  //const endTime = new Date(end)
   return (
     <Stack
       direction="row"
@@ -71,7 +71,8 @@ const BookingCard: React.FC<Props> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
           <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
-          {startTime.getHours()}:{startTime.getMinutes()} - {endTime.getHours()}:{endTime.getMinutes()}
+          {/* {startTime.getHours()}:{startTime.getMinutes()} - {endTime.getHours()}:{endTime.getMinutes()} */}
+          {start} - {end}
           </Typography>
         </Stack>
         <Box alignSelf="stretch">
