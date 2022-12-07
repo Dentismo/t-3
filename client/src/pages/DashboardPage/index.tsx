@@ -17,7 +17,11 @@ const DentistPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   const [searchParams] = useSearchParams() // updates state on query change
-  const [bookings, setBookings] = useState<Booking[]>(bookingsJson)
+  const [bookings, setBookings] = useState<Booking[]>(
+    bookingsJson.sort((b1, b2) =>
+      b1.date > b2.date ? 1 : b1.date < b2.date ? -1 : 0
+    )
+  )
   const tab = searchParams.get('tab') || 'pending'
   const bookingsForTab = bookings.filter(
     (booking) => booking.state === tab
@@ -35,14 +39,14 @@ const DentistPage: React.FC = () => {
   }
 
   const setBookingState = (
-    bookingId: Booking['id'],
+    bookingId: Booking['_id'],
     state: Booking['state'] | 'deleted'
   ) =>
     setBookings(
       state === 'deleted'
-        ? bookings.filter((booking) => booking.id !== bookingId)
+        ? bookings.filter((booking) => booking._id !== bookingId)
         : bookings.map((booking) =>
-            booking.id === bookingId
+            booking._id === bookingId
               ? {
                   ...booking,
                   state

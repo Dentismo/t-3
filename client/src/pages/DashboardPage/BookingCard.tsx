@@ -21,7 +21,7 @@ type Props = {
   booking: Booking
   openModalWithParams: Function
   setBookingState: (
-    bookingId: Booking['id'],
+    bookingId: Booking['_id'],
     state: Booking['state'] | 'deleted'
   ) => void
 } & StackProps
@@ -33,7 +33,7 @@ const BookingCard: React.FC<Props> = ({
   ...props
 }) => {
   const { enqueueSnackbar } = useSnackbar()
-  const { id, user, details, date, state, start, end } = booking
+  const { _id, user, details, date, state, start, end } = booking
   const [denyLoading, setDenyLoading] = useState<boolean>(false)
   const [acceptLoading, setAcceptLoading] = useState<boolean>(false)
   return (
@@ -84,18 +84,20 @@ const BookingCard: React.FC<Props> = ({
                       description: `You're about to deny ${user.name}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setDenyLoading(true)
-                        await Api.patch('/request/booking/denied', {
-                          _id: booking.id
+                        const id = Math.random().toString(36).substring(2,7);
+
+                        await Api.patch('/request/denied/' + id, {
+                          _id: booking._id
                         })
                           .then(() => {
                             setDenyLoading(false)
                             enqueueSnackbar(
-                              `Appointment ${id} successfully denied!`,
+                              `Appointment ${_id} successfully denied!`,
                               {
                                 variant: 'success'
                               }
                             )
-                            setBookingState(id, 'denied')
+                            setBookingState(_id, 'denied')
                           })
                           .catch((err) => console.log(err))
                       }
@@ -121,18 +123,20 @@ const BookingCard: React.FC<Props> = ({
                       description: `You're about to accept ${user.name}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setAcceptLoading(true)
-                        await Api.patch('/request/booking/approve', {
-                          _id: booking.id
+                        const id = Math.random().toString(36).substring(2,7);
+
+                        await Api.patch('/request/approve/' + id, {
+                          _id: booking._id
                         })
                           .then(() => {
                             setAcceptLoading(false)
                             enqueueSnackbar(
-                              `Appointment ${id} successfully accepted!`,
+                              `Appointment ${_id} successfully accepted!`,
                               {
                                 variant: 'success'
                               }
                             )
-                            setBookingState(id, 'approved')
+                            setBookingState(_id, 'approved')
                           })
                           .catch((err) => console.log(err))
                       }
@@ -157,12 +161,12 @@ const BookingCard: React.FC<Props> = ({
                   description: `You're about to delete ${user.name}'s appointment on ${date}. Are you sure?`,
                   onAccept: () => {
                     enqueueSnackbar(
-                      `Appointment ${id} successfully accepted!`,
+                      `Appointment ${_id} successfully accepted!`,
                       {
                         variant: 'success'
                       }
                     )
-                    setBookingState(id, 'deleted')
+                    setBookingState(_id, 'deleted')
                   }
                 })
               }
