@@ -45,7 +45,8 @@ function LoginForm() {
       password: Yup.string().required('Required')
     }),
     onSubmit: async (values, { resetForm }) => {
-      await Api.post('request/login', {
+      const id = Math.random().toString(36).substring(2,7);
+      await Api.post('request/login/' + id, {
         email: values.email,
         password: values.password
       })

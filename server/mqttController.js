@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const mqttHandler = require("./mqttHandler");
 
-router.post("/request/:topic", async (req, res) => {
+router.post("/request/:topic/:id", async (req, res) => {
   //define mqtt topics with the given parametere
-  const mqttTopic = "request/" + req.params.topic;
-  const responseTopic = "response/" + req.params.topic;
+  const mqttTopic = 'request/' + req.params.topic + "/" + req.params.id
+    const responseTopic = 'response/' + req.params.topic + "/" + req.params.id
 
   //subscribe to the response
   mqttHandler.subscribe(responseTopic);
@@ -19,10 +19,10 @@ router.post("/request/:topic", async (req, res) => {
   res.status(201).json(response);
 });
 
-router.get("/request/:topic", async (req, res) => {
+router.get("/request/:topic/:id", async (req, res) => {
   //define mqtt topics with the given parametere
-  const mqttTopic = "request/" + req.params.topic;
-  const responseTopic = "response/" + req.params.topic;
+  const mqttTopic = "request/" + req.params.topic + "/" + req.params.id
+  const responseTopic = "response/" + req.params.topic + "/" + req.params.id
 
   mqttHandler.publish(mqttTopic, "send");
 
@@ -35,10 +35,11 @@ router.get("/request/:topic", async (req, res) => {
   res.status(201).json(response);
 });
 
-router.patch("/request/:topic/:delegation", async (req, res) => {
-  const { topic, delegation } = req.params;
-  const mqttTopic = `request/${topic}/${delegation}`;
-  const responseTopic = `response/${topic}/${delegation}`;
+router.patch("/request/:delegation/:id", async (req, res) => {
+  const { delegation } = req.params;
+  const { id } = req.params.id;
+  const mqttTopic = `request/${delegation}/${id}`;
+  const responseTopic = `response/${delegation}/${id}`;
 
   console.log(mqttTopic, responseTopic);
 
@@ -49,11 +50,12 @@ router.patch("/request/:topic/:delegation", async (req, res) => {
   res.status(200).json(message);
 });
 
-router.delete("/request/:topic", async (req, res) => {
-  const { topic } = req.params;
+router.delete("/request/delete/:id", async (req, res) => {
   const { bookingId } = req.body;
-  const mqttTopic = `request/${topic}`;
-  const responseTopic = `response/${topic}`;
+  const { id } = req.params.id;
+
+  const mqttTopic = `request/delete/${id}`;
+  const responseTopic = `response/delete/${id}`;
 
   mqttHandler.subscribe(responseTopic);
   mqttHandler.publish(mqttTopic, bookingId);
