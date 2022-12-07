@@ -43,6 +43,7 @@ function setupApp() {
   console.log("Applying CORS");
   app.use(
     cors({
+      //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
       origin: "http://localhost:8080",
     })
   );

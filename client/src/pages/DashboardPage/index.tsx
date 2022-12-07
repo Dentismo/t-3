@@ -15,21 +15,31 @@ const DentistPage: React.FC = () => {
   const [modalTitle, setModalTitle] = useState<string>('')
   const [modalDescription, setModalDescription] = useState<string>('')
   const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [fetching, setFetching] = useState<boolean>(false)
 
   useEffect(() => {
     const fetcher = async () => {
+      setFetching(true)
       const id = Math.random().toString(36).substring(2, 7)
-      const fetchedBookings = await Api.post(`/request/booking-requests/${id}`, { clinicID: "1"});
-      setBookings((fetchedBookings.data as Booking[]).sort((b1, b2) =>
-      b1.date > b2.date ? 1 : b1.date < b2.date ? -1 : 0
-    ));
+      try {
+        const fetchedBookings = await Api.post(
+          `/request/booking-requests/${id}`,
+          { clinicID: '12' }
+        )
+        setFetching(false)
+        setBookings(
+          (fetchedBookings.data as Booking[]).sort((b1, b2) =>
+            b1.date > b2.date ? 1 : b1.date < b2.date ? -1 : 0
+          )
+        )
+      } catch (err) {
+        console.log(err)
+      }
     }
     fetcher()
   }, [])
   const [searchParams] = useSearchParams() // updates state on query change
-  const [bookings, setBookings] = useState<Booking[]>(
-   []
-  )
+  const [bookings, setBookings] = useState<Booking[]>([])
 
   const tab = searchParams.get('tab') || 'pending'
   const bookingsForTab = bookings.filter(
@@ -63,6 +73,7 @@ const DentistPage: React.FC = () => {
               : booking
           )
     )
+  if (fetching) return <>Loading...</>
 
   return (
     <Box

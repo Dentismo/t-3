@@ -71,8 +71,8 @@ const BookingCard: React.FC<Props> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
           <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
-          {/* {startTime.getHours()}:{startTime.getMinutes()} - {endTime.getHours()}:{endTime.getMinutes()} */}
-          {start} - {end}
+            {/* {startTime.getHours()}:{startTime.getMinutes()} - {endTime.getHours()}:{endTime.getMinutes()} */}
+            {start} - {end}
           </Typography>
         </Stack>
         <Box alignSelf="stretch">
@@ -94,7 +94,7 @@ const BookingCard: React.FC<Props> = ({
                 icon={<CloseIcon color="error" />}
                 onClick={() => {
                   if (!acceptLoading) {
-                    const id = Math.random().toString(36).substring(2,7);
+                    const id = Math.random().toString(36).substring(2, 7)
 
                     openModalWithParams({
                       title: 'Confirm Action',
@@ -133,7 +133,7 @@ const BookingCard: React.FC<Props> = ({
                 icon={<CheckIcon color="success" />}
                 onClick={() => {
                   if (!denyLoading) {
-                    const id = Math.random().toString(36).substring(2,7);
+                    const id = Math.random().toString(36).substring(2, 7)
 
                     openModalWithParams({
                       title: 'Confirm Action',
@@ -141,6 +141,7 @@ const BookingCard: React.FC<Props> = ({
                       onAccept: async () => {
                         try {
                           setAcceptLoading(true)
+                          console.log('before')
                           await Api.patch('/request/approve/' + id, { _id })
                           await sendEmail({ booking, type: 'approved' })
                           setAcceptLoading(false)
