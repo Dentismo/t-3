@@ -1,3 +1,4 @@
+import sendEmail from '@/util/sendEmail'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -36,6 +37,8 @@ const BookingCard: React.FC<Props> = ({
   const { _id, user, details, date, state, start, end } = booking
   const [denyLoading, setDenyLoading] = useState<boolean>(false)
   const [acceptLoading, setAcceptLoading] = useState<boolean>(false)
+  const startTime = new Date(start)
+  const endTime = new Date(end)
   return (
     <Stack
       direction="row"
@@ -57,7 +60,8 @@ const BookingCard: React.FC<Props> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
           <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
-            {start} - {end}
+            {startTime.getHours()}:{startTime.getMinutes()} -{' '}
+            {endTime.getHours()}:{endTime.getMinutes()}
           </Typography>
         </Stack>
         <Box alignSelf="stretch">
@@ -84,12 +88,11 @@ const BookingCard: React.FC<Props> = ({
                       description: `You're about to deny ${user.name}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setDenyLoading(true)
-                        const id = Math.random().toString(36).substring(2,7);
-
+                        const id = Math.random().toString(36).substring(2, 7)
+                        try {
                         await Api.patch('/request/denied/' + id, {
                           _id: booking._id
                         })
-                          .then(() => {
                             setDenyLoading(false)
                             enqueueSnackbar(
                               `Appointment ${_id} successfully denied!`,
@@ -98,11 +101,18 @@ const BookingCard: React.FC<Props> = ({
                               }
                             )
                             setBookingState(_id, 'denied')
-                          })
-                          .catch((err) => console.log(err))
-                      }
-                    })
-                  } else {
+                            sendEmail({booking, type: "denied"})
+                          } catch(err) {
+                            console.log(err)
+                            enqueueSnackbar(
+                              `Failed to deny appointment!`,
+                              {
+                                variant: 'error'
+                              }
+                    )}
+                    )}
+                            }
+                        } else {
                     enqueueSnackbar('Request in progress - Try again later', {
                       variant: 'error'
                     })
@@ -123,23 +133,30 @@ const BookingCard: React.FC<Props> = ({
                       description: `You're about to accept ${user.name}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setAcceptLoading(true)
-                        const id = Math.random().toString(36).substring(2,7);
-
+                        const id = Math.random().toString(36).substring(2, 7)
+                        try {
                         await Api.patch('/request/approve/' + id, {
                           _id: booking._id
                         })
-                          .then(() => {
-                            setAcceptLoading(false)
-                            enqueueSnackbar(
-                              `Appointment ${_id} successfully accepted!`,
-                              {
-                                variant: 'success'
-                              }
-                            )
-                            setBookingState(_id, 'approved')
-                          })
-                          .catch((err) => console.log(err))
+                        setAcceptLoading(false)
+                        enqueueSnackbar(
+                          `Appointment ${_id} successfully accepted!`,
+                          {
+                            variant: 'success'
+                          }
+                        )
+                        setBookingState(_id, 'approved')
+                        sendEmail({booking, type: "approved"})
+                      } catch(err) {
+                        console.log(err)
+                        enqueueSnackbar(
+                          `Failed to accept appointment!`,
+                          {
+                            variant: 'error'
+                          }
+                        )
                       }
+                    }
                     })
                   } else {
                     enqueueSnackbar('Request in progress - Try again later', {

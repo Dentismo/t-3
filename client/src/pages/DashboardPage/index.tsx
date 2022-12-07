@@ -19,21 +19,19 @@ const DentistPage: React.FC = () => {
   useEffect(() => {
     const fetcher = async () => {
       const id = Math.random().toString(36).substring(2, 7)
-      const fetchedBookings = await Api.post(`/request/booking-requests/${id}`, { clinicID: "2"});
-      setBookings(fetchedBookings.data as Booking[]);
+      const fetchedBookings = await Api.post(`/request/booking-requests/${id}`, { clinicID: "1"});
+      setBookings((fetchedBookings.data as Booking[]).sort((b1, b2) =>
+      b1.date > b2.date ? 1 : b1.date < b2.date ? -1 : 0
+    ));
     }
     fetcher()
   }, [])
   const [searchParams] = useSearchParams() // updates state on query change
   const [bookings, setBookings] = useState<Booking[]>(
-    // [].sort((b1, b2) =>
-     // b1.date > b2.date ? 1 : b1.date < b2.date ? -1 : 0
-   // )
    []
   )
 
   const tab = searchParams.get('tab') || 'pending'
-  console.log(bookings);
   const bookingsForTab = bookings.filter(
     (booking) => booking.state === tab
   ).length
