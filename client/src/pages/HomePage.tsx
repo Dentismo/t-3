@@ -1,24 +1,28 @@
 import { Button } from '@mui/material'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Api } from '../Api'
 import DentistCard from '../components/DentistCard'
-import clinic from '../images/elegant-clinic.jpg'
+import clinicImg from '../images/elegant-clinic.jpg'
 import picker from '../images/picker.jpg'
 import '../styles/HomePage.css'
+import { Clinic } from './ClinicPage/types'
 
 function HomePage() {
-  const buttonText = 'Press me'
-  const dentists = [
-    {
-      name: 'Dentist 1',
-      details: '08.00 to 17:00 Monday to Friday',
-      id: '1',
-      location: 'Lindholmen'
-    },
-    { name: 'Dentist 2' },
-    { name: 'Dentist 3' },
-    { name: 'Dentist 4' },
-    { name: 'Dentist 5' }
-  ]
+  const id = Math.random().toString(36).substring(2,7);
+
+  const [clinics, setClinics] = useState<Clinic[]>([]);
+
+  useEffect(() => {
+    const fetchClinics = async () => {
+      try {
+        const res = await Api.get('request/clinics/' + id)
+        setClinics(res.data)
+      } catch(error){
+          console.log(error)
+      }
+    };
+    fetchClinics();
+  }, []);
 
   const ref = useRef<null | HTMLDivElement>(null)
 
@@ -41,12 +45,12 @@ function HomePage() {
                 variant="outlined"
               >
                 {' '}
-                See available dentist
+                See available clinics
               </Button>
             </div>
           </div>
           <div className="image-holder">
-            <img src={clinic} alt="" />
+            <img src={clinicImg} alt="" />
           </div>
         </div>
         <div className="banner-below-image">
@@ -82,19 +86,19 @@ function HomePage() {
           </div>
         </div>
         <div className="available-dentist">
-          <p>Available Dentists:</p>
+          <p>Available Clinics:</p>
         </div>
         <div
           id="card-section"
           ref={ref}
           className={
-            dentists.length > 3 && dentists.length !== 5
+            clinics.length > 3 && clinics.length !== 5
               ? 'dentist-cards'
               : 'alt-dentist-cards'
           }
         >
-          {dentists.map((dentist) => (
-            <DentistCard dentist={dentist} key={dentist.name}></DentistCard>
+          {clinics.map((clinic) => (
+            <DentistCard clinic={clinic} key={clinic.name.toString()}></DentistCard>
           ))}
         </div>
         <div className="footer">
