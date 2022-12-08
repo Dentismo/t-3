@@ -2,7 +2,7 @@ import { styled } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import moment from 'moment'
 import { useSnackbar } from 'notistack'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useParams } from 'react-router'
@@ -10,16 +10,27 @@ import { Api } from '../../Api'
 import AppointmentModal from './AppointmentModal'
 import ClinicCard from './ClinicCard'
 import clinics from './clinics'
-import { Booking } from './types'
+import { Booking, Clinic } from './types'
 
 const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
-  //example clinic to help populate page without database
+  //access clinic id from the paramter
   const { pageId } = useParams()
-  const response = Api.get('request/clinicPortal/clinic/' + pageId)
 
-  const clinic = clinics[0]
+  const [clinic, setClinic] = useState<Clinic>(clinics[0])
+
+  useEffect(() => {
+    const queryClinic = async () => {
+      const response = await Api.post(`/request/clinic/${pageId}`, {
+        _id: pageId
+      })
+      setClinic(response.data)
+      console.log(response.data)
+    }
+
+    queryClinic().catch((err) => console.log(err))
+  }, [])
 
   const [openModal, setOpenModal] = useState<boolean>(false)
 
