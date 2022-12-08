@@ -28,3 +28,13 @@ export type OpenModalParams = {
   description: string
   onAccept: Function
 }
+
+export type Dentist = {
+  _id: String
+  name: String
+  username: String
+  password: String
+  email: String
+  clinicId: String
+  token: String
+}
