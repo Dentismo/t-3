@@ -6,7 +6,7 @@ export type Clinic = {
   city: String
   coordinate: {
     latitude: String
-    longitutde: String
+    longitude: String
   }
   openinghours: {
     monday: {
