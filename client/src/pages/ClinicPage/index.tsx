@@ -6,25 +6,31 @@ import { useCallback, useEffect, useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useParams } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { Api } from '../../Api'
 import AppointmentModal from './AppointmentModal'
 import ClinicCard from './ClinicCard'
 import clinics from './clinics'
 import { Booking, Clinic } from './types'
+const mongoose = require('mongoose')
 
 const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
   //access clinic id from the paramter
   const { pageId } = useParams()
+  const navigate = useNavigate()
 
   const [clinic, setClinic] = useState<Clinic>(clinics[0])
+
+  if (!mongoose.Types.ObjectId.isValid(pageId)) navigate('/404page')
 
   useEffect(() => {
     const queryClinic = async () => {
       const response = await Api.post(`/request/clinic/${pageId}`, {
         _id: pageId
       })
+
       setClinic(response.data)
       console.log(response.data)
     }
@@ -40,6 +46,7 @@ function ClinicPage() {
   //Maps: location of the clinic
   const apiKey = process.env.REACT_APP_API_KEY
   let location = clinic.address
+  const center = clinic.coordinate.latitude + ',' + clinic.coordinate.longitude
 
   //fetch events from server
   const events: any[] | undefined = []
@@ -234,7 +241,7 @@ function ClinicPage() {
                   height: '290px'
                 }}
                 loading="lazy"
-                src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${location}`}
+                src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${location}&center=${center}`}
               />
               <span
                 style={{
