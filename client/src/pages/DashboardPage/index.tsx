@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { Stack, Typography, Box } from '@mui/material'
-import { Booking, OpenModalParams } from './types'
-import BookingList from './BookingList'
-import ConfirmationModal from './ConfirmationModal'
-import bookingsJson from './bookings'
-import Sideview from './Sideview'
+import { Box, Stack, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Api } from '../../Api'
-import clinics from '../ClinicPage/clinics'
-import { Dentist } from './types'
+import BookingList from './BookingList'
+import bookingsJson from './bookings'
+import ConfirmationModal from './ConfirmationModal'
+import Sideview from './Sideview'
+import { Booking, Dentist, OpenModalParams } from './types'
 
 // TODO: use react context instead of nested state
 // TODO: put type declarations into separate file
@@ -22,13 +20,13 @@ const DentistPage: React.FC = () => {
   const loginId = localStorage.getItem('loginId')
 
   const [dentist, setDentist] = useState<Dentist>({
-    _id: "",
-    clinicId: "",
-    name: "",
-    username: "",
-    password: "",
-    email: "",
-    token: ""
+    _id: '',
+    clinicId: '',
+    name: '',
+    username: '',
+    password: '',
+    email: '',
+    token: ''
   })
 
   useEffect(() => {
