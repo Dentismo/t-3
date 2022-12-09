@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import { Api } from '../Api'
-import DentistCard from '../components/DentistCard'
+import ClinicCard from '../components/ClinicCard'
 import clinicImg from '../images/elegant-clinic.jpg'
 import picker from '../images/picker.jpg'
 import '../styles/HomePage.css'
@@ -98,7 +98,7 @@ function HomePage() {
           }
         >
           {clinics.map((clinic) => (
-            <DentistCard clinic={clinic} key={clinic.name.toString()}></DentistCard>
+            <ClinicCard clinic={clinic} key={clinic.name.toString()}></ClinicCard>
           ))}
         </div>
         <div className="footer">

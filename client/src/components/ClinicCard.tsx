@@ -7,7 +7,7 @@ interface Props {
   clinic: Clinic
 }
 
-function DentistCard({clinic}: Props) {
+function ClinicCard({clinic}: Props) {
   return (
     <Link style={{ textDecoration: 'none' }} to={`/clinic/${clinic._id}`}>
     <Card sx={{ width: 345 }}>
@@ -33,4 +33,4 @@ function DentistCard({clinic}: Props) {
   );
 }
 
-export default DentistCard;
+export default ClinicCard;
