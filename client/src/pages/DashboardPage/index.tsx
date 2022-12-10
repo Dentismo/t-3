@@ -24,7 +24,7 @@ const DentistPage: React.FC = () => {
       try {
         const fetchedBookings = await Api.post(
           `/request/booking-requests/${id}`,
-          { clinicID: '12' }
+          { clinicID: localStorage.getItem('clinicId') }
         )
         setFetching(false)
         setBookings(
