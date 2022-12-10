@@ -10,12 +10,10 @@ import {
 } from '@mui/material'
 import { Box } from '@mui/system'
 import { useSnackbar } from 'notistack'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Api } from '../../Api'
 import IconAction from './IconAction'
 import { Booking } from './types'
-
-// TODO: use backend model
 
 type Props = {
   booking: Booking
@@ -84,7 +82,7 @@ const BookingCard: React.FC<Props> = ({
                       description: `You're about to deny ${user.name}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setDenyLoading(true)
-                        const id = Math.random().toString(36).substring(2,7);
+                        const id = Math.random().toString(36).substring(2, 7)
 
                         await Api.patch('/request/denied/' + id, {
                           _id: booking._id
@@ -123,7 +121,7 @@ const BookingCard: React.FC<Props> = ({
                       description: `You're about to accept ${user.name}'s appointment on ${date}. Are you sure?`,
                       onAccept: async () => {
                         setAcceptLoading(true)
-                        const id = Math.random().toString(36).substring(2,7);
+                        const id = Math.random().toString(36).substring(2, 7)
 
                         await Api.patch('/request/approve/' + id, {
                           _id: booking._id

@@ -1,21 +1,42 @@
 import { styled } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import moment from 'moment'
-import { Api } from '../../Api'
 import { useSnackbar } from 'notistack'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { useParams } from 'react-router'
+import { useNavigate } from 'react-router-dom'
+import { Api } from '../../Api'
 import AppointmentModal from './AppointmentModal'
 import ClinicCard from './ClinicCard'
 import clinics from './clinics'
-import { Booking } from './types'
+import { Booking, Clinic } from './types'
+const mongoose = require('mongoose')
 
 const localizer = momentLocalizer(moment)
 
 function ClinicPage() {
-  //example clinic to help populate page without database
-  const clinic = clinics[0]
+  //access clinic id from the paramter
+  const { pageId } = useParams()
+  const navigate = useNavigate()
+
+  const [clinic, setClinic] = useState<Clinic>(clinics[0])
+
+  if (!mongoose.Types.ObjectId.isValid(pageId)) navigate('/404page')
+
+  useEffect(() => {
+    const queryClinic = async () => {
+      const response = await Api.post(`/request/clinic/${pageId}`, {
+        _id: pageId
+      })
+
+      setClinic(response.data)
+      console.log(response.data)
+    }
+
+    queryClinic().catch((err) => console.log(err))
+  }, [])
 
   const [openModal, setOpenModal] = useState<boolean>(false)
 
@@ -25,6 +46,7 @@ function ClinicPage() {
   //Maps: location of the clinic
   const apiKey = process.env.REACT_APP_API_KEY
   let location = clinic.address
+  const center = clinic.coordinate.latitude + ',' + clinic.coordinate.longitude
 
   //fetch events from server
   const events: any[] | undefined = []
@@ -84,6 +106,7 @@ function ClinicPage() {
       details: String
     ) => {
       try {
+        //Check for the required fields. If they are empty, send a snackbar notification that the required fields must be filled.
         if (name === '' || email === '' || inssurance === '') {
           enqueueSnackbar('Fill out the required fields', {
             variant: 'error'
@@ -96,20 +119,28 @@ function ClinicPage() {
             email: email,
             name: name
           },
-          clinicId: '1', //change so we get the correct id
-          clinicName: 'Arbitrary Clinic',
+          //ClinicId is taken from the url using useParams() from react. Clinic pages have an id associated with them in the router: clinic/:pageId
+          clinicId: pageId ?? '',
+          clinicName: clinic.name,
           issuance: inssurance,
-          date: 'not sure how',
+          //Format the date so it is ready for the availability checker to process the date.
+          date:
+            start.getUTCFullYear() +
+            '/' +
+            (start.getUTCMonth() + 1) +
+            '/' +
+            ('0' + start.getUTCDate()),
           state: 'pending',
           start: start.toString(),
           end: end.toString(),
           details: details
         }
-        const id = Math.random().toString(36).substring(2,7);
+        const id = Math.random().toString(36).substring(2, 7)
 
-        const success = await Api.post('request/availablity/' + id, booking);
+        const success = await Api.post('/request/availablity/' + id, booking)
 
-        if (success.data.email) {
+        //if the booking request is accepted by the availability checker....
+        if (success.data.accepted) {
           setMyEvents((prev) => [
             ...prev,
             {
@@ -124,7 +155,7 @@ function ClinicPage() {
           setOpenModal(false)
           return true
         } else {
-          //if the timeslot is not available for booking
+          //if the timeslot is not available for booking (accepted will have a value of false)
           enqueueSnackbar('Timeslot was not available', {
             variant: 'error'
           })
@@ -210,7 +241,7 @@ function ClinicPage() {
                   height: '290px'
                 }}
                 loading="lazy"
-                src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${location}`}
+                src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${location}&center=${center}`}
               />
               <span
                 style={{

@@ -1,5 +1,5 @@
-import React, { SetStateAction, Dispatch } from 'react'
-import { Modal, Typography, Button, Stack } from '@mui/material'
+import { Button, Modal, Stack, Typography } from '@mui/material'
+import { Dispatch, SetStateAction } from 'react'
 
 type Props = {
   title: string

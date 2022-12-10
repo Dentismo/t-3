@@ -1,5 +1,4 @@
-import React from 'react'
-import { Tooltip, IconButton } from '@mui/material'
+import { IconButton, Tooltip } from '@mui/material'
 
 type Props = {
   tooltip?: string

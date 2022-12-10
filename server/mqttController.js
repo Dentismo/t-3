@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const mqttHandler = require("./mqttHandler");
+const bcrypt = require('bcryptjs');
 
 router.post("/request/:topic/:id", async (req, res) => {
   //define mqtt topics with the given parametere
@@ -10,6 +11,10 @@ router.post("/request/:topic/:id", async (req, res) => {
   //subscribe to the response
   mqttHandler.subscribe(responseTopic);
 
+  const {password} = req.body
+  if(password) {
+    req.body.password = await bcrypt.hash(values.password, 10)
+  }
   //publish request
   mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
 
@@ -19,20 +24,35 @@ router.post("/request/:topic/:id", async (req, res) => {
   res.status(201).json(response);
 });
 
-router.get("/request/:topic/:id", async (req, res) => {
+router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
   //define mqtt topics with the given parametere
-  const mqttTopic = "request/" + req.params.topic + "/" + req.params.id
-  const responseTopic = "response/" + req.params.topic + "/" + req.params.id
+  if(req.params.topicDefinition) {
+    const mqttTopic = "request/" + req.params.topic + "/" + req.params.topicDefinition + "/" + req.params.id
+    const responseTopic = "response/" + req.params.topic + "/" + req.params.topicDefinition + "/" + req.params.id
 
-  mqttHandler.publish(mqttTopic, "send");
+    mqttHandler.publish(mqttTopic, req.params.id);
 
-  //subscribe to the response
-  mqttHandler.subscribe(responseTopic);
+    //subscribe to the response
+    mqttHandler.subscribe(responseTopic);
 
-  //message received is parse to json and returned to the frontend
-  const response = await mqttHandler.onMessage();
+    //message received is parse to json and returned to the frontend
+    const response = await mqttHandler.onMessage();
 
-  res.status(201).json(response);
+    res.status(201).json(response);
+  } else {
+    const mqttTopic = "request/" + req.params.topic + "/" + req.params.id
+    const responseTopic = "response/" + req.params.topic + "/" + req.params.id
+
+    mqttHandler.publish(mqttTopic, req.params.id);
+
+    //subscribe to the response
+    mqttHandler.subscribe(responseTopic);
+
+    //message received is parse to json and returned to the frontend
+    const response = await mqttHandler.onMessage();
+
+    res.status(201).json(response);
+}
 });
 
 router.patch("/request/:delegation/:id", async (req, res) => {

@@ -8,7 +8,7 @@ import {
   TextField,
   Typography
 } from '@mui/material'
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 interface Props {
   open: boolean

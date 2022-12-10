@@ -4,9 +4,10 @@ export type Clinic = {
   owner: String
   address: String
   city: String
+  _id?: String
   coordinate: {
     latitude: String
-    longitutde: String
+    longitude: String
   }
   openinghours: {
     monday: {

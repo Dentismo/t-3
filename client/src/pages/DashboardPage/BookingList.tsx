@@ -1,5 +1,4 @@
 import { Stack, Typography } from '@mui/material'
-import React from 'react'
 import BookingCard from './BookingCard'
 import { Booking, BookingItem, BookingsMap } from './types'
 
