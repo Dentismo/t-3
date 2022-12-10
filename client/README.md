@@ -38,7 +38,15 @@ This package is the Client-side of the Dentismo Client/Server component. It prov
 
 ## Visuals
 
-Gifs
+
+### Use Case: User makes an appointment
+
+![user](https://media.giphy.com/media/M7caU7Ex3L9Ki1VvEc/giphy.gif)
+
+### Use Case: Dentist delegates appointment
+
+![dentist](https://media.giphy.com/media/atDQoRzTqVtQImkFCD/giphy.gif)
+
 
 ## Installation
 
