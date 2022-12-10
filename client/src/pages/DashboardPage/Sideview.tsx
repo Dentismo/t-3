@@ -1,21 +1,20 @@
-import React from 'react'
 import {
-  Toolbar,
-  Drawer,
+  Box,
   Divider,
+  Drawer,
+  IconButton,
   List,
-  Typography,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Box,
-  IconButton
+  Toolbar,
+  Typography
 } from '@mui/material'
 
-import { useNavigate } from 'react-router-dom'
-import PendingIcon from '@mui/icons-material/Pending'
 import CancelIcon from '@mui/icons-material/Cancel'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import PendingIcon from '@mui/icons-material/Pending'
+import { useNavigate } from 'react-router-dom'
 
 type AppointmentType = {
   title: string

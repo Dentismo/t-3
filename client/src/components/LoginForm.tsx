@@ -14,7 +14,6 @@ import * as Yup from 'yup'
 import { Api } from '../Api'
 
 const paperStyle = { padding: 20, height: '20rem', width: '25rem' }
-const textStyle = { margin: 4 }
 
 const styles = {
   form: {
@@ -45,7 +44,7 @@ function LoginForm() {
       password: Yup.string().required('Required')
     }),
     onSubmit: async (values, { resetForm }) => {
-      const id = Math.random().toString(36).substring(2,7);
+      const id = Math.random().toString(36).substring(2, 7)
       await Api.post('request/login/' + id, {
         email: values.email,
         password: values.password

@@ -9,7 +9,7 @@ const clinics: Clinic[] = [
         city: 'Gothenburg', 
         coordinate: {
             latitude: '',
-            longitutde: ''
+            longitude: ''
         }, 
         openinghours: {
             monday: {

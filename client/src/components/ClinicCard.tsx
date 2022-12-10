@@ -1,19 +1,15 @@
+import { Clinic } from "@/pages/ClinicPage/types";
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import image from "../images/tooth2.jpg";
 
 interface Props {
-  dentist: {
-    name: String,
-    details?: String,
-    id?: String,
-    location?: String
-  }
+  clinic: Clinic
 }
 
-function DentistCard({dentist}: Props) {
+function ClinicCard({clinic}: Props) {
   return (
-    <Link style={{ textDecoration: 'none' }} to={`/clinic/${dentist.id}`}>
+    <Link style={{ textDecoration: 'none' }} to={`/clinic/${clinic._id}`}>
     <Card sx={{ width: 345 }}>
       <CardActionArea>
         <CardMedia
@@ -24,11 +20,11 @@ function DentistCard({dentist}: Props) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {dentist.name}
+            {clinic.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <p>Opening hours: {dentist.details}</p>
-            <p>Location: {dentist.location}</p>
+            <p>Address: {clinic.address}</p>
+            <p>City: {clinic.city}</p>
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -37,4 +33,4 @@ function DentistCard({dentist}: Props) {
   );
 }
 
-export default DentistCard;
+export default ClinicCard;

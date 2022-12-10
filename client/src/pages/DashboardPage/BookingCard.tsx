@@ -12,12 +12,10 @@ import {
 } from '@mui/material'
 import { Box } from '@mui/system'
 import { useSnackbar } from 'notistack'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Api } from '../../Api'
 import IconAction from './IconAction'
 import { Booking } from './types'
-
-// TODO: use backend model
 
 type Props = {
   booking: Booking

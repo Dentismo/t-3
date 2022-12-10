@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Stack, Typography, Box } from '@mui/material'
-import { Booking, OpenModalParams } from './types'
 import BookingList from './BookingList'
 import ConfirmationModal from './ConfirmationModal'
 import Sideview from './Sideview'
-import { useSearchParams } from 'react-router-dom'
 import { Api } from '../../Api'
+import { useSearchParams } from 'react-router-dom'
+import { Booking, Dentist, OpenModalParams } from './types'
 
 // TODO: use react context instead of nested state
 // TODO: put type declarations into separate file
@@ -16,9 +16,28 @@ const DentistPage: React.FC = () => {
   const [modalDescription, setModalDescription] = useState<string>('')
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [fetching, setFetching] = useState<boolean>(false)
+  const loginId = localStorage.getItem('loginId')
+
+  const [dentist, setDentist] = useState<Dentist>({
+    _id: '',
+    clinicId: '',
+    name: '',
+    username: '',
+    password: '',
+    email: '',
+    token: ''
+  })
 
   useEffect(() => {
-    const fetcher = async () => {
+    const queryClinic = async () => {
+      const response = await Api.post(`/request/clinic/${loginId}`, {
+        _id: loginId
+      })
+      setDentist(response.data)
+      console.log(response.data)
+    }
+
+    const queryBookings = async () => {
       setFetching(true)
       const id = Math.random().toString(36).substring(2, 7)
       try {
@@ -36,8 +55,11 @@ const DentistPage: React.FC = () => {
         console.log(err)
       }
     }
-    fetcher()
-  }, [])
+
+    queryBookings()
+    queryClinic().catch((err) => console.log(err))
+  }, [loginId])
+
   const [searchParams] = useSearchParams() // updates state on query change
   const [bookings, setBookings] = useState<Booking[]>([])
 
@@ -93,7 +115,7 @@ const DentistPage: React.FC = () => {
         spacing={2}
       >
         <Stack>
-          <Typography variant="h3">Welcome, Arbitrary Clinic!</Typography>
+          <Typography variant="h3">Welcome, {dentist.name}</Typography>
           {bookingsForTab === 0 ? (
             <Typography variant="h4" color="grey" mt={3}>
               Couldn't find any {tab} appointments :(
