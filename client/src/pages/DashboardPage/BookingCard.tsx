@@ -113,6 +113,7 @@ const BookingCard: React.FC<Props> = ({
                           enqueueSnackbar('Failed to accept appointment!', {
                             variant: 'error'
                           })
+                          setDenyLoading(false)
                           console.log(err)
                         }
                       }
@@ -156,6 +157,7 @@ const BookingCard: React.FC<Props> = ({
                           enqueueSnackbar('Failed to accept appointment!', {
                             variant: 'error'
                           })
+                          setAcceptLoading(false)
                           console.log(err)
                         }
                       }
