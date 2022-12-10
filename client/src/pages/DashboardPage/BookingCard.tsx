@@ -50,6 +50,7 @@ const BookingCard: React.FC<Props> = ({
   const [acceptLoading, setAcceptLoading] = useState<boolean>(false)
   //const startTime = new Date(start)
   //const endTime = new Date(end)
+
   return (
     <Stack
       direction="row"
@@ -142,7 +143,6 @@ const BookingCard: React.FC<Props> = ({
                       onAccept: async () => {
                         try {
                           setAcceptLoading(true)
-                          console.log('before')
                           await Api.patch('/request/approve/' + id, { _id })
                           await sendEmail({ booking, type: 'approved' })
                           setAcceptLoading(false)
@@ -179,14 +179,14 @@ const BookingCard: React.FC<Props> = ({
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
-                  description: `You're about to resend an email to ${name} confirming their appointment is ${state}. Please avoid resending emails unless they failed to send. Are you sure you want to proceed?`,
+                  description: `You're about to resend an email to ${name} (${email}) confirming their appointment is ${state}. Please avoid resending emails unless they failed to send. Are you sure you want to proceed?`,
                   onAccept: () => {
                     sendEmail({
                       booking,
                       type: state
                     })
                     enqueueSnackbar(
-                      `Appointment ${_id}'s status successfully resent!`,
+                      `Appointment's status successfully resent!`,
                       {
                         variant: 'success'
                       }
@@ -203,12 +203,9 @@ const BookingCard: React.FC<Props> = ({
                   title: 'Confirm Action',
                   description: `You're about to delete ${name}'s appointment on ${date}. Are you sure?`,
                   onAccept: () => {
-                    enqueueSnackbar(
-                      `Appointment ${_id} successfully approved!`,
-                      {
-                        variant: 'success'
-                      }
-                    )
+                    enqueueSnackbar(`Appointment successfully deleted!`, {
+                      variant: 'success'
+                    })
                     setBookingState(_id, 'deleted')
                   }
                 })

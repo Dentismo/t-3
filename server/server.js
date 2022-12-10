@@ -37,16 +37,17 @@ function startApp(port) {
 
 function setupApp() {
   const app = express();
+  app.use(
+    cors({
+      origin: "*",
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+      optionsSucessStatus: 204,
+    })
+  );
+
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(morgan("dev"));
-  console.log("Applying CORS");
-  app.use(
-    cors({
-      //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-      origin: "http://localhost:8080",
-    })
-  );
 
   return app;
 }
