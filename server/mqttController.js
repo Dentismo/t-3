@@ -5,8 +5,8 @@ const bcrypt = require('bcryptjs');
 
 router.post("/request/:topic/:id", async (req, res) => {
   //define mqtt topics with the given parametere
-  const mqttTopic = 'request/' + req.params.topic + "/" + req.params.id
-    const responseTopic = 'response/' + req.params.topic + "/" + req.params.id
+  const mqttTopic = "request/" + req.params.topic + '/' + req.params.id;
+  const responseTopic = "response/" + req.params.topic + '/' + req.params.id;
 
   //subscribe to the response
   mqttHandler.subscribe(responseTopic);
@@ -17,7 +17,6 @@ router.post("/request/:topic/:id", async (req, res) => {
   }
   //publish request
   mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
-
   //message received is parse to json and returned to the frontend
   const response = await mqttHandler.onMessage();
 
@@ -32,11 +31,10 @@ router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
 
     mqttHandler.publish(mqttTopic, req.params.id);
 
-    //subscribe to the response
-    mqttHandler.subscribe(responseTopic);
-
-    //message received is parse to json and returned to the frontend
-    const response = await mqttHandler.onMessage();
+  //subscribe to the response
+  mqttHandler.subscribe(responseTopic);
+  //message received is parse to json and returned to the frontend
+  const response = await mqttHandler.onMessage();
 
     res.status(201).json(response);
   } else {

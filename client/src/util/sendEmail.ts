@@ -13,8 +13,7 @@ type SendEmailOptions = {
  */
 const sendEmail = async (options: SendEmailOptions) => {
   try {
-    const response = await Api.post('/mail', options)
-    console.log(response)
+    await Api.post('/mail', options)
   } catch (err) {
     console.log(err)
   }

@@ -1,11 +1,10 @@
-import { Box, Stack, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { Api } from '../../Api'
+import React, { useEffect, useState } from 'react'
+import { Stack, Typography, Box } from '@mui/material'
 import BookingList from './BookingList'
-import bookingsJson from './bookings'
 import ConfirmationModal from './ConfirmationModal'
 import Sideview from './Sideview'
+import { Api } from '../../Api'
+import { useSearchParams } from 'react-router-dom'
 import { Booking, Dentist, OpenModalParams } from './types'
 
 // TODO: use react context instead of nested state
@@ -16,7 +15,7 @@ const DentistPage: React.FC = () => {
   const [modalTitle, setModalTitle] = useState<string>('')
   const [modalDescription, setModalDescription] = useState<string>('')
   const [modalOpen, setModalOpen] = useState<boolean>(false)
-
+  const [fetching, setFetching] = useState<boolean>(false)
   const loginId = localStorage.getItem('loginId')
 
   const [dentist, setDentist] = useState<Dentist>({
@@ -38,15 +37,32 @@ const DentistPage: React.FC = () => {
       console.log(response.data)
     }
 
+    const queryBookings = async () => {
+      setFetching(true)
+      const id = Math.random().toString(36).substring(2, 7)
+      try {
+        const fetchedBookings = await Api.post(
+          `/request/booking-requests/${id}`,
+          { clinicID: localStorage.getItem('clinicId') }
+        )
+        setFetching(false)
+        setBookings(
+          (fetchedBookings.data as Booking[]).sort((b1, b2) =>
+            b1.date > b2.date ? 1 : b1.date < b2.date ? -1 : 0
+          )
+        )
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    queryBookings()
     queryClinic().catch((err) => console.log(err))
-  }, [])
+  }, [loginId])
 
   const [searchParams] = useSearchParams() // updates state on query change
-  const [bookings, setBookings] = useState<Booking[]>(
-    bookingsJson.sort((b1, b2) =>
-      b1.date > b2.date ? 1 : b1.date < b2.date ? -1 : 0
-    )
-  )
+  const [bookings, setBookings] = useState<Booking[]>([])
+
   const tab = searchParams.get('tab') || 'pending'
   const bookingsForTab = bookings.filter(
     (booking) => booking.state === tab
@@ -79,6 +95,7 @@ const DentistPage: React.FC = () => {
               : booking
           )
     )
+  if (fetching) return <>Loading...</>
 
   return (
     <Box

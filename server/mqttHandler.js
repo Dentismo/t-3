@@ -31,7 +31,7 @@ class MqttHandler {
 
     // When a message arrives, console.log it
     this.mqttClient.on("message", function (topic, message) {
-      console.log(message.toString());
+      //console.log(message.toString());
     });
   }
 
@@ -53,7 +53,6 @@ class MqttHandler {
   onMessage() {
     return new Promise((resolve) => {
       this.mqttClient.on("message", (topic, message) => {
-        console.log(message.toString());
         resolve(JSON.parse(message.toString()));
 
         this.mqttClient.unsubscribe(topic);

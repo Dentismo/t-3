@@ -1,6 +1,8 @@
+import sendEmail from '../../util/sendEmail'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
+import EmailIcon from '@mui/icons-material/Email'
 import {
   CircularProgress,
   Divider,
@@ -31,9 +33,22 @@ const BookingCard: React.FC<Props> = ({
   ...props
 }) => {
   const { enqueueSnackbar } = useSnackbar()
-  const { _id, user, details, date, state, start, end } = booking
+  const {
+    _id,
+    user: { name, email },
+    clinicId,
+    details,
+    date,
+    state,
+    start,
+    issuance,
+    end
+  } = booking
   const [denyLoading, setDenyLoading] = useState<boolean>(false)
   const [acceptLoading, setAcceptLoading] = useState<boolean>(false)
+  //const startTime = new Date(start)
+  //const endTime = new Date(end)
+
   return (
     <Stack
       direction="row"
@@ -55,6 +70,7 @@ const BookingCard: React.FC<Props> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
           <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
+            {/* {startTime.getHours()}:{startTime.getMinutes()} - {endTime.getHours()}:{endTime.getMinutes()} */}
             {start} - {end}
           </Typography>
         </Stack>
@@ -62,7 +78,7 @@ const BookingCard: React.FC<Props> = ({
           <Divider orientation="vertical" />
         </Box>
         <Typography fontWeight={600} noWrap overflow="visible">
-          {user.name}:
+          {name}:
         </Typography>
         <Typography flexGrow={1}>{details}</Typography>
       </Stack>
@@ -77,27 +93,28 @@ const BookingCard: React.FC<Props> = ({
                 icon={<CloseIcon color="error" />}
                 onClick={() => {
                   if (!acceptLoading) {
+                    const id = Math.random().toString(36).substring(2, 7)
+
                     openModalWithParams({
                       title: 'Confirm Action',
-                      description: `You're about to deny ${user.name}'s appointment on ${date}. Are you sure?`,
+                      description: `You're about to deny ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
                       onAccept: async () => {
-                        setDenyLoading(true)
-                        const id = Math.random().toString(36).substring(2, 7)
-
-                        await Api.patch('/request/denied/' + id, {
-                          _id: booking._id
-                        })
-                          .then(() => {
-                            setDenyLoading(false)
-                            enqueueSnackbar(
-                              `Appointment ${_id} successfully denied!`,
-                              {
-                                variant: 'success'
-                              }
-                            )
-                            setBookingState(_id, 'denied')
+                        try {
+                          setDenyLoading(true)
+                          await Api.patch('/request/denied/' + id, { _id })
+                          setDenyLoading(false)
+                          sendEmail({ booking, type: 'denied' })
+                          enqueueSnackbar(`Appointment successfully denied!`, {
+                            variant: 'success'
                           })
-                          .catch((err) => console.log(err))
+                          setBookingState(_id, 'denied')
+                        } catch (err) {
+                          enqueueSnackbar('Failed to accept appointment!', {
+                            variant: 'error'
+                          })
+                          setDenyLoading(false)
+                          console.log(err)
+                        }
                       }
                     })
                   } else {
@@ -116,27 +133,31 @@ const BookingCard: React.FC<Props> = ({
                 icon={<CheckIcon color="success" />}
                 onClick={() => {
                   if (!denyLoading) {
+                    const id = Math.random().toString(36).substring(2, 7)
+
                     openModalWithParams({
                       title: 'Confirm Action',
-                      description: `You're about to accept ${user.name}'s appointment on ${date}. Are you sure?`,
+                      description: `You're about to accept ${name}'s appointment on ${date}. This will also send a confirmation email to ${email}. Are you sure?`,
                       onAccept: async () => {
-                        setAcceptLoading(true)
-                        const id = Math.random().toString(36).substring(2, 7)
-
-                        await Api.patch('/request/approve/' + id, {
-                          _id: booking._id
-                        })
-                          .then(() => {
-                            setAcceptLoading(false)
-                            enqueueSnackbar(
-                              `Appointment ${_id} successfully accepted!`,
-                              {
-                                variant: 'success'
-                              }
-                            )
-                            setBookingState(_id, 'approved')
+                        try {
+                          setAcceptLoading(true)
+                          await Api.patch('/request/approve/' + id, { _id })
+                          await sendEmail({ booking, type: 'approved' })
+                          setAcceptLoading(false)
+                          enqueueSnackbar(
+                            `Appointment successfully accepted!`,
+                            {
+                              variant: 'success'
+                            }
+                          )
+                          setBookingState(_id, 'approved')
+                        } catch (err) {
+                          enqueueSnackbar('Failed to accept appointment!', {
+                            variant: 'error'
                           })
-                          .catch((err) => console.log(err))
+                          setAcceptLoading(false)
+                          console.log(err)
+                        }
                       }
                     })
                   } else {
@@ -151,19 +172,38 @@ const BookingCard: React.FC<Props> = ({
         ) : (
           <>
             <IconAction
+              tooltip="Resend email"
+              icon={<EmailIcon htmlColor="grey" />}
+              onClick={() =>
+                openModalWithParams({
+                  title: 'Confirm Action',
+                  description: `You're about to resend an email to ${name} (${email}) confirming their appointment is ${state}. Please avoid resending emails unless they failed to send. Are you sure you want to proceed?`,
+                  onAccept: () => {
+                    sendEmail({
+                      booking,
+                      type: state
+                    })
+                    enqueueSnackbar(
+                      `Appointment's status successfully resent!`,
+                      {
+                        variant: 'success'
+                      }
+                    )
+                  }
+                })
+              }
+            />
+            <IconAction
               tooltip="Delete Appointment"
               icon={<DeleteIcon htmlColor="grey" />}
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
-                  description: `You're about to delete ${user.name}'s appointment on ${date}. Are you sure?`,
+                  description: `You're about to delete ${name}'s appointment on ${date}. Are you sure?`,
                   onAccept: () => {
-                    enqueueSnackbar(
-                      `Appointment ${_id} successfully accepted!`,
-                      {
-                        variant: 'success'
-                      }
-                    )
+                    enqueueSnackbar(`Appointment successfully deleted!`, {
+                      variant: 'success'
+                    })
                     setBookingState(_id, 'deleted')
                   }
                 })
