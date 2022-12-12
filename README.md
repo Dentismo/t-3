@@ -1,103 +1,77 @@
 # T3 Project
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
----
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
 ## Name
 
-Choose a self-explaining name for your project.
+Dentismo Client: The frontend of the Dentismo System
 
 ## Description
 
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+This package is the Client-side of the Dentismo Client/Server component. It provides a simple, understandable graphical interface for dentists to respond to their appointments, and users to see information about provided Clinics and fill out appointment forms. To interact with other components, the Dentismo Client only directly talks to the Dentismo Server.
 
-## Badges
+### Pages
 
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+- Home Page (`­/`) - Explains our provided services and lists available Clinics (each navigating to `/clinic/:id`)
+
+- Clinic Page (`/clinic/:id`) - Displays information about the Clinic - name, address (with a Google Map view) and opening times per work day. A Calendar view is also displayed, where users can see the corresponding Clinic's schedule. Selecting a time slot will prompt the user with an Appointment Form
+
+- Login Page (`/login`) - Displays a login form, which is intended for Dentists to authorize themselves
+
+- Dashboard Page (`/dashboard`) - Displays a tab interface for viewing the corresponding Clinic's appointments that are either pending, approved or denied.
+
+### Dentist Features
+
+- Logging in using email/password credentials
+
+- Viewing a list of user-requested appointments sorted by their status (pending, approved, and denied), appointment date, and appointment time
+
+- Approving and denying their appointments, automatically sending a confirmation email to the recipient. If it is needed for any reason, it is also possible to resend confirmation emails to already delegated appointments.
+
+- Deleting appointments that have already been delegated.
+
+### User Features
+
+- Viewing a list of available clinics
+
+- Viewing information about a clinic, including that clinic's location on a Google Map interface, dentists as well as time schedule
+
+- Booking an appointment with a clinic by filling out an appointment form
+
+- Receiving emails about the appointment's status based on the dentist's decision
+
+### Technology
+
+- React and ReactDOM for creating custom frontend components and mounting them on the HTML DOM. Routing is handled using React Router and State Management is handled using React's native Hooks API
+
+- React Big Calendar for displaying a Calendar view for viewing clinic's appointment schedules
+
+- TypeScript for easier debugging and overall increased developer experience
+
+- MaterialUI for creating and customizing material components, ease of styling and displaying icons
+
+- Notistack for displaying Snackbars
 
 ## Visuals
 
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+### Use Case: User makes an appointment
+
+![user](https://media.giphy.com/media/M7caU7Ex3L9Ki1VvEc/giphy.gif)
+
+### Use Case: Dentist delegates appointment
+
+![dentist](https://media.giphy.com/media/atDQoRzTqVtQImkFCD/giphy.gif)
 
 ## Installation
 
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+Requirements:
 
-## Usage
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-The-Command-Line) - confirm using `git --version`
+- [Node](https://nodejs.org/en/) - confirm using `node --version`
+- [Node Package Manager](https://www.npmjs.com/) (comes with Node) - confirm using `npm --version`
 
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+To run the application locally:
 
-## Support
-
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-
-Show your appreciation to those who have contributed to the project.
-
-## License
-
-For open source projects, say how it is licensed.
-
-## Project status
-
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- First clone the project by running `git clone git@git.chalmers.se:courses/dit355/dit356-2022/t-3/t3-project.git` in a terminal
+- Move into the `client` directory by running `cd t3-project/client`
+- Before running the application, you must install required dependencies using `npm install`
+- Run the development server using `npm run start` and navigate to http://localhost:8080 in your browser if the application wasn't started automatically
+- For creating an optimized, ready to serve JS [bundle](https://medium.com/@gimenete/how-javascript-bundlers-work-1fc0d0caf2da), run `npm run build` and serve the `build` directory by running `npm install -g server && serve -s build`
