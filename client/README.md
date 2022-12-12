@@ -75,3 +75,11 @@ To run the application locally:
 - Before running the application, you must install required dependencies using `npm install`
 - Run the development server using `npm run start` and navigate to http://localhost:8080 in your browser if the application wasn't started automatically
 - For creating an optimized, ready to serve JS [bundle](https://medium.com/@gimenete/how-javascript-bundlers-work-1fc0d0caf2da), run `npm run build` and serve the `build` directory by running `npm install -g server && serve -s build`
+
+## Authors and acknowledgment
+
+See in the [t3-project README](https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project/-/tree/main#user-content-authors-and-acknowledgment)
+
+## Roadmap
+
+See in the [t3-project README](https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project/-/tree/main#user-content-roadmap)
