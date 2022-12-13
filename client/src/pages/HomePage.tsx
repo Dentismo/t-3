@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, Divider } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import { Api } from '../Api'
 import ClinicCard from '../components/ClinicCard'
@@ -86,6 +86,7 @@ function HomePage() {
             </div>
           </div>
         </div>
+        <Divider id="divider" />
         <div className="available-dentist">
           <p>Available Clinics:</p>
         </div>
