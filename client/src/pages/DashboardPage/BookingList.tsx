@@ -63,7 +63,7 @@ const BookingList: React.FC<Props> = ({
                 //textDecoration: 'underline'
               }}
             >
-              Bookings for {date}:
+              Bookings for <u>{date}</u>:
             </Typography>
             {bookings
               .sort((b1, b2) =>
