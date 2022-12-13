@@ -123,7 +123,7 @@ Content-Type:  application/json
   ![terminal](https://i.imgur.com/7XZcUhI.png)
 - To simulate the behavior of another component run the command `mosquitto_pub -t response/demo/1 -m "{ \"message\": \"Hello to you too!\" }"` in another terminal
 - Now we not only see the sent message in the "response" terminal, but we also see the HTTP response in VSCode, which is what the Server received on the "response" topic and returns to the client
-  ![response](https://i.imgur.com/pUU3n8S.png)![api](https://i.imgur.com/PZ0rnb9.png)
+![response](https://i.imgur.com/pUU3n8S.png) ![api](https://i.imgur.com/PZ0rnb9.png)
 
 ## Authors and acknowledgment
 
