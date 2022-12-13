@@ -1,0 +1,16 @@
+{
+  "name": "t3-project",
+  "version": "1.0.0",
+  "description": "## Getting started",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "SET PORT=8080 && SET API_ENDPOINT='http://localhost:8080/api' && cd client && npm run build && cd ../server && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project.git"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -72,7 +72,7 @@ function addFrontendToApp(app) {
   app.use(history());
   // Serve static assets
   const root = path.normalize(__dirname + "/..");
-  const client = path.join(root, "client", "dist");
+  const client = path.join(root, "client", "build");
   app.use(express.static(client));
 }
 
