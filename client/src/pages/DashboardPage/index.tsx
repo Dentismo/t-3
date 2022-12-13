@@ -101,28 +101,32 @@ const DentistPage: React.FC = () => {
     <Box
       sx={{
         display: 'flex',
-        minHeight: 'calc(100vh - 45px - 3rem)'
+        minHeight: 'calc(100vh - 45px - 3rem)',
+        boxShadow: 2,
       }}
     >
       <Sideview tab={tab} />
 
       <Stack
         sx={{
-          backgroundColor: 'rgb(220, 220, 220)',
+          backgroundColor: '#F9FFF',
+          boxShadow: 2,
           padding: 5,
-          flexGrow: 1
+          flexGrow: 1,
+          fontFamily: "'playfair-display'",
         }}
         spacing={2}
       >
+   
         <Stack>
-          <Typography variant="h3">Welcome, {dentist.name}</Typography>
+          <Typography variant="h3" fontFamily="'playfair-display'">Welcome, {dentist.name}</Typography>
           {bookingsForTab === 0 ? (
             <Typography variant="h4" color="grey" mt={3}>
               Couldn't find any {tab} appointments :(
             </Typography>
           ) : (
-            <Typography variant="h4">
-              Displaying {bookingsForTab} {tab} apppointments
+            <Typography variant="h4" fontFamily="'playfair-display'">
+              You have {bookingsForTab} {tab} apppointments
             </Typography>
           )}
         </Stack>

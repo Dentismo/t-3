@@ -57,9 +57,10 @@ const BookingList: React.FC<Props> = ({
         return (
           <Stack key={bookings[0]._id} spacing={2}>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
-                textDecoration: 'underline'
+                fontFamily: "'Al Nile Bold'"
+                //textDecoration: 'underline',
               }}
             >
               Bookings for {date}:
@@ -75,6 +76,7 @@ const BookingList: React.FC<Props> = ({
                   booking={booking}
                   key={booking._id}
                   sx={{
+                    fontFamily: "'apple-system'",
                     borderRadius: createBorderRadius(index, bookings.length)
                   }}
                 />

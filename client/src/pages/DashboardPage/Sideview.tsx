@@ -28,7 +28,7 @@ type Props = {
 
 const Sideview: React.FC<Props> = ({ tab }) => {
   const navigate = useNavigate()
-  const drawerWidth = 170
+  const drawerWidth = 190
 
   const listItems: AppointmentType[] = [
     {
@@ -67,11 +67,14 @@ const Sideview: React.FC<Props> = ({ tab }) => {
           position: 'absolute',
           width: drawerWidth,
           boxSizing: 'border-box',
-          backgroundColor: 'rgb(80, 80, 80)',
-          color: 'white'
+          backgroundColor: '#e0e1dd',
+          //'rgb(251,	249,	245)',
+          color: 'grey',
+          borderRight: 0.5,
+          boxShadow: 1,
         },
         '& .MuiDivider-root': {
-          background: 'white'
+          background: 'ccd5ae'
         }
       }}
       variant="permanent"
@@ -79,10 +82,15 @@ const Sideview: React.FC<Props> = ({ tab }) => {
     >
       <Toolbar
         sx={{
-          py: 3
+          py: 4,
+          padding: 5,
         }}
       >
-        <Typography variant="h6">Appointments</Typography>
+        <Typography sx={{
+          fontSize: 24,
+          color:'black'
+        }}
+        >Appointments</Typography>
       </Toolbar>
       <Divider />
       <List>
@@ -102,6 +110,7 @@ const Sideview: React.FC<Props> = ({ tab }) => {
               </ListItemIcon>
               <ListItemText
                 sx={{
+                  color: "black",
                   textDecoration:
                     tab === li.title.toLowerCase() ? 'underline' : ''
                 }}
