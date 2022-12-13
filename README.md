@@ -40,8 +40,6 @@ See the `server` package [README](https://git.chalmers.se/courses/dit355/dit356-
 - [bcrypt](https://www.npmjs.com/package/bcrypt) for hashing dentist passwords before publishing them
 - [Nodemailer](https://nodemailer.com/about/) for setting up a SMTP transporter and sending emails
 
-## Visuals
-
 ## Installation
 
 Requirements:
@@ -58,7 +56,11 @@ To run the application locally:
 - Clone the **Availability Checker** component by running `git clone https://git.chalmers.se/courses/dit355/dit356-2022/t-3/availability-checker.git` in a terminal and start it by running `cd availability-checker && npm run start`
 - Clone the **Booking Manager** component by running `git clone https://git.chalmers.se/courses/dit355/dit356-2022/t-3/booking-manager.git` in a terminal and start it by running `cd booking-manager && npm run start`
 - Clone the **Clinic Portal** component by running `git clone https://git.chalmers.se/courses/dit355/dit356-2022/t-3/clinic-portal.git` in a terminal and start it by running `cd clinic-portal && npm run start`
-- Open http://localhost:8080 in your browser the application wasn't automatically started
+- Open http://localhost:8080 in your browser if the application wasn't automatically started
+
+Once in the browser, you should see the home page.
+![taw](https://i.imgur.com/3imbo4G.png) To access the dashboard page, you must login as dentist. You can use the following credentials to login using a demo account: demo@dentismo.com password123
+![dashboard](http://image.to/dashboard)
 
 ## Authors and acknowledgment
 
@@ -73,9 +75,9 @@ To run the application locally:
 
 - As was already discussed, in order for the frontend to communicate with other components, it does so by using HTTP, and relying on the server to subscribe and publish to the MQTT broker. This approach was used due to time constraints and difficulties in implementing a MQTT client for React. This would be the first issue for future releases, as it would remove the need for a HTTP server, thus increasing the system's Fault Tolerance.
 
-- custom calendar implementation
+- Due to time constraints, for displaying clinic time schedules, we used [React Big Calendar](https://github.com/jquense/react-big-calendar). In future releases, we would like to move to a custom implementation of a Calendar component, since we could make it more customizable, fit better to our theme, and make a more appropriate API for feeding it events to display, thus increasing the system's Usability and Modifiability.
 
-- deployment
+- Another problem we faced was the high number of terminal sessions running in parallel, which made the development process much more confusing and difficult. The solution to this is to deploy our backend components and to use an MQTT Broker running on the cloud. This would make our system more testable (since now different users can publish to the same MQTT Broker), traceable (since all logs and activity belonging to a component can be viewed in a single place), deployable (since we will be able to automatically deploy our system after pushing to the remote repository, made possible by custom pipelines).
 
 ## Project Status
 
