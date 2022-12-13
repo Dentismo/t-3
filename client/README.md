@@ -11,44 +11,31 @@ This package is the Client-side of the Dentismo Client/Server component. It prov
 ### Pages
 
 - Home Page (`­/`) - Explains our provided services and lists available Clinics (each navigating to `/clinic/:id`)
-
 - Clinic Page (`/clinic/:id`) - Displays information about the Clinic - name, address (with a Google Map view) and opening times per work day. A Calendar view is also displayed, where users can see the corresponding Clinic's schedule. Selecting a time slot will prompt the user with an Appointment Form
-
 - Login Page (`/login`) - Displays a login form, which is intended for Dentists to authorize themselves
-
 - Dashboard Page (`/dashboard`) - Displays a tab interface for viewing the corresponding Clinic's appointments that are either pending, approved or denied.
 
 ### Dentist Features
 
 - Logging in using email/password credentials
-
 - Viewing a list of user-requested appointments sorted by their status (pending, approved, and denied), appointment date, and appointment time
-
 - Approving and denying their appointments, automatically sending a confirmation email to the recipient. If it is needed for any reason, it is also possible to resend confirmation emails to already delegated appointments.
-
 - Deleting appointments that have already been delegated.
 
 ### User Features
 
 - Viewing a list of available clinics
-
 - Viewing information about a clinic, including that clinic's location on a Google Map interface, dentists as well as time schedule
-
 - Booking an appointment with a clinic by filling out an appointment form
-
 - Receiving emails about the appointment's status based on the dentist's decision
 
 ### Technology
 
-- React and ReactDOM for creating custom frontend components and mounting them on the HTML DOM. Routing is handled using React Router and State Management is handled using React's native Hooks API
-
-- React Big Calendar for displaying a Calendar view for viewing clinic's appointment schedules
-
-- TypeScript for easier debugging and overall increased developer experience
-
-- MaterialUI for creating and customizing material components, ease of styling and displaying icons
-
-- Notistack for displaying Snackbars
+- [React](https://reactjs.org/docs/react-api.html) and [ReactDOM](https://reactjs.org/docs/react-dom.html) for creating custom frontend components and mounting them on the HTML DOM. Routing is handled using [React Router](https://reactrouter.com/en/main) and State Management is handled using React's native [Hooks API](https://reactjs.org/docs/hooks-reference.html)
+- [React Big Calendar](https://www.npmjs.com/package/react-big-calendar) for displaying a Calendar view for viewing clinic's appointment schedules
+- [TypeScript](https://www.typescriptlang.org/) for easier debugging and overall increased developer experience
+- [MaterialUI](https://mui.com/) for creating and customizing material components, ease of styling and displaying icons
+- [Notistack](https://notistack.com/) for displaying Snackbars
 
 ## Visuals
 
