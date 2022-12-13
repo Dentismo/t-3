@@ -1,103 +1,84 @@
 # T3 Project
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
----
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
 ## Name
 
-Choose a self-explaining name for your project.
+Dentismo Client/Server component
 
 ## Description
 
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+This package is the Client/Server component of the Dentismo System. It is the entry point of the system and it consists of:
 
-## Badges
+- The [`client`](https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project/-/blob/main/client/README.md) package which provides users with a Graphical Interface for interacing with the system
+- The [`server`](https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project/-/blob/main/server/README.md) package which runs the HTTP server used by the `client` package to communicate with other components via a MQTT broker
 
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### The Flow
 
-## Visuals
+1. Every action dispatched against the system begins in the frontend, where a certain user event is handled (on form submit, on button click etc).
+2. The client then makes an API call against the server, which triggers the server to subscribe and publish to the MQTT broker on the topic corresponding to the API route.
+3. One of the backend components, which is subscribed to the topic from **Step 2**, then responds to the received message by processing the incoming payload and publishing the response
+4. The server receives the response from the MQTT broker and returns it as an HTTP response to the client
+5. The client receives the response and parses it to JSON.
 
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+See the `server` package [README](https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project/-/blob/main/server/README.md) for a demonstration or the [MQTT Topic Definition](https://git.chalmers.se/courses/dit355/dit356-2022/t-3/documentation/-/blob/main/MQTT.md) for a more in-depth guide on how communications are handled.
+
+### Technology
+
+#### Frontend Technologies
+
+- [React](https://reactjs.org/docs/react-api.html) and [ReactDOM](https://reactjs.org/docs/react-dom.html) for creating custom frontend components and mounting them on the HTML DOM. Routing is handled using [React Router](https://reactrouter.com/en/main) and State Management is handled using React's native [Hooks API](https://reactjs.org/docs/hooks-reference.html)
+- [React Big Calendar](https://www.npmjs.com/package/react-big-calendar) for displaying a Calendar view for viewing clinic's appointment schedules
+- [TypeScript](https://www.typescriptlang.org/) for easier debugging and overall increased developer experience (utilized only in the `client` package)
+- [MaterialUI](https://mui.com/) for creating and customizing material components, ease of styling and displaying icons
+- [Notistack](https://notistack.com/) for displaying Snackbars
+
+#### Backend Technologies
+
+- [MongoDB Atlas](https://www.mongodb.com/atlas/database) for creating a non-relational database
+- [Mongoose](https://mongoosejs.com/) for establishing a connection with the MongoDB database and persisting data to it
+- [Express](https://expressjs.com/) for starting a HTTP server
+- [MQTT.js](https://github.com/mqttjs/MQTT.js) for creating a MQTT client for the Node runtime
+- [bcrypt](https://www.npmjs.com/package/bcrypt) for hashing dentist passwords before publishing them
+- [Nodemailer](https://nodemailer.com/about/) for setting up a SMTP transporter and sending emails
 
 ## Installation
 
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+Requirements:
 
-## Usage
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-The-Command-Line) - confirm by running `git --version`
+- [Node](https://nodejs.org/en/) - confirm by running `node --version`
+- [Node Package Manager](https://www.npmjs.com/) (comes with Node) - confirm by running `npm --version`
+- [Mosquitto](https://mosquitto.org/) - confirm by running `mosquitto -h`
 
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+To run the application locally:
 
-## Support
+- Clone the **Client/Server** component by running `git clone https://git.chalmers.se/courses/dit355/dit356-2022/t-3/t3-project.git` in a terminal and start it by running `npm run start`
+- Clone the **Availability** component by running `git clone https://git.chalmers.se/courses/dit355/dit356-2022/t-3/authentication` and start it by running `cd authentication && npm run start`
+- Clone the **Availability Checker** component by running `git clone https://git.chalmers.se/courses/dit355/dit356-2022/t-3/availability-checker.git` in a terminal and start it by running `cd availability-checker && npm run start`
+- Clone the **Booking Manager** component by running `git clone https://git.chalmers.se/courses/dit355/dit356-2022/t-3/booking-manager.git` in a terminal and start it by running `cd booking-manager && npm run start`
+- Clone the **Clinic Portal** component by running `git clone https://git.chalmers.se/courses/dit355/dit356-2022/t-3/clinic-portal.git` in a terminal and start it by running `cd clinic-portal && npm run start`
+- Open http://localhost:8080 in your browser if the application wasn't automatically started
 
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+Once in the browser, you should see the home page.
+![taw](https://i.imgur.com/3imbo4G.png) To access the dashboard page, you must login as dentist. You can use the following credentials to login using a demo account: demo@dentismo.com password123
+![dashboard](https://cdn.discordapp.com/attachments/1049048076591046836/1052223287113044009/Screenshot_2022-12-13_at_14.59.35.png)
 
 ## Authors and acknowledgment
 
-Show your appreciation to those who have contributed to the project.
+- Georg Zsolnai (guszsoge@student.gu.se) - Developer, Product Owner, Scrum Master (weeks 1-4 and 6-7)
+- Carl Dahlqvist Thuresson (carlthur@student.chalmers.se) - Developer, Scrum Master (week 5)
+- Bardia Forooraghi (bardiaf@student.chalmers.se) - Developer, Backend Scrum Master (weeks 1-4)
+- Ansis Plepis (gusplean@student.gu.se) - Developer, Frontend Scrum Master (weeks 1-4)
+- Ivan Vidackovic (gusvidiv@student.gu.se) - Developer
+- John Christopher Webb (johnchri@student.chalmers.se) - Developer
 
-## License
+## Roadmap
 
-For open source projects, say how it is licensed.
+- As was already discussed, in order for the frontend to communicate with other components, it does so by using HTTP, and relying on the server to subscribe and publish to the MQTT broker. This approach was used due to time constraints and difficulties in implementing a MQTT client for React. This would be the first issue for future releases, as it would remove the need for a HTTP server, thus increasing the system's Fault Tolerance.
 
-## Project status
+- Due to time constraints, for displaying clinic time schedules, we used [React Big Calendar](https://github.com/jquense/react-big-calendar). In future releases, we would like to move to a custom implementation of a Calendar component, since we could make it more customizable, fit better to our theme, and make a more appropriate API for feeding it events to display, thus increasing the system's Usability and Modifiability.
 
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- Another problem we faced was the high number of terminal sessions running in parallel, which made the development process much more confusing and difficult. The solution to this is to deploy our backend components and to use an MQTT Broker running on the cloud. This would make our system more testable (since now different users can publish to the same MQTT Broker), traceable (since all logs and activity belonging to a component can be viewed in a single place), deployable (since we will be able to automatically deploy our system after pushing to the remote repository, made possible by custom pipelines).
+
+## Project Status
+
+Finished as of 17.12.2022.
