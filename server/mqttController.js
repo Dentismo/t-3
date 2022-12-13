@@ -11,6 +11,7 @@ const configurations = {
   resetTimeout: 30000 // After 30 seconds, try again.
 };
 
+/*
 router.post("/request/:topic/:id", async (req, res) => {
   //define mqtt topics with the given parametere
   const mqttTopic = "request/" + req.params.topic + '/' + req.params.id;
@@ -30,6 +31,27 @@ router.post("/request/:topic/:id", async (req, res) => {
 
   res.status(201).json(response);
 });
+*/
+
+const breaker = CircuitBreaker(router.post("/request/:topic/:id", async (req, res) => {
+  //define mqtt topics with the given parametere
+  const mqttTopic = "request/" + req.params.topic + '/' + req.params.id;
+  const responseTopic = "response/" + req.params.topic + '/' + req.params.id;
+
+  //subscribe to the response
+  mqttHandler.subscribe(responseTopic);
+
+  const {password} = req.body
+  if(password) {
+    req.body.password = await bcrypt.hash(values.password, 10)
+  }
+  //publish request
+  mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
+  //message received is parse to json and returned to the frontend
+  const response = await mqttHandler.onMessage();
+
+  res.status(201).json(response);
+}), configurations).fire(responseTopic).then(res.status(201).json(response)).catch(console.error);
 
 // router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
 //   //define mqtt topics with the given parametere
