@@ -3,6 +3,12 @@ const router = express.Router({ mergeParams: true });
 const mqttHandler = require("./mqttHandler");
 const bcrypt = require('bcryptjs');
 
+const configurations = {
+  timeout: 3000, // If our function takes longer than 3 seconds, trigger a failure
+  errorThresholdPercentage: 50, // When 50% of requests fail, trip the circuit
+  resetTimeout: 30000 // After 30 seconds, try again.
+};
+
 router.post("/request/:topic/:id", async (req, res) => {
   //define mqtt topics with the given parametere
   const mqttTopic = "request/" + req.params.topic + '/' + req.params.id;
