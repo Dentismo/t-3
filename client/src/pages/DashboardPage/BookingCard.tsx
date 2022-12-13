@@ -57,7 +57,6 @@ const BookingCard: React.FC<Props> = ({
       bgcolor="white"
       {...props}
       sx={{
-
         transition: 'border-radius 500ms',
         '&:active': {
           boxShadow: 'none'
@@ -71,16 +70,25 @@ const BookingCard: React.FC<Props> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
           <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
-          {startTime.getHours()}:{startTime.getMinutes() < 10 ?  "0" + startTime.getMinutes() : startTime.getMinutes()} - {endTime.getHours()}:{endTime.getMinutes() < 10 ? "0" + endTime.getMinutes() : endTime.getMinutes()}
+            {startTime.getHours()}:
+            {startTime.getMinutes() < 10
+              ? '0' + startTime.getMinutes()
+              : startTime.getMinutes()}{' '}
+            - {endTime.getHours()}:
+            {endTime.getMinutes() < 10
+              ? '0' + endTime.getMinutes()
+              : endTime.getMinutes()}
           </Typography>
         </Stack>
         <Box alignSelf="stretch">
           <Divider orientation="vertical" />
         </Box>
-        <Typography fontWeight={600} noWrap overflow="visible" fontFamily="'Apple SD Gothic Neo UltraLight'">
+        <Typography noWrap overflow="visible" fontWeight={400}>
           {name}:
         </Typography>
-        <Typography flexGrow={1}>{details}</Typography>
+        <Typography flexGrow={1} fontWeight="lighter">
+          {details}
+        </Typography>
       </Stack>
       <Stack direction="row" ml="auto" alignSelf="center">
         {state === 'pending' ? (

@@ -113,19 +113,19 @@ const DentistPage: React.FC = () => {
           boxShadow: 2,
           padding: 5,
           flexGrow: 1,
-          fontFamily: "'playfair-display'",
+          fontFamily: "Apple SD Gothic Neo Bold",
         }}
         spacing={2}
       >
-   
+
         <Stack>
-          <Typography variant="h3" fontFamily="'playfair-display'">Welcome, {dentist.name}</Typography>
+          <Typography variant="h3" fontWeight="lighter">Welcome, Sara {dentist.name}</Typography>
           {bookingsForTab === 0 ? (
             <Typography variant="h4" color="grey" mt={3}>
               Couldn't find any {tab} appointments :(
             </Typography>
           ) : (
-            <Typography variant="h4" fontFamily="'playfair-display'">
+            <Typography variant="h4" fontWeight="lighter">
               You have {bookingsForTab} {tab} apppointments
             </Typography>
           )}

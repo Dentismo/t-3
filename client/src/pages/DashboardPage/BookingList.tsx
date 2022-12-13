@@ -59,8 +59,8 @@ const BookingList: React.FC<Props> = ({
             <Typography
               variant="h6"
               sx={{
-                fontFamily: "'Al Nile Bold'"
-                //textDecoration: 'underline',
+                fontWeight:"lighter",
+                //textDecoration: 'underline'
               }}
             >
               Bookings for {date}:
