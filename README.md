@@ -60,7 +60,7 @@ To run the application locally:
 
 Once in the browser, you should see the home page.
 ![taw](https://i.imgur.com/3imbo4G.png) To access the dashboard page, you must login as dentist. You can use the following credentials to login using a demo account: demo@dentismo.com password123
-![dashboard](http://image.to/dashboard)
+![dashboard](https://cdn.discordapp.com/attachments/1049048076591046836/1052223287113044009/Screenshot_2022-12-13_at_14.59.35.png)
 
 ## Authors and acknowledgment
 
