@@ -50,8 +50,10 @@ const breaker = CircuitBreaker(router.post("/request/:topic/:id", async (req, re
   //message received is parse to json and returned to the frontend
   const response = await mqttHandler.onMessage();
 
-  res.status(201).json(response);
+  //res.status(201).json(response);
 }), configurations).fire(responseTopic).then(res.status(201).json(response)).catch(console.error);
+breaker.fallback(() => 'Sorry, out of service right now');
+breaker.on('fallback', (result) => reportFallbackEvent(result));
 
 // router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
 //   //define mqtt topics with the given parametere
