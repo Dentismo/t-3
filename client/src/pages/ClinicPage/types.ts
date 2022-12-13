@@ -43,7 +43,7 @@ export type Booking = {
   issuance: String
   date: String
   state: 'approved' | 'pending' | 'denied'
-  start: String
-  end: String
+  start: string
+  end: string
   details: String
 }
