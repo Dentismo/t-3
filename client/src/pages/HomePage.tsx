@@ -8,21 +8,21 @@ import '../styles/HomePage.css'
 import { Clinic } from './ClinicPage/types'
 
 function HomePage() {
-  const id = Math.random().toString(36).substring(2,7);
+  const id = Math.random().toString(36).substring(2, 7)
 
-  const [clinics, setClinics] = useState<Clinic[]>([]);
+  const [clinics, setClinics] = useState<Clinic[]>([])
 
   useEffect(() => {
     const fetchClinics = async () => {
       try {
         const res = await Api.get('request/clinics/' + id)
         setClinics(res.data)
-      } catch(error){
-          console.log(error)
+      } catch (error) {
+        console.log(error)
       }
-    };
-    fetchClinics();
-  }, []);
+    }
+    fetchClinics()
+  }, [])
 
   const ref = useRef<null | HTMLDivElement>(null)
 
@@ -77,10 +77,11 @@ function HomePage() {
             </div>
             <div>
               <p id="us-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
+                Our intuitive system involves the use of compiling all dentists
+                from a central database to bring the dentists to you! Gone are
+                the days of searching for dentist in your area on unoptimized
+                sites, now you can find all dentists near you in one central
+                place.
               </p>
             </div>
           </div>
@@ -98,7 +99,10 @@ function HomePage() {
           }
         >
           {clinics.map((clinic) => (
-            <ClinicCard clinic={clinic} key={clinic.name.toString()}></ClinicCard>
+            <ClinicCard
+              clinic={clinic}
+              key={clinic.name.toString()}
+            ></ClinicCard>
           ))}
         </div>
         <div className="footer">
