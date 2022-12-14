@@ -1,10 +1,10 @@
+import { Box, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Stack, Typography, Box } from '@mui/material'
+import { useSearchParams } from 'react-router-dom'
+import { Api } from '../../Api'
 import BookingList from './BookingList'
 import ConfirmationModal from './ConfirmationModal'
 import Sideview from './Sideview'
-import { Api } from '../../Api'
-import { useSearchParams } from 'react-router-dom'
 import { Booking, Dentist, OpenModalParams } from './types'
 
 // TODO: use react context instead of nested state
@@ -16,7 +16,7 @@ const DentistPage: React.FC = () => {
   const [modalDescription, setModalDescription] = useState<string>('')
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [fetching, setFetching] = useState<boolean>(false)
-  const loginId = localStorage.getItem('loginId')
+  const loginId = localStorage.loginId
 
   const [dentist, setDentist] = useState<Dentist>({
     _id: '',
@@ -43,7 +43,7 @@ const DentistPage: React.FC = () => {
       try {
         const fetchedBookings = await Api.post(
           `/request/booking-requests/${id}`,
-          { clinicID: localStorage.getItem('clinicId') }
+          { clinicId: localStorage.clinicId }
         )
         setFetching(false)
         setBookings(
