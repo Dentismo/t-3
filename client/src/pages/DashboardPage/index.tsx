@@ -42,7 +42,8 @@ const DentistPage: React.FC = () => {
       const id = Math.random().toString(36).substring(2, 7)
       try {
         const fetchedBookings = await Api.post(
-          `/request/booking-requests/${id}`, { clinicID: localStorage.getItem('clinicId') } /*{"clinicId":"1"}*/
+          `/request/booking-requests/${id}`,
+          { clinicID: localStorage.getItem('clinicId') } /*{"clinicId":"1"}*/
         )
         setFetching(false)
         setBookings(
@@ -118,7 +119,7 @@ const DentistPage: React.FC = () => {
       >
 
         <Stack>
-          <Typography variant="h3" font-weight="bold" fontFamily="'playfair-display'" sx={{color: '#51989A'}}>Welcome, {dentist.name}</Typography>
+          <Typography variant="h3" font-weight="bold" fontFamily="'playfair-display'" sx={{color: '#51989A', borderTop: 4}}>Welcome, {dentist.name}</Typography>
           {bookingsForTab === 0 ? (
             <Typography variant="h4" color="#696969" mt={3}>
               Sorry, we couldn't find any {tab} appointments :(

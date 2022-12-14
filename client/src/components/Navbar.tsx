@@ -54,13 +54,13 @@ const Navbar = (props: ContainerProps) => {
             style={{ width: '45px', height: '45px' }}
             alt="logo"
           />
-          <span style={{ fontSize: '2em', fontWeight: 500 }}>Dentismo</span>
+          <span style={{ fontSize: '2em', fontWeight: 500, fontFamily: 'playfair-display'}}>Dentismo</span>
         </NavbarGroup>
       </Link>
       <NavbarGroup>
         {!tokenExists ? (
           <LinkButton
-            style={{ fontSize: '1rem', textTransform: 'none' }}
+            style={{ fontSize: '1rem', textTransform: 'none', fontFamily: 'playfair-display'}}
             variant="outlined"
             buttontext="Login"
             linkto="/login"
