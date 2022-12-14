@@ -34,7 +34,9 @@ export type Clinic = {
 }
 
 export type Booking = {
-  user: {
+  email: String  
+  name: String
+  user?: {
     email: String
     name: String
   }
