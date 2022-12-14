@@ -141,10 +141,8 @@ function ClinicPage() {
         }
         //create booking
         const booking: Booking = {
-          user: {
-            email: email,
-            name: name
-          },
+          email: email,
+          name: name,
           //ClinicId is taken from the url using useParams() from react. Clinic pages have an id associated with them in the router: clinic/:pageId
           clinicId: pageId ?? '',
           clinicName: clinic.name,
