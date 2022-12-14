@@ -128,7 +128,7 @@ function ClinicPage() {
       end: Date,
       email: String,
       name: String,
-      inssurance: String,
+      inssurance: string,
       details: String
     ) => {
       try {
@@ -146,7 +146,7 @@ function ClinicPage() {
           //ClinicId is taken from the url using useParams() from react. Clinic pages have an id associated with them in the router: clinic/:pageId
           clinicId: pageId ?? '',
           clinicName: clinic.name,
-          issuance: inssurance,
+          issuance: parseInt(inssurance),
           //Format the date so it is ready for the availability checker to process the date.
           date:
             start.getUTCFullYear() +
@@ -160,8 +160,10 @@ function ClinicPage() {
           details: details
         }
         const id = Math.random().toString(36).substring(2, 7)
-
-        const success = await Api.post('/request/availablity/' + id, booking)
+        const endpoint = `/request/availability/${id}`
+        // console.log(`Sending POST request to ${endpoint} with payload:`)
+        // console.log({ payload: booking })
+        const success = await Api.post(endpoint, booking)
 
         //if the booking request is accepted by the availability checker....
         if (success.data.accepted) {
