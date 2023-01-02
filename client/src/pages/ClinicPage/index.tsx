@@ -113,12 +113,12 @@ function ClinicPage() {
           })
           return false
         }
+        // mosquitto_sub -v -t '/request/availablity/+'
+
         //create booking
         const booking: Booking = {
-          user: {
             email: email,
-            name: name
-          },
+            name: name,
           //ClinicId is taken from the url using useParams() from react. Clinic pages have an id associated with them in the router: clinic/:pageId
           clinicId: pageId ?? '',
           clinicName: clinic.name,
@@ -137,7 +137,7 @@ function ClinicPage() {
         }
         const id = Math.random().toString(36).substring(2, 7)
 
-        const success = await Api.post('/request/availablity/' + id, booking)
+        const success = await Api.post('request/availablity/' + id, booking)
 
         //if the booking request is accepted by the availability checker....
         if (success.data.accepted) {
