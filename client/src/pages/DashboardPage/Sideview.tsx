@@ -87,9 +87,8 @@ const Sideview: React.FC<Props> = ({ tab }) => {
         }}
       >
         <Typography sx={{
-          fontSize: 22,
-          color:'black',
-          fontWeight: 'light',
+          fontSize: 24,
+          color: 'black'
         }}
         >Appointments</Typography>
       </Toolbar>

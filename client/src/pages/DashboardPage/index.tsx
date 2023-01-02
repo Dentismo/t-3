@@ -137,7 +137,7 @@ const DentistPage: React.FC = () => {
             variant="h3"
             font-weight="bold"
             fontFamily="'playfair-display'"
-            sx={{ color: '#51989A' }}
+            sx={{ color: '#51989A', borderTop: 4 }}
           >
             Welcome, {dentist.name}
           </Typography>
