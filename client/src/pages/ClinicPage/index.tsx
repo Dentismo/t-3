@@ -1,4 +1,4 @@
-import { styled } from '@mui/material'
+import { CircularProgress, styled } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import moment from 'moment'
 import { useSnackbar } from 'notistack'
@@ -29,6 +29,7 @@ function ClinicPage() {
 
   const [clinic, setClinic] = useState<Clinic>(clinics[0])
   const [myEvents, setMyEvents] = useState<CalendarEvent[]>([])
+  const [fetching, setFetching] = useState<boolean>(true)
 
   const [view, setView] = useState<View>(Views.WEEK)
   const onView = useCallback((newView: View) => setView(newView), [setView])
@@ -37,6 +38,7 @@ function ClinicPage() {
 
   useEffect(() => {
     const queryClinic = async () => {
+      setFetching(true)
       //fetch dentist data from clinic portal
       const response = await Api.post(`/request/clinic/${pageId}`, {
         _id: pageId
@@ -64,6 +66,7 @@ function ClinicPage() {
       })
 
       setMyEvents(temporaryArr)
+      setFetching(false)
     }
 
     queryClinic().catch((err) => console.log(err))
@@ -234,6 +237,23 @@ function ClinicPage() {
     display: 'flex',
     flexDirection: 'column'
   })
+
+  if (fetching)
+    return (
+      <div
+        style={{
+          height: '80vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '0.5rem',
+          flexDirection: 'column'
+        }}
+      >
+        <h2>Loading...</h2>
+        <CircularProgress />
+      </div>
+    )
 
   return (
     <div>
