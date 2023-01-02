@@ -1,10 +1,10 @@
+import { Box, CircularProgress, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Stack, Typography, Box } from '@mui/material'
+import { useSearchParams } from 'react-router-dom'
+import { Api } from '../../Api'
 import BookingList from './BookingList'
 import ConfirmationModal from './ConfirmationModal'
 import Sideview from './Sideview'
-import { Api } from '../../Api'
-import { useSearchParams } from 'react-router-dom'
 import { Booking, Dentist, OpenModalParams } from './types'
 
 // TODO: use react context instead of nested state
@@ -42,7 +42,8 @@ const DentistPage: React.FC = () => {
       const id = Math.random().toString(36).substring(2, 7)
       try {
         const fetchedBookings = await Api.post(
-          `/request/booking-requests/${id}`, { clinicID: localStorage.getItem('clinicId') } /*{"clinicId":"1"}*/
+          `/request/booking-requests/${id}`,
+          { clinicID: localStorage.getItem('clinicId') } /*{"clinicId":"1"}*/
         )
         setFetching(false)
         setBookings(
@@ -94,14 +95,29 @@ const DentistPage: React.FC = () => {
               : booking
           )
     )
-  if (fetching) return <>Loading...</>
+  if (fetching)
+    return (
+      <div
+        style={{
+          height: '80vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '0.5rem',
+          flexDirection: 'column'
+        }}
+      >
+        <h2>Loading...</h2>
+        <CircularProgress />
+      </div>
+    )
 
   return (
     <Box
       sx={{
         display: 'flex',
         minHeight: 'calc(100vh - 45px - 3rem)',
-        boxShadow: 2,
+        boxShadow: 2
       }}
     >
       <Sideview tab={tab} />
@@ -112,19 +128,29 @@ const DentistPage: React.FC = () => {
           boxShadow: 2,
           padding: 5,
           flexGrow: 1,
-          fontFamily: "Apple SD Gothic Neo Bold",
+          fontFamily: 'Apple SD Gothic Neo Bold'
         }}
         spacing={2}
       >
-
         <Stack>
-          <Typography variant="h3" font-weight="bold" fontFamily="'playfair-display'" sx={{color: '#51989A'}}>Welcome, {dentist.name}</Typography>
+          <Typography
+            variant="h3"
+            font-weight="bold"
+            fontFamily="'playfair-display'"
+            sx={{ color: '#51989A' }}
+          >
+            Welcome, {dentist.name}
+          </Typography>
           {bookingsForTab === 0 ? (
             <Typography variant="h4" color="#696969" mt={3}>
               Sorry, we couldn't find any {tab} appointments :(
             </Typography>
           ) : (
-            <Typography variant="h4" color="#696969" fontFamily="'playfair-display'">
+            <Typography
+              variant="h4"
+              color="#696969"
+              fontFamily="'playfair-display'"
+            >
               You have {bookingsForTab} {tab} apppointments
             </Typography>
           )}
