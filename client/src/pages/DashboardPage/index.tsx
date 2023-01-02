@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, CircularProgress, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Api } from '../../Api'
@@ -43,7 +43,7 @@ const DentistPage: React.FC = () => {
       try {
         const fetchedBookings = await Api.post(
           `/request/booking-requests/${id}`,
-          { clinicId: localStorage.clinicId }
+          { clinicID: localStorage.getItem('clinicId') } /*{"clinicId":"1"}*/
         )
         setFetching(false)
         setBookings(
@@ -95,34 +95,63 @@ const DentistPage: React.FC = () => {
               : booking
           )
     )
-  if (fetching) return <>Loading...</>
+  if (fetching)
+    return (
+      <div
+        style={{
+          height: '80vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '0.5rem',
+          flexDirection: 'column'
+        }}
+      >
+        <h2>Loading...</h2>
+        <CircularProgress />
+      </div>
+    )
 
   return (
     <Box
       sx={{
         display: 'flex',
-        minHeight: 'calc(100vh - 45px - 3rem)'
+        minHeight: 'calc(100vh - 45px - 3rem)',
+        boxShadow: 2
       }}
     >
       <Sideview tab={tab} />
 
       <Stack
         sx={{
-          backgroundColor: 'rgb(220, 220, 220)',
+          backgroundColor: '#F9FFF',
+          boxShadow: 2,
           padding: 5,
-          flexGrow: 1
+          flexGrow: 1,
+          fontFamily: 'Apple SD Gothic Neo Bold'
         }}
         spacing={2}
       >
         <Stack>
-          <Typography variant="h3">Welcome, {dentist.name}</Typography>
+          <Typography
+            variant="h3"
+            font-weight="bold"
+            fontFamily="'playfair-display'"
+            sx={{ color: '#51989A', borderTop: 4 }}
+          >
+            Welcome, {dentist.name}
+          </Typography>
           {bookingsForTab === 0 ? (
-            <Typography variant="h4" color="grey" mt={3}>
-              Couldn't find any {tab} appointments :(
+            <Typography variant="h4" color="#696969" mt={3}>
+              Sorry, we couldn't find any {tab} appointments :(
             </Typography>
           ) : (
-            <Typography variant="h4">
-              Displaying {bookingsForTab} {tab} apppointments
+            <Typography
+              variant="h4"
+              color="#696969"
+              fontFamily="'playfair-display'"
+            >
+              You have {bookingsForTab} {tab} apppointments
             </Typography>
           )}
         </Stack>

@@ -34,11 +34,11 @@ export type Clinic = {
 }
 
 export type Booking = {
-  email: String
+  email: String  
   name: String
   user?: {
-    email: string
-    name: string
+    email: String
+    name: String
   }
   clinicName: String
   clinicId: String

@@ -142,6 +142,8 @@ function ClinicPage() {
           })
           return false
         }
+        // mosquitto_sub -v -t '/request/availablity/+'
+
         //create booking
         const booking: Booking = {
           email: email,
@@ -163,10 +165,8 @@ function ClinicPage() {
           details: details
         }
         const id = Math.random().toString(36).substring(2, 7)
-        const endpoint = `/request/availability/${id}`
-        // console.log(`Sending POST request to ${endpoint} with payload:`)
-        // console.log({ payload: booking })
-        const success = await Api.post(endpoint, booking)
+
+        const success = await Api.post('request/availablity/' + id, booking)
 
         //if the booking request is accepted by the availability checker....
         if (success.data.accepted) {
