@@ -1,4 +1,3 @@
-import sendEmail from '../../util/sendEmail'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -14,6 +13,7 @@ import { Box } from '@mui/system'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { Api } from '../../Api'
+import sendEmail from '../../util/sendEmail'
 import IconAction from './IconAction'
 import { Booking } from './types'
 

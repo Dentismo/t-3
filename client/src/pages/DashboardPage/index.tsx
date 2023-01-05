@@ -16,7 +16,7 @@ const DentistPage: React.FC = () => {
   const [modalDescription, setModalDescription] = useState<string>('')
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [fetching, setFetching] = useState<boolean>(false)
-  const loginId = localStorage.getItem('loginId')
+  const loginId = localStorage.loginId
 
   const [dentist, setDentist] = useState<Dentist>({
     _id: '',

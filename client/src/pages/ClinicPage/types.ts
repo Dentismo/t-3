@@ -42,10 +42,10 @@ export type Booking = {
   }
   clinicName: String
   clinicId: String
-  issuance: String
+  issuance: number
   date: String
   state: 'approved' | 'pending' | 'denied'
-  start: String
-  end: String
+  start: string
+  end: string
   details: String
 }

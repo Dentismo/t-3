@@ -8,6 +8,7 @@ import {
   TextField,
   Typography
 } from '@mui/material'
+import { useSnackbar } from 'notistack'
 import { Dispatch, SetStateAction, useState } from 'react'
 
 interface Props {
@@ -26,6 +27,10 @@ const AppointmentModal: React.FC<Props> = ({
   end
 }) => {
   const handleClose = () => setOpen(false)
+  let clicks = 0
+  const { enqueueSnackbar } = useSnackbar()
+
+  const [disableSubmit, setDisableSubmit] = useState<boolean>(false)
 
   const [email, setEmail] = useState<String>('')
   const [name, setName] = useState<String>('')
@@ -147,9 +152,22 @@ const AppointmentModal: React.FC<Props> = ({
             <Button onClick={handleClose}>Cancel</Button>
             <Button
               variant="contained"
+              disabled={disableSubmit}
               onClick={() => {
-                onAccept(start, end, email, name, inssurance, details)
+                clicks++
+                if (clicks === 15) {
+                  setDisableSubmit(true)
+                  enqueueSnackbar('Too many requests - please try again', {
+                    variant: 'error'
+                  })
+                  setTimeout(() => {
+                    setDisableSubmit(false)
+                  }, 2000)
+                }
                 checkAllFields()
+                if (emailValid && nameValid && inssuranceValid) {
+                  onAccept(start, end, email, name, inssurance, details)
+                }
               }}
             >
               Submit

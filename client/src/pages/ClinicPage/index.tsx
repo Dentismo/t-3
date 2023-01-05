@@ -1,9 +1,9 @@
-import { styled } from '@mui/material'
+import { CircularProgress, styled } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import moment from 'moment'
 import { useSnackbar } from 'notistack'
 import { useCallback, useEffect, useState } from 'react'
-import { Calendar, momentLocalizer } from 'react-big-calendar'
+import { Calendar, momentLocalizer, View, Views } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useParams } from 'react-router'
 import { useNavigate } from 'react-router-dom'
@@ -16,23 +16,57 @@ const mongoose = require('mongoose')
 
 const localizer = momentLocalizer(moment)
 
+type CalendarEvent = {
+  title: string
+  start: Date
+  end: Date
+}
+
 function ClinicPage() {
   //access clinic id from the paramter
   const { pageId } = useParams()
   const navigate = useNavigate()
 
   const [clinic, setClinic] = useState<Clinic>(clinics[0])
+  const [myEvents, setMyEvents] = useState<CalendarEvent[]>([])
+  const [fetching, setFetching] = useState<boolean>(true)
+
+  const [view, setView] = useState<View>(Views.WEEK)
+  const onView = useCallback((newView: View) => setView(newView), [setView])
 
   if (!mongoose.Types.ObjectId.isValid(pageId)) navigate('/404page')
 
   useEffect(() => {
     const queryClinic = async () => {
+      setFetching(true)
+      //fetch dentist data from clinic portal
       const response = await Api.post(`/request/clinic/${pageId}`, {
         _id: pageId
       })
 
       setClinic(response.data)
-      console.log(response.data)
+
+      //fetch events from booking manager
+      const fetchedBookings = await Api.post(
+        `/request/booking-requests/${pageId}`,
+        { clinicId: pageId }
+      )
+
+      const temporaryArr: CalendarEvent[] = []
+      fetchedBookings.data.forEach((booking: Booking) => {
+        const bookingState =
+          booking.state[0].toUpperCase() +
+          booking.state.slice(1, booking.state.length)
+
+        temporaryArr.push({
+          title: bookingState,
+          start: new Date(booking.start),
+          end: new Date(booking.end)
+        })
+      })
+
+      setMyEvents(temporaryArr)
+      setFetching(false)
     }
 
     queryClinic().catch((err) => console.log(err))
@@ -48,15 +82,10 @@ function ClinicPage() {
   let location = clinic.address
   const center = clinic.coordinate.latitude + ',' + clinic.coordinate.longitude
 
-  //fetch events from server
-  const events: any[] | undefined = []
-
   //start and end times of clinic {Find way to do that for each day individually}
   const startTime = 8
   const endTime = 16
   const today = new Date()
-
-  const [myEvents, setMyEvents] = useState(events)
 
   let [showDefaultText] = useState(false)
 
@@ -102,7 +131,7 @@ function ClinicPage() {
       end: Date,
       email: String,
       name: String,
-      inssurance: String,
+      inssurance: string,
       details: String
     ) => {
       try {
@@ -117,12 +146,12 @@ function ClinicPage() {
 
         //create booking
         const booking: Booking = {
-            email: email,
-            name: name,
+          email: email,
+          name: name,
           //ClinicId is taken from the url using useParams() from react. Clinic pages have an id associated with them in the router: clinic/:pageId
           clinicId: pageId ?? '',
           clinicName: clinic.name,
-          issuance: inssurance,
+          issuance: parseInt(inssurance),
           //Format the date so it is ready for the availability checker to process the date.
           date:
             start.getUTCFullYear() +
@@ -141,11 +170,15 @@ function ClinicPage() {
 
         //if the booking request is accepted by the availability checker....
         if (success.data.accepted) {
+          const bookingState =
+            booking.state[0].toUpperCase() +
+            booking.state.slice(1, booking.state.length)
           setMyEvents((prev) => [
             ...prev,
             {
-              start: booking.start,
-              end: booking.end
+              title: bookingState,
+              start: start,
+              end: end
             }
           ])
 
@@ -199,12 +232,28 @@ function ClinicPage() {
   })
 
   const BoxShadowDiv = styled('div')({
-    boxShadow:
-      '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+    boxShadow: '0px 0px 3px #888888',
     borderRadius: '4px',
     display: 'flex',
     flexDirection: 'column'
   })
+
+  if (fetching)
+    return (
+      <div
+        style={{
+          height: '80vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '0.5rem',
+          flexDirection: 'column'
+        }}
+      >
+        <h2>Loading...</h2>
+        <CircularProgress />
+      </div>
+    )
 
   return (
     <div>
@@ -216,7 +265,7 @@ function ClinicPage() {
       >
         <div
           style={{
-            height: '12rem',
+            height: '2.5rem',
             backgroundColor: '#22443d',
             width: '100%'
           }}
@@ -224,10 +273,10 @@ function ClinicPage() {
         <div
           style={{
             backgroundColor: 'white',
-            marginTop: '0.5rem',
+            marginTop: '2rem',
             padding: '1.5rem',
             width: '71%',
-            boxShadow: '0px 0px 2px #888888'
+            boxShadow: '0px 0px 1.5px #888888'
           }}
         >
           <CardMapContainer>
@@ -271,13 +320,14 @@ function ClinicPage() {
                 events={myEvents}
                 startAccessor="start"
                 endAccessor="end"
-                style={{ height: 500, width: '88%' }}
-                view={'week'}
+                style={{ height: 500, width: '100%' }}
+                view={view}
                 views={['week']}
                 step={30}
                 timeslots={1}
                 selectable={true}
                 onSelectSlot={openForm}
+                onView={onView}
                 min={
                   new Date(
                     today.getFullYear(),
