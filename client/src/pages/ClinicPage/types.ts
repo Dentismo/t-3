@@ -34,18 +34,18 @@ export type Clinic = {
 }
 
 export type Booking = {
-  email: String
+  email: String  
   name: String
   user?: {
-    email: string
-    name: string
+    email: String
+    name: String
   }
   clinicName: String
   clinicId: String
   issuance: number
   date: String
   state: 'approved' | 'pending' | 'denied'
-  start: String
-  end: String
+  start: string
+  end: string
   details: String
 }

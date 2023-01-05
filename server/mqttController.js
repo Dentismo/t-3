@@ -20,13 +20,13 @@ router.post("/request/:topic/:id", async (req, res) => {
   const mqttTopic = "request/" + req.params.topic + "/" + req.params.id;
   const responseTopic = "response/" + req.params.topic + "/" + req.params.id;
 
+  //   console.log(
+  //     `Server received POST request. Publishing to ${mqttTopic} and subscribing to ${responseTopic}`
+  //   );
+
   //subscribe to the response
   mqttHandler.subscribe(responseTopic);
 
-  const {password} = req.body
-  if(password) {
-    req.body.password = await bcrypt.hash(values.password, 10)
-  }
   //publish request
   mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
   //message received is parse to json and returned to the frontend
@@ -73,6 +73,28 @@ router.post("/request/:topic/:id", async (req, res) => {
 
 const breaker = new CircuitBreaker(routes, configurations);
 router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
+  let mqttTopic = ""
+  let responseTopic = ""
+  if (req.params.topicDefinition) {
+    mqttTopic =
+      "request/" +
+      req.params.topic +
+      "/" +
+      req.params.topicDefinition +
+      "/" +
+      req.params.id;
+    responseTopic =
+      "response/" +
+      req.params.topic +
+      "/" +
+      req.params.topicDefinition +
+      "/" +
+      req.params.id;
+  } else {
+    mqttTopic = "request/" + req.params.topic + "/" + req.params.id;
+    responseTopic = "response/" + req.params.topic + "/" + req.params.id;
+  }
+
   try {
     const stats = breaker.stats;
     if (breaker.opened) return;

@@ -9,7 +9,7 @@ const mqttHandler = require("./mqttHandler");
 const mqttController = require("./mqttController");
 const mailRouter = require("./routers/mailRouter");
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 const app = startApp(port);
 module.exports = app;

@@ -1,4 +1,3 @@
-import sendEmail from '../../util/sendEmail'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -14,6 +13,7 @@ import { Box } from '@mui/system'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { Api } from '../../Api'
+import sendEmail from '../../util/sendEmail'
 import IconAction from './IconAction'
 import { Booking } from './types'
 
@@ -46,14 +46,14 @@ const BookingCard: React.FC<Props> = ({
   } = booking
   const [denyLoading, setDenyLoading] = useState<boolean>(false)
   const [acceptLoading, setAcceptLoading] = useState<boolean>(false)
-  //const startTime = new Date(start)
-  //const endTime = new Date(end)
+  const startTime = new Date(start)
+  const endTime = new Date(end)
 
   return (
     <Stack
       direction="row"
       padding={2}
-      boxShadow="0 0 2px rgba(0, 0, 0, 0.2)"
+      boxShadow="0 0 2px rgba(0, 0, 0, 0.9)"
       bgcolor="white"
       {...props}
       sx={{
@@ -70,17 +70,25 @@ const BookingCard: React.FC<Props> = ({
       <Stack direction="row" spacing={1} alignItems="center">
         <Stack>
           <Typography px={1} noWrap borderRadius="3px" fontSize="1.2rem">
-            {/* {startTime.getHours()}:{startTime.getMinutes()} - {endTime.getHours()}:{endTime.getMinutes()} */}
-            {start} - {end}
+            {startTime.getHours()}:
+            {startTime.getMinutes() < 10
+              ? '0' + startTime.getMinutes()
+              : startTime.getMinutes()}{' '}
+            - {endTime.getHours()}:
+            {endTime.getMinutes() < 10
+              ? '0' + endTime.getMinutes()
+              : endTime.getMinutes()}
           </Typography>
         </Stack>
         <Box alignSelf="stretch">
           <Divider orientation="vertical" />
         </Box>
-        <Typography fontWeight={600} noWrap overflow="visible">
+        <Typography noWrap overflow="visible" fontWeight={400}>
           {name}:
         </Typography>
-        <Typography flexGrow={1}>{details}</Typography>
+        <Typography flexGrow={1} fontWeight="lighter">
+          {details}
+        </Typography>
       </Stack>
       <Stack direction="row" ml="auto" alignSelf="center">
         {state === 'pending' ? (
@@ -173,7 +181,7 @@ const BookingCard: React.FC<Props> = ({
           <>
             <IconAction
               tooltip="Resend email"
-              icon={<EmailIcon htmlColor="grey" />}
+              icon={<EmailIcon htmlColor="#457b9d" />}
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
@@ -195,7 +203,7 @@ const BookingCard: React.FC<Props> = ({
             />
             <IconAction
               tooltip="Delete Appointment"
-              icon={<DeleteIcon htmlColor="grey" />}
+              icon={<DeleteIcon htmlColor="#e63946" />}
               onClick={() =>
                 openModalWithParams({
                   title: 'Confirm Action',
