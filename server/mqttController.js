@@ -18,7 +18,7 @@ router.post("/request/:topic/:id", async (req, res) => {
   mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
   //message received is parse to json and returned to the frontend
   const response = await mqttHandler.onMessage();
-
+  mqttHandler.unsubscribe(responseTopic);
   res.status(201).json(response);
 });
 
@@ -61,6 +61,7 @@ router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
     const response = await mqttHandler.onMessage();
 
     res.status(201).json(response);
+    mqttHandler.unsubscribe(responseTopic);
   }
 });
 
@@ -76,6 +77,7 @@ router.patch("/request/:delegation/:id", async (req, res) => {
   mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
   const message = await mqttHandler.onMessage();
 
+  mqttHandler.unsubscribe(responseTopic);
   res.status(200).json(message);
 });
 
@@ -90,6 +92,7 @@ router.delete("/request/delete/:id", async (req, res) => {
   mqttHandler.publish(mqttTopic, bookingId);
   const message = await mqttHandler.onMessage();
 
+  mqttHandler.unsubscribe(responseTopic);
   res.status(200).json(message);
 });
 
