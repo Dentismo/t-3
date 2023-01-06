@@ -165,13 +165,8 @@ function ClinicPage() {
           details: details
         }
         const id = Math.random().toString(36).substring(2, 7)
-<<<<<<< HEAD
-        const success = await Api.post('request/availability/' + id, booking)
-=======
-
         const success = await Api.post('request/availability/' + id, booking)
 
->>>>>>> refs/remotes/origin/main
         //if the booking request is accepted by the availability checker....
         if (success.data.accepted) {
           const bookingState =
