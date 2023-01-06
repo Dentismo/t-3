@@ -3,7 +3,7 @@ import Divider from '@mui/material/Divider'
 import moment from 'moment'
 import { useSnackbar } from 'notistack'
 import { useCallback, useEffect, useState } from 'react'
-import { Calendar, momentLocalizer, View, Views } from 'react-big-calendar'
+import { Calendar, View, Views, momentLocalizer } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useParams } from 'react-router'
 import { useNavigate } from 'react-router-dom'
@@ -165,7 +165,13 @@ function ClinicPage() {
           details: details
         }
         const id = Math.random().toString(36).substring(2, 7)
+<<<<<<< HEAD
         const success = await Api.post('request/availability/' + id, booking)
+=======
+
+        const success = await Api.post('request/availability/' + id, booking)
+
+>>>>>>> refs/remotes/origin/main
         //if the booking request is accepted by the availability checker....
         if (success.data.accepted) {
           const bookingState =

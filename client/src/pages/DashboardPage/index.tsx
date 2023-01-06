@@ -34,7 +34,6 @@ const DentistPage: React.FC = () => {
         _id: loginId
       })
       setDentist(response.data)
-      console.log(response.data)
     }
 
     const queryBookings = async () => {
