@@ -19,7 +19,7 @@ router.post("/request/:topic/:id", async (req, res) => {
   //define mqtt topics with the given parametere
   const mqttTopic = "request/" + req.params.topic + "/" + req.params.id;
   const responseTopic = "response/" + req.params.topic + "/" + req.params.id;
-  
+
   try {
     const stats = breaker.stats;
 
@@ -161,11 +161,41 @@ router.patch("/request/:delegation/:id", async (req, res) => {
 
   console.log(mqttTopic, responseTopic);
 
-  mqttHandler.subscribe(responseTopic);
-  mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
-  const message = await mqttHandler.onMessage();
+  try {
+    const stats = breaker.stats;
 
-  res.status(200).json(message);
+    if (breaker.opened) 
+      return;
+
+    if ((stats.failures < configurations.volumeThreshold) && !breaker.halfOpen)
+      return;
+
+    const errorRate = stats.successes / stats.fires * 100;
+
+    if (errorRate > configurations.errorThresholdPercentage || breaker.halfOpen)
+      breaker.open();
+      
+    mqttHandler.subscribe(responseTopic);
+    mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
+    const message = await mqttHandler.onMessage();
+  
+    res.status(200).json(message);
+
+    breaker.on('open', () => console.log(`================= OPEN: The breaker for ${routes} just opened. =================`));
+    breaker.on('halfOpen', () => {
+      // Based on configuration, wait for 30 seconds and if everything is OK then close circuit breaker
+      console.log(`=================  HALF_OPEN: The breaker for ${routes} is half open. =================`)
+      setTimeout(() => {breaker.close()}, configurations.resetTimeout)
+    });
+    breaker.on('close', () => console.log(`=================  CLOSE: The breaker for ${routes} has closed. Service OK. =================`)); 
+    breaker.on('fallback', () => console.log(`=================  FALLBACK: FALLBACK is invoked. =================`));
+    breaker.on('reject', () => console.log(`=================  REJECTED: The breaker for ${routes} is open. Failing fast. =================`));
+  
+    return await breaker.fire().then().catch(console.log({ state: breaker.opened ? 'open' : 'closed' }));
+
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.delete("/request/delete/:id", async (req, res) => {
