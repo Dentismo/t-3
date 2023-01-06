@@ -44,7 +44,7 @@ router.post("/request/:topic/:id", async (req, res) => {
   
     const {password} = req.body
     if(password) {
-      req.body.password = await bcrypt.hash(values.password, 10)
+      req.body.password = await bcrypt.hash(req.body.password, 10)
     }
     //publish request
     mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
