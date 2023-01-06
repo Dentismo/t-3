@@ -29,7 +29,12 @@ router.post("/request/:topic/:id", async (req, res) => {
     if ((stats.failures < configurations.volumeThreshold) && !breaker.halfOpen)
       return;
 
-    const errorRate = stats.successes / stats.fires * 100;
+    /*
+      The error rate is calculated by dividing the number of failures by the number of times the circuit has been activated. 
+      This error rate is then compared to the errorThresholdPercentage value
+    */
+
+    const errorRate = stats.failures / stats.fires * 100;
 
     if (errorRate > configurations.errorThresholdPercentage || breaker.halfOpen)
       breaker.open();
@@ -50,7 +55,7 @@ router.post("/request/:topic/:id", async (req, res) => {
 
     breaker.on('open', () => console.log(`================= OPEN: The breaker for ${routes} just opened. =================`));
     breaker.on('halfOpen', () => {
-      // Based on configuration, wait for 30 seconds and if everything is OK then close circuit breaker
+      // Based on configuration, wait for 10 seconds and if everything is OK then close circuit breaker
       console.log(`=================  HALF_OPEN: The breaker for ${routes} is half open. =================`)
       setTimeout(() => {breaker.close()}, configurations.resetTimeout)
     });
@@ -100,7 +105,11 @@ router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
     if ((stats.failures < configurations.volumeThreshold) && !breaker.halfOpen)
       return;
 
-    const errorRate = stats.successes / stats.fires * 100;
+    /*
+      The error rate is calculated by dividing the number of failures by the number of times the circuit has been activated. 
+      This error rate is then compared to the errorThresholdPercentage value
+    */
+    const errorRate = stats.failures / stats.fires * 100;
 
     if (errorRate > configurations.errorThresholdPercentage || breaker.halfOpen)
       breaker.open();
@@ -135,7 +144,7 @@ router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
 
     breaker.on('open', () => console.log(`================= OPEN: The breaker for ${routes} just opened. =================`));
     breaker.on('halfOpen', () => {
-      // Based on configuration, wait for 30 seconds and if everything is OK then close circuit breaker
+      // Based on configuration, wait for 10 seconds and if everything is OK then close circuit breaker
       console.log(`=================  HALF_OPEN: The breaker for ${routes} is half open. =================`)
       setTimeout(() => {breaker.close()}, configurations.resetTimeout)
     });
@@ -170,7 +179,11 @@ router.patch("/request/:delegation/:id", async (req, res) => {
     if ((stats.failures < configurations.volumeThreshold) && !breaker.halfOpen)
       return;
 
-    const errorRate = stats.successes / stats.fires * 100;
+    /*
+      The error rate is calculated by dividing the number of failures by the number of times the circuit has been activated. 
+      This error rate is then compared to the errorThresholdPercentage value
+    */
+    const errorRate = stats.failures / stats.fires * 100;
 
     if (errorRate > configurations.errorThresholdPercentage || breaker.halfOpen)
       breaker.open();
@@ -183,7 +196,7 @@ router.patch("/request/:delegation/:id", async (req, res) => {
 
     breaker.on('open', () => console.log(`================= OPEN: The breaker for ${routes} just opened. =================`));
     breaker.on('halfOpen', () => {
-      // Based on configuration, wait for 30 seconds and if everything is OK then close circuit breaker
+      // Based on configuration, wait for 10 seconds and if everything is OK then close circuit breaker
       console.log(`=================  HALF_OPEN: The breaker for ${routes} is half open. =================`)
       setTimeout(() => {breaker.close()}, configurations.resetTimeout)
     });
@@ -214,11 +227,15 @@ router.delete("/request/delete/:id", async (req, res) => {
     if ((stats.failures < configurations.volumeThreshold) && !breaker.halfOpen)
       return;
 
-    const errorRate = stats.successes / stats.fires * 100;
+    /*
+      The error rate is calculated by dividing the number of failures by the number of times the circuit has been activated. 
+      This error rate is then compared to the errorThresholdPercentage value
+    */
+    const errorRate = stats.failures / stats.fires * 100;
 
     if (errorRate > configurations.errorThresholdPercentage || breaker.halfOpen)
       breaker.open();
-      
+
     mqttHandler.subscribe(responseTopic);
     mqttHandler.publish(mqttTopic, bookingId);
     const message = await mqttHandler.onMessage();
@@ -227,7 +244,7 @@ router.delete("/request/delete/:id", async (req, res) => {
 
     breaker.on('open', () => console.log(`================= OPEN: The breaker for ${routes} just opened. =================`));
     breaker.on('halfOpen', () => {
-      // Based on configuration, wait for 30 seconds and if everything is OK then close circuit breaker
+      // Based on configuration, wait for 10 seconds and if everything is OK then close circuit breaker
       console.log(`=================  HALF_OPEN: The breaker for ${routes} is half open. =================`)
       setTimeout(() => {breaker.close()}, configurations.resetTimeout)
     });
