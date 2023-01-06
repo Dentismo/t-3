@@ -42,10 +42,6 @@ router.post("/request/:topic/:id", async (req, res) => {
     //subscribe to the response
     mqttHandler.subscribe(responseTopic);
   
-    const {password} = req.body
-    if(password) {
-      req.body.password = await bcrypt.hash(req.body.password, 10)
-    }
     //publish request
     mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
     //message received is parse to json and returned to the frontend
