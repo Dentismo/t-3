@@ -166,9 +166,7 @@ function ClinicPage() {
         }
         const id = Math.random().toString(36).substring(2, 7)
 
-        console.log('BEFORE')
         const success = await Api.post('request/availability/' + id, booking)
-        console.log('AFTER')
 
         //if the booking request is accepted by the availability checker....
         if (success.data.accepted) {
