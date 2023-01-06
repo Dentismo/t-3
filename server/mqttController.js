@@ -12,64 +12,60 @@ const configurations = {
   errorThresholdPercentage: 10, // When 10% of requests fail, trip the circuit
   resetTimeout: 10000 // After 10 seconds, try again.
 };
-//const breaker = new CircuitBreaker(routes, configurations);
-
-/*
-router.post("/request/:topic/:id", async (req, res) => {
-  //define mqtt topics with the given parametere
-  const mqttTopic = "request/" + req.params.topic + "/" + req.params.id;
-  const responseTopic = "response/" + req.params.topic + "/" + req.params.id;
-
-  //   console.log(
-  //     `Server received POST request. Publishing to ${mqttTopic} and subscribing to ${responseTopic}`
-  //   );
-
-  //subscribe to the response
-  mqttHandler.subscribe(responseTopic);
-
-  //publish request
-  mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
-  //message received is parse to json and returned to the frontend
-  const response = await mqttHandler.onMessage();
-
-  res.status(201).json(response);
-});
-*/
 
 
-// *********************************************************************************************************
-// Testing
-// *********************************************************************************************************
 router.post("/request/:topic/:id", async (req, res) => {
 
   //define mqtt topics with the given parametere
   const mqttTopic = "request/" + req.params.topic + "/" + req.params.id;
   const responseTopic = "response/" + req.params.topic + "/" + req.params.id;
   
-  //subscribe to the response
-  mqttHandler.subscribe(responseTopic);
+  try {
+    const stats = breaker.stats;
+
+    if (breaker.opened) 
+      return;
+
+    if ((stats.failures < configurations.volumeThreshold) && !breaker.halfOpen)
+      return;
+
+    const errorRate = stats.successes / stats.fires * 100;
+
+    if (errorRate > configurations.errorThresholdPercentage || breaker.halfOpen)
+      breaker.open();
+
+    //subscribe to the response
+    mqttHandler.subscribe(responseTopic);
   
-  const {password} = req.body
-  if(password) {
-    req.body.password = await bcrypt.hash(values.password, 10)
+    const {password} = req.body
+    if(password) {
+      req.body.password = await bcrypt.hash(values.password, 10)
+    }
+    //publish request
+    mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
+    //message received is parse to json and returned to the frontend
+    const response = await mqttHandler.onMessage();
+
+    res.status(201).json(response);
+
+    breaker.on('open', () => console.log(`================= OPEN: The breaker for ${routes} just opened. =================`));
+    breaker.on('halfOpen', () => {
+      // Based on configuration, wait for 30 seconds and if everything is OK then close circuit breaker
+      console.log(`=================  HALF_OPEN: The breaker for ${routes} is half open. =================`)
+      setTimeout(() => {breaker.close()}, configurations.resetTimeout)
+    });
+    breaker.on('close', () => console.log(`=================  CLOSE: The breaker for ${routes} has closed. Service OK. =================`)); 
+    breaker.on('fallback', () => console.log(`=================  FALLBACK: FALLBACK is invoked. =================`));
+    breaker.on('reject', () => console.log(`=================  REJECTED: The breaker for ${routes} is open. Failing fast. =================`));
+  
+    return await breaker.fire().then().catch(console.log({ state: breaker.opened ? 'open' : 'closed' }));
+
+  } catch (error) {
+    console.log(error);
   }
-  //publish request
-  mqttHandler.publish(mqttTopic, JSON.stringify(req.body));
-  //message received is parse to json and returned to the frontend
-  const response = await mqttHandler.onMessage();
 
-  res.status(201).json(response);
-
-  breaker.on('open', () => console.log(`================= OPEN: The breaker for ${routes} just opened. =================`));
-  breaker.on('halfOpen', () => console.log(`=================  HALF_OPEN: The breaker for ${routes} is half open. ================= `));
-  breaker.on('close', () => console.log(`=================  CLOSE: The breaker for ${routes} has closed. Service OK. ================= `)); 
-
-  return breaker.fire(routes).then().catch(console.log({ state: breaker.opened ? 'open' : 'closed' }));
-  //return breaker.fire(routes).then().catch(console.log(breaker.stats));
 });
-// *********************************************************************************************************
-// Testing
-// *********************************************************************************************************
+
 
 const breaker = new CircuitBreaker(routes, configurations);
 router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
@@ -97,10 +93,15 @@ router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
 
   try {
     const stats = breaker.stats;
-    if (breaker.opened) return;
+
+    if (breaker.opened) 
+      return;
+
     if ((stats.failures < configurations.volumeThreshold) && !breaker.halfOpen)
       return;
+
     const errorRate = stats.successes / stats.fires * 100;
+
     if (errorRate > configurations.errorThresholdPercentage || breaker.halfOpen)
       breaker.open();
   
@@ -143,6 +144,7 @@ router.get("/request/:topic/:topicDefinition?/:id", async (req, res) => {
     breaker.on('reject', () => console.log(`=================  REJECTED: The breaker for ${routes} is open. Failing fast. =================`));
   
     return await breaker.fire().then().catch(console.log({ state: breaker.opened ? 'open' : 'closed' }));
+
   } catch (error) {
     console.log(error)
   }

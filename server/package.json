@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "SET PORT=8080 && node server",
-    "dev": "SET PORT=8080 && nodemon server",
+    "dev": "PORT=8080 && nodemon server",
     "lint": "eslint ."
   },
   "keywords": [],
