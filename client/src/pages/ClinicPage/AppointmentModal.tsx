@@ -62,10 +62,10 @@ const AppointmentModal: React.FC<Props> = ({
     <Dialog open={open} onClose={handleClose}>
       <div
         style={{
-          padding: '0rem 1rem 0rem 1rem',
+          padding: '0rem 1rem 0rem 1rem'
         }}
       >
-        <DialogTitle sx={{ fontSize: '1.5rem', fontWeight: 600}}>
+        <DialogTitle sx={{ fontSize: '1.5rem', fontWeight: 600 }}>
           {'Book an appointment'}
         </DialogTitle>
         <Divider sx={{ margin: '0rem 1.5rem 0rem 1.5rem' }} />
@@ -155,7 +155,7 @@ const AppointmentModal: React.FC<Props> = ({
               disabled={disableSubmit}
               onClick={() => {
                 clicks++
-                if (clicks === 15) {
+                if (clicks === 8) {
                   setDisableSubmit(true)
                   enqueueSnackbar('Too many requests - please try again', {
                     variant: 'error'
