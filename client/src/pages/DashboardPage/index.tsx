@@ -29,8 +29,9 @@ const DentistPage: React.FC = () => {
   })
 
   useEffect(() => {
+    setFetching(true)
     const queryClinic = async () => {
-      const response = await Api.post(`/request/clinic/${loginId}`, {
+      const response = await Api.post(`/request/dentist/${loginId}`, {
         _id: loginId
       })
       setDentist(response.data)
@@ -38,12 +39,11 @@ const DentistPage: React.FC = () => {
     }
 
     const queryBookings = async () => {
-      setFetching(true)
       const id = Math.random().toString(36).substring(2, 7)
       try {
         const fetchedBookings = await Api.post(
           `/request/booking-requests/${id}`,
-          { clinicID: localStorage.getItem('clinicId') } /*{"clinicId":"1"}*/
+          { clinicID: localStorage.clinicId } /*{"clinicId":"1"}*/
         )
         setFetching(false)
         setBookings(
@@ -139,7 +139,7 @@ const DentistPage: React.FC = () => {
             fontFamily="'playfair-display'"
             sx={{ color: '#51989A', borderTop: 4 }}
           >
-            Welcome, {dentist.name}
+            Welcome {dentist.name ?? 'back'}!
           </Typography>
           {bookingsForTab === 0 ? (
             <Typography variant="h4" color="#696969" mt={3}>
