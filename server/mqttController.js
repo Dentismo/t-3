@@ -9,7 +9,7 @@ const routes = 'http://localhost:3000/api/*'
 
 const configurations = {
   timeout: 3000, // If our function takes longer than 3 seconds, trigger a failure
-  errorThresholdPercentage: 10, // When 10% of requests fail, trip the circuit
+  errorThresholdPercentage: 30, // When 30% of requests fail, trip the circuit
   resetTimeout: 10000 // After 10 seconds, try again.
 };
 
