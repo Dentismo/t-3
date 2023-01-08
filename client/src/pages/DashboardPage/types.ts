@@ -1,9 +1,7 @@
 export type Booking = {
   _id: string
-  user: {
-    email: string
-    name: string
-  }
+  email: string
+  name: string
   clinicId: string
   clinicName: string
   issuance: string

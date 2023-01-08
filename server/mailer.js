@@ -5,7 +5,10 @@ const path = require("path");
 
 /* Setup transporter for sending mail */
 const transporter = nodemailer.createTransport({
-  service: "hotmail",
+  //   service: "smtp.office365.com",
+  host: "smtp.office365.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.MAIL_ADDRESS,
     pass: process.env.MAIL_PASSWORD,
@@ -28,13 +31,9 @@ transporter.use(
 // TODO: replace homePage with our domain when in production
 /* Custom mail sending interface */
 const sendMail = async ({ booking, type }) => {
-  const {
-    clinicId,
-    date,
-    user: { email },
-  } = booking;
+  const { clinicId, date, email } = booking;
   transporter.sendMail({
-    from: `Clinic ${clinicId} ${process.env.MAIL_ADDRESS}`,
+    from: `${process.env.MAIL_ADDRESS}`,
     to: email,
     subject: `Appointment on ${date} ${type}`,
     template: "index",

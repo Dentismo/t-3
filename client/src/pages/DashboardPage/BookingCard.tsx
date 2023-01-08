@@ -35,7 +35,8 @@ const BookingCard: React.FC<Props> = ({
   const { enqueueSnackbar } = useSnackbar()
   const {
     _id,
-    user: { name, email },
+    name,
+    email,
     clinicId,
     details,
     date,
@@ -109,7 +110,7 @@ const BookingCard: React.FC<Props> = ({
                       onAccept: async () => {
                         try {
                           setDenyLoading(true)
-                          await Api.patch('/request/denied/' + id, { _id })
+                          await Api.post('/request/denied/' + id, { _id })
                           setDenyLoading(false)
                           sendEmail({ booking, type: 'denied' })
                           enqueueSnackbar(`Appointment successfully denied!`, {
@@ -149,7 +150,7 @@ const BookingCard: React.FC<Props> = ({
                       onAccept: async () => {
                         try {
                           setAcceptLoading(true)
-                          await Api.patch('/request/approve/' + id, { _id })
+                          await Api.post('/request/approve/' + id, { _id })
                           await sendEmail({ booking, type: 'approved' })
                           setAcceptLoading(false)
                           enqueueSnackbar(

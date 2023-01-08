@@ -35,7 +35,6 @@ const DentistPage: React.FC = () => {
         _id: loginId
       })
       setDentist(response.data)
-      console.log(response.data)
     }
 
     const queryBookings = async () => {
@@ -43,7 +42,7 @@ const DentistPage: React.FC = () => {
       try {
         const fetchedBookings = await Api.post(
           `/request/booking-requests/${id}`,
-          { clinicID: localStorage.clinicId } /*{"clinicId":"1"}*/
+          { clinicId: localStorage.getItem('clinicId') } /*{"clinicId":"1"}*/
         )
         setFetching(false)
         setBookings(
@@ -57,7 +56,8 @@ const DentistPage: React.FC = () => {
     }
 
     queryBookings()
-    queryClinic().catch((err) => console.log(err))
+      .then(() => queryClinic())
+      .catch((err) => console.log(err))
   }, [loginId])
 
   const [searchParams] = useSearchParams() // updates state on query change
@@ -135,7 +135,7 @@ const DentistPage: React.FC = () => {
         <Stack>
           <Typography
             variant="h3"
-            font-weight="bold"
+            fontWeight="bold"
             fontFamily="'playfair-display'"
             sx={{ color: '#51989A', borderTop: 4 }}
           >

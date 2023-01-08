@@ -165,7 +165,6 @@ function ClinicPage() {
           details: details
         }
         const id = Math.random().toString(36).substring(2, 7)
-
         const success = await Api.post('request/availability/' + id, booking)
 
         //if the booking request is accepted by the availability checker....
