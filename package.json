@@ -1,4 +1,7 @@
 {
+  "dependencies": {
+    "opossum": "^7.0.1"
+  },
   "name": "t3-project",
   "version": "1.0.0",
   "description": "## Getting started",
